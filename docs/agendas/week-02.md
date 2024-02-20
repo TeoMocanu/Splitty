@@ -37,7 +37,7 @@ Agenda Items:
     - we can reach the weekly goal by implementing some basic requirements and writing tests for them
 - Summarize action points: Who , what , when? (2 min)
   - everyone can reach the weekly goal by implementing some basic requirements and writing tests for them
-  - everyone has to paste their part on the Overleef document
+  - everyone has to paste their part on the Overleaf document
   - everyone should read and comment on the other's part
 - Planning next meeting (2 min)
   - Friday 23/02/2024, Echo, 18:00, after classes
