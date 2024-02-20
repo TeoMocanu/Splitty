@@ -32,7 +32,7 @@ Agenda Items:
     - we will get used to template and start from there
     <!-- - we will read through the points for the basic requirements and choose 2-3 and come up with a solution -->
   - Misc. (6 min to spare :) )
-    - we will collaborate in teams of 2-3 on the three parts: frontend, database/backend and object/classes
+    - we will collaborate in teams of 2-3 on the three parts: frontend, database/backend and objects/classes
     - the person object will be identified by the event and the name, since there is no authentification system
     - we can reach the weekly goal by implementing some basic requirements and writing tests for them
 - Summarize action points: Who , what , when? (2 min)
@@ -42,6 +42,9 @@ Agenda Items:
 - Planning next meeting (2 min)
   - Friday 23/02/2024, Echo, 18:00, after classes
 - Feedback round: What went well and what can be improved next time? (1 min)
+  - nothing to add
 - Planned meeting duration != actual duration? Where/why did you mis-estimate? (1 min)
+  - finished 15 min early, we moved quicker through the introduction part
 - Question round: Does anyone have anything to add before the meeting closes? (2 min)
+  - nothing to add
 - Closure (0 min)
