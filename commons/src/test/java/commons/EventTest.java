@@ -103,4 +103,64 @@ public class EventTest {
         assertEquals(p2.getId(), a.getParticipants().get(2));
         assertEquals(p3.getId(), a.getParticipants().get(3));
     }
+
+    @Test
+    public void getExpensesTest() {
+        var a = new Event("title1");
+        var e0 = new Expense(1, "title1", 1);
+        var e1 = new Expense(2, "title2", 2);
+        var e2 = new Expense(3, "title3", 3);
+        var e3 = new Expense(4, "title4", 4);
+        List<Long> list = new ArrayList<>();
+        list.add(e0.getId());
+        list.add(e1.getId());
+        list.add(e2.getId());
+        list.add(e3.getId());
+        a.setExpenses(list);
+        assertEquals(4, a.getExpenses().size());
+        assertEquals(e0.getId(), a.getExpenses().get(0));
+        assertEquals(e1.getId(), a.getExpenses().get(1));
+        assertEquals(e2.getId(), a.getExpenses().get(2));
+        assertEquals(e3.getId(), a.getExpenses().get(3));
+    }
+
+    @Test
+    public void setExpensesTest() {
+        var a = new Event("title1");
+        var e0 = new Expense(1, "title1", 1);
+        var e1 = new Expense(2, "title2", 2);
+        var e2 = new Expense(3, "title3", 3);
+        var e3 = new Expense(4, "title4", 4);
+        List<Long> list = new ArrayList<>();
+        list.add(e0.getId());
+        list.add(e1.getId());
+        list.add(e2.getId());
+        list.add(e3.getId());
+        a.setExpenses(list);
+        assertEquals(4, a.getExpenses().size());
+        assertEquals(e0.getId(), a.getExpenses().get(0));
+        assertEquals(e1.getId(), a.getExpenses().get(1));
+        assertEquals(e2.getId(), a.getExpenses().get(2));
+        assertEquals(e3.getId(), a.getExpenses().get(3));
+    }
+
+    @Test
+    public void addExpenseTest() {
+        var a = new Event("title1");
+        var e0 = new Expense(1, "title1", 1);
+        var e1 = new Expense(2, "title2", 2);
+        var e2 = new Expense(3, "title3", 3);
+        var e3 = new Expense(4, "title4", 4);
+        List<Long> list = new ArrayList<>();
+        list.add(e0.getId());
+        list.add(e1.getId());
+        list.add(e2.getId());
+        a.setExpenses(list);
+        a.addExpenses(e3);
+        assertEquals(4, a.getExpenses().size());
+        assertEquals(e0.getId(), a.getExpenses().get(0));
+        assertEquals(e1.getId(), a.getExpenses().get(1));
+        assertEquals(e2.getId(), a.getExpenses().get(2));
+        assertEquals(e3.getId(), a.getExpenses().get(3));
+    }
 }
