@@ -64,7 +64,8 @@ public class Expense {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Expense expense)) return false;
-        return id == expense.id && Float.compare(expense.amount, amount) == 0 && Objects.equals(payerId, expense.payerId) && Objects.equals(title, expense.title);
+        return id == expense.id && Float.compare(expense.amount, amount) == 0
+                && Objects.equals(payerId, expense.payerId) && Objects.equals(title, expense.title);
     }
 
     @Override

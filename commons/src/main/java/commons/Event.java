@@ -73,7 +73,8 @@ public class Event {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Event event)) return false;
-        return getId() == event.getId() && Objects.equals(getTitle(), event.getTitle()) && Objects.equals(getParticipants(), event.getParticipants()) && Objects.equals(getExpenses(), event.getExpenses());
+        return getId() == event.getId() && Objects.equals(getTitle(), event.getTitle())
+                && Objects.equals(getParticipants(), event.getParticipants()) && Objects.equals(getExpenses(), event.getExpenses());
     }
 
     @Override
