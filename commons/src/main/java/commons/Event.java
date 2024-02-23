@@ -16,8 +16,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
     public String title;
-    public List<Participant> participants;
-    public List<Expense> expenses;
+    public List<Long> participants;
+    public List<Long> expenses;
 
     public Event(){
 
@@ -46,28 +46,28 @@ public class Event {
         this.title = title;
     }
 
-    public List<Participant> getParticipants() {
+    public List<Long> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Participant> participants) {
+    public void setParticipants(List<Long> participants) {
         this.participants = participants;
     }
 
     public void addParticipant(Participant participant) {
-        this.participants.add(participant);
+        this.participants.add(participant.getId());
     }
 
-    public List<Expense> getExpenses() {
+    public List<Long> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Expense> expenses) {
+    public void setExpenses(List<Long> expenses) {
         this.expenses = expenses;
     }
 
     public void addExpenses(Expense expense) {
-        this.expenses.add(expense);
+        this.expenses.add(expense.getId());
     }
 
     @Override

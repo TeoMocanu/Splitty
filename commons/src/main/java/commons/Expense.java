@@ -5,17 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Expense {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    public Participant payer;
+    public long payerId;
     public String title;
     public float amount;
     //public List<Participant> splitBetween;
@@ -24,8 +22,8 @@ public class Expense {
 
     }
 
-    public Expense(Participant payer, String title, float amount){
-        this.payer = payer;
+    public Expense(long payerId, String title, float amount){
+        this.payerId = payerId;
         this.title = title;
         this.amount = amount;
     }
@@ -38,12 +36,12 @@ public class Expense {
         this.id = id;
     }
 
-    public Participant getPayer() {
-        return payer;
+    public long getPayer() {
+        return payerId;
     }
 
     public void setPayer(Participant payer) {
-        this.payer = payer;
+        this.payerId = payerId;
     }
 
     public String getTitle() {
@@ -66,12 +64,12 @@ public class Expense {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Expense expense)) return false;
-        return id == expense.id && Float.compare(expense.amount, amount) == 0 && Objects.equals(payer, expense.payer) && Objects.equals(title, expense.title);
+        return id == expense.id && Float.compare(expense.amount, amount) == 0 && Objects.equals(payerId, expense.payerId) && Objects.equals(title, expense.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, payer, title, amount);
+        return Objects.hash(id, payerId, title, amount);
     }
 
 
