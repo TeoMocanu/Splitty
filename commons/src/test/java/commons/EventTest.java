@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventTest {
     @Test
     public void checkConstructor() {
@@ -61,5 +64,43 @@ public class EventTest {
     public void getTitleTest() {
         var a = new Event("title1");
         assertEquals("title1", a.getTitle());
+    }
+
+    @Test
+    public void getParticipantsTest() {
+        var a = new Event("title1");
+        var p0 = new Participant("name1", "email1", "iban1");
+        var p1 = new Participant("name2", "email2", "iban2");
+        var p2 = new Participant("name3", "email3", "iban3");
+        var p3 = new Participant("name4", "email4", "iban4");
+        a.addParticipant(p0);
+        a.addParticipant(p1);
+        a.addParticipant(p2);
+        a.addParticipant(p3);
+        assertEquals(4, a.getParticipants().size());
+        assertEquals(p0.getId(), a.getParticipants().get(0));
+        assertEquals(p1.getId(), a.getParticipants().get(1));
+        assertEquals(p2.getId(), a.getParticipants().get(2));
+        assertEquals(p3.getId(), a.getParticipants().get(3));
+    }
+
+    @Test
+    public void setParticipantsTest() {
+        var a = new Event("title1");
+        var p0 = new Participant("name1", "email1", "iban1");
+        var p1 = new Participant("name2", "email2", "iban2");
+        var p2 = new Participant("name3", "email3", "iban3");
+        var p3 = new Participant("name4", "email4", "iban4");
+        List<Long> list = new ArrayList<>();
+        list.add(p0.getId());
+        list.add(p1.getId());
+        list.add(p2.getId());
+        list.add(p3.getId());
+        a.setParticipants(list);
+        assertEquals(4, a.getParticipants().size());
+        assertEquals(p0.getId(), a.getParticipants().get(0));
+        assertEquals(p1.getId(), a.getParticipants().get(1));
+        assertEquals(p2.getId(), a.getParticipants().get(2));
+        assertEquals(p3.getId(), a.getParticipants().get(3));
     }
 }
