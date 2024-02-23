@@ -1,9 +1,6 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
     public String title;
+    @ElementCollection
     public List<Long> participants;
+    @ElementCollection
     public List<Long> expenses;
 
     public Event(){
