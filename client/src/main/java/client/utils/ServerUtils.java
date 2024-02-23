@@ -24,7 +24,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import commons.Expense;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -61,13 +60,4 @@ public class ServerUtils {
 				.accept(APPLICATION_JSON) //
 				.post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
 	}
-
-	public Expense addExpense(Expense expense) {
-		return ClientBuilder.newClient(new ClientConfig()) //
-				.target(SERVER).path("api/quotes") //
-				.request(APPLICATION_JSON) //
-				.accept(APPLICATION_JSON) //
-				.post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
-	}
-
 }
