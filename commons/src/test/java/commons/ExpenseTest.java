@@ -59,4 +59,23 @@ public class ExpenseTest {
         a.setPayer(part);
         assertEquals(part.getId(), a.getPayer());
     }
+
+    @Test
+    public void setTitleTest() {
+        var a = new Expense(0, "title1", 1);
+        a.setTitle("title2");
+        assertEquals("title2", a.getTitle());
+    }
+
+    @Test
+    public void getTitleTest() {
+        var a = new Expense(0, "title1", 1);
+        assertEquals("title1", a.getTitle());
+    }
+
+    @Test
+    public void getAmountTest() {
+        var a = new Expense(0, "title1", 1);
+        assertEquals(1, a.getAmount());
+    }
 }
