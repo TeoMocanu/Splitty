@@ -19,7 +19,6 @@ import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
 import commons.Participant;
-import commons.Person;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -44,14 +43,12 @@ public class ContactDetailCtrl {
     @FXML
     private TextField bicField;
 
-    private Participant participant
+    private Participant participant;
 
     @Inject
     public ContactDetailCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-//        this.participant = new Participant(null, null, null, null);
-        this.participant = new Participant(null, null, null);
     }
 
     @Inject
@@ -59,13 +56,15 @@ public class ContactDetailCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.participant = participant;
+        initFields();
     }
 
+    //TODO also add the BIC field
     public void initFields(){
         this.nameField.setText(participant.getName());
         this.emailField.setText(participant.getEmail());
         this.ibanField.setText(participant.getIban());
-//        this.bicField.setText(participant.getBic());
+        this.bicField.setText(null);
     }
 
     public void abort() {
@@ -75,24 +74,27 @@ public class ContactDetailCtrl {
 
     public void ok() {
         try {
-            server.editDetails(getParticipant());
+            if(participant == null){
+                server.addParticipant(getParticipant());
+            }else {
+                server.editParticipant(participant, getParticipant());
+            }
         } catch (WebApplicationException e) {
-
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
             return;
         }
-
         clearFields();
         mainCtrl.showOverview();
     }
 
+    //TODO also add the BIC field
     private Participant getParticipant() {
-        var p = new Person(firstName.getText(), lastName.getText());
-        var q = quote.getText();
-        return new Quote(p, q);
+        return new Participant(nameField.getText(),
+                emailField.getText(),
+                ibanField.getText());
     }
 
     private void clearFields() {
@@ -113,5 +115,18 @@ public class ContactDetailCtrl {
             default:
                 break;
         }
+    }
+
+    public boolean validateInput(){
+        if(!nameField.getText().matches("[A-Z][a-z]+"))
+            return false;
+        if(!emailField.getText().matches("[A-Za-z.]+@[A-za-z.]+\\.[a-z]+"))
+            return false;
+        // The format is NL01_BANK_2345_6789_10
+        if(!ibanField.getText().matches("[A-Z]{2}[0-9]{2} [A-Z]{4} ([0-9]{4} )* [0-9]{0,4}"))
+            return false;
+        if(!bicField.getText().equals(ibanField.getText().substring(5, 9)))
+            return false;
+        return true;
     }
 }
