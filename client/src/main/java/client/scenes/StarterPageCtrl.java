@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class StarterPageCtrl {
     }
 
     public void joinEvent(ServerUtils server) {
-        eventName = createNewEvent.getText();
+        eventName = joinEvent.getText();
         Event newEvent = new Event(eventName);
         eventList.add(newEvent);
     }
