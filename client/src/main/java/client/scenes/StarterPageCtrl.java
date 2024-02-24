@@ -49,6 +49,21 @@ public class StarterPageCtrl {
         this.eventList = eventList;
     }
 
+    public List<Event> lastSearch() {
+        List<Event> searches = new ArrayList<>();
+        for(int i = eventList.size() - 1; i >= 0 && searches.size() < 4; i--)
+            searches.add(eventList.get(i));
+        return searches;
+    }
+
+    public boolean isHistoryEmpty() {
+        return eventList.size() == 0;
+    }
+
+    public boolean historyContains(String name) {
+        return eventList.contains(name);
+    }
+
     public void createNewEvent(ServerUtils server) {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
