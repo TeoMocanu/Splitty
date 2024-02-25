@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Participant;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,14 +31,20 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private Scene contactDetail;
+    private ContactDetailCtrl contactDetailCtrl;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<ContactDetailCtrl, Parent> contactDetail) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
+
+        this.contactDetail = new Scene(contactDetail.getValue());
+        this.contactDetailCtrl = contactDetail.getKey();
 
         showOverview();
         primaryStage.show();
@@ -53,5 +60,16 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+
+    public void showContactDetailAdd() {
+        primaryStage.setTitle("Contact Details");
+        primaryStage.setScene(contactDetail);
+    }
+
+    public void showContactDetailEdit(Participant participant) {
+        primaryStage.setTitle("Contact Details");
+        primaryStage.setScene(contactDetail);
+        contactDetailCtrl.setParticipant(participant);
     }
 }

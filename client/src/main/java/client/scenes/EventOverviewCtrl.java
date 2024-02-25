@@ -14,10 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 public class EventOverviewCtrl implements Initializable {
 
@@ -27,13 +25,11 @@ public class EventOverviewCtrl implements Initializable {
     private ObservableList<Quote> data;
 
     @FXML
-    private ListView<Participant> participants;
-
+    private HBox participants;
     @FXML
-    private ComboBox<Participant> eventPayers;
-
+    private ComboBox eventPayers;
     @FXML
-    private TableView<Quote> table;
+    private TableView table;
     @FXML
     private TableColumn<Expense, String> expense;
 //    @FXML
@@ -49,22 +45,19 @@ public class EventOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        participants.setCellFactory(q -> new SimpleStringProperty( q.getName()));
-        eventPayers.setCellFactory(q -> new SimpleStringProperty( q.getValue().getName()));
-
-        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
+//        participants.setCellFactory(q -> new SimpleStringProperty( q.getName()));
+//        eventPayers.setCellFactory(q -> new SimpleStringProperty( q.getValue().getName()));
+//
+//        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
 //        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
 //        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
     }
 
-    public void addQuote() {
-        mainCtrl.showAdd();
+    public void addParticipant() {
+        mainCtrl.showContactDetailAdd();
     }
 
-    public void refresh() {
-        var quotes = server.getQuotes();
-        data = FXCollections.observableList(quotes);
-        table.setItems(data);
-        participants.setItems(FXCollections.observableList(server.getParticipantsOfEvent()));
+    public void editParticipant() {
+        mainCtrl.showContactDetailEdit(new Participant("name", "email", "iibun"));
     }
 }

@@ -51,14 +51,6 @@ public class ContactDetailCtrl {
         this.server = server;
     }
 
-    @Inject
-    public ContactDetailCtrl(ServerUtils server, MainCtrl mainCtrl, Participant participant) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.participant = participant;
-        initFields();
-    }
-
     //TODO also add the BIC field
     public void initFields(){
         this.nameField.setText(participant.getName());
@@ -98,6 +90,10 @@ public class ContactDetailCtrl {
         return new Participant(nameField.getText(),
                 emailField.getText(),
                 ibanField.getText());
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
     private void clearFields() {
