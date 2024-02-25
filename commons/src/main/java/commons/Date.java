@@ -8,7 +8,7 @@ public class Date {
     private int year;
 
     public Date(int day, int month, int year) throws Exception {
-        if(day > 31 || day > 30 && month % 2 == 0 || day < 0)
+        if(day > 31 || day < 0)
             throw new Exception("Invalid date");
         if(month < 0 || month > 12)
             throw new Exception("Invalid date");
@@ -55,11 +55,11 @@ public class Date {
         return Objects.hash(day, month, year);
     }
 
-    public String toStringMDY() {
+    public String toStringDMY() {
         return day + "." + month + "." + year;
     }
 
-    public String toStringDMY() {
+    public String toStringMDY() {
         return month + "." + day + "." + year;
     }
 }
