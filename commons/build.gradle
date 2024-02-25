@@ -6,4 +6,5 @@ java {
 
 dependencies {
 	implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
+    testImplementation 'junit:junit:4.13.1'
 }
