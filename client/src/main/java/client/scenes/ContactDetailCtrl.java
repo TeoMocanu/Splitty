@@ -72,8 +72,11 @@ public class ContactDetailCtrl {
         mainCtrl.showOverview();
     }
 
+    //TODO Maybe we can create custom exceptions?
     public void ok() {
         try {
+            if(!validateInput())
+                throw new WebApplicationException("Invalid input!");
             if(participant == null){
                 server.addParticipant(getParticipant());
             }else {
