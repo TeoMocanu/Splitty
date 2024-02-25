@@ -1,11 +1,18 @@
 package commons;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 class TransactionTest {
-/*
+
     @Test
     void getPayer() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         assertEquals(transaction.getPayer(),"Mario");
+
     }
 
     @Test
@@ -117,5 +124,5 @@ class TransactionTest {
         assertEquals(transaction.toString(),"Transaction{payer='Mario', payee='Mihai', amount=150.0, currency='$', description='money for shopping', timestamp=2024-02-23T20:04}");
     }
 
-*/
+
 }
