@@ -60,8 +60,10 @@ public class QuoteOverviewCtrl implements Initializable {
     }
 
     public void addQuote() {
-        mainCtrl.showAdd();
+        mainCtrl.showAddQuote();
     }
+
+    public void addExpense() { mainCtrl.showAddExpense(); }
 
     public void refresh() {
         var quotes = server.getQuotes();
