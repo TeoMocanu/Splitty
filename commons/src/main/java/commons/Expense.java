@@ -24,6 +24,12 @@ public class Expense {
 
     }
 
+    public Expense(long payerId, String title, float amount){
+        this.payerId = payerId;
+        this.title = title;
+        this.amount = amount;
+    }
+
     public Expense(long payerId, String title, float amount, String type){
         this.payerId = payerId;
         this.title = title;
