@@ -24,10 +24,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import commons.Expense;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
+import commons.Participant;
+import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -63,11 +64,30 @@ public class ServerUtils {
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
+    //TODO modify the path
     public Expense addExpense(Expense expense) { // path needs to be reconfigured
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expsenses") //
+                .target(SERVER).path("api/expenses") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
+    //TODO modify the path
+    public Participant addParticipant(Participant participant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participant") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+    }
+
+    //TODO check the path after api is implemented and redo the method
+    public Participant editParticipant(Participant oldParticipant, Participant newParticipant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participant") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
     }
 }
