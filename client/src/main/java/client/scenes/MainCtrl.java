@@ -27,20 +27,31 @@ public class MainCtrl {
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+    private AddQuoteCtrl addQuoteCtrl;
+    private Scene addQuote;
+    private AddExpenseCtrl addExpenseCtrl;
+    private Scene addExpense;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+    public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
 
         showOverview();
         primaryStage.show();
+    }
+
+    public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
+        this.addQuoteCtrl = addQuote.getKey();
+        this.addQuote = new Scene(addQuote.getValue());
+    }
+
+    public void addOverview(Pair<QuoteOverviewCtrl, Parent> overview){
+        this.overviewCtrl = overview.getKey();
+        this.overview = new Scene(overview.getValue());
+    }
+
+    public void addExpense(Pair<AddExpenseCtrl, Parent> addExpense){
+        this.addExpenseCtrl = addExpense.getKey();
+        this.addExpense = new Scene(addExpense.getValue());
     }
 
     public void showOverview() {
@@ -49,9 +60,15 @@ public class MainCtrl {
         overviewCtrl.refresh();
     }
 
-    public void showAdd() {
+    public void showAddQuote() {
         primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        primaryStage.setScene(addQuote);
+        addQuote.setOnKeyPressed(e -> addQuoteCtrl.keyPressed(e));
+    }
+
+    public void showAddExpense() {
+        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setScene(addExpense);
+        addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 }

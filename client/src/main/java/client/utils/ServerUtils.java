@@ -28,6 +28,7 @@ import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
 import commons.Participant;
+import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -61,6 +62,15 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    }
+
+    //TODO modify the path
+    public Expense addExpense(Expense expense) { // path needs to be reconfigured
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
     //TODO modify the path

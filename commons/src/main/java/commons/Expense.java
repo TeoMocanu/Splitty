@@ -16,6 +16,8 @@ public class Expense {
     public long payerId;
     public String title;
     public float amount;
+
+    public String type;
     //public List<Participant> splitBetween;
 
     public Expense(){
@@ -26,6 +28,13 @@ public class Expense {
         this.payerId = payerId;
         this.title = title;
         this.amount = amount;
+    }
+
+    public Expense(long payerId, String title, float amount, String type){
+        this.payerId = payerId;
+        this.title = title;
+        this.amount = amount;
+        this.type = type;
     }
 
     public long getId() {

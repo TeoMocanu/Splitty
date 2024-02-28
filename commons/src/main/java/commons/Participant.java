@@ -18,8 +18,10 @@ public class Participant {
     public String email;
     public String iban;
 
-    public Participant(){
+    public Participant(){ }
 
+    public Participant(String name){
+        this.name = name;
     }
 
     public Participant(String name, String email, String iban){
