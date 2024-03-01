@@ -7,17 +7,16 @@ import java.io.Serializable;
 @Embeddable
 public class DebtKey implements Serializable{
     @Id
-    @Column(name = "eventId")
+    @Column(name = "event_id")
     private long eventId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "debtId")
-    private long debtId;
+    @Column(name = "debt_id")
+    private long id;
 
-    public DebtKey(long eventId, long debtId) {
+    public DebtKey(long eventId) {
         this.eventId = eventId;
-        this.debtId = debtId;
     }
 
     @SuppressWarnings("unused")
@@ -25,5 +24,7 @@ public class DebtKey implements Serializable{
         // for object mappers
     }
 
-
+    public long getId() {
+        return id;
+    }
 }

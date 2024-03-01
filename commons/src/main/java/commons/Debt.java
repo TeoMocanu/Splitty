@@ -1,30 +1,58 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import commons.primary_keys.DebtKey;
+import jakarta.persistence.*;
 import jakarta.persistence.Id;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Debt {
 
-    @Id
+    @EmbeddedId
+    private DebtKey debtKey;
+
+    @ManyToOne
+    @MapsId("event_id")
+    @JoinColumn(name = "event_id")
+    public Event event;
+
+    @Column(name = "debtor")
     private String debtor;
 
+    @Column(name = "creditor")
     private String creditor;
+
+    @Column(name = "amount")
     private double amount;
 
     @SuppressWarnings("unused")
-    private Debt() {
+    protected Debt() {
         // for object mapper
     }
 
-    public Debt(String debtor, String creditor, double amount) {
+    public Debt(long eventId, String debtor, String creditor, double amount) {
+        this.debtKey = new DebtKey(eventId);
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
+    }
+
+    public long getId() {
+        return debtKey.getId();
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public String getDebtor() {
@@ -52,24 +80,17 @@ public class Debt {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Debt debt = (Debt) o;
-        return Double.compare(amount, debt.amount) == 0 && Objects.equals(debtor, debt.debtor) && Objects.equals(creditor, debt.creditor);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(debtor, creditor, amount);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "Debt{" +
-                "debtor='" + debtor + '\'' +
-                ", creditor='" + creditor + '\'' +
-                ", amount=" + amount +
-                '}';
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }
