@@ -50,7 +50,7 @@ public class Expense {
     }
 
     public void setPayer(Participant payer) {
-        this.payerId = payerId;
+        this.payerId = payer.getId();
     }
 
     public String getTitle() {

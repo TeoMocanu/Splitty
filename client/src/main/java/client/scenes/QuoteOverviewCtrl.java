@@ -27,6 +27,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -36,6 +37,7 @@ public class QuoteOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private ObservableList<Quote> data;
+    private boolean EN = true;
 
     @FXML
     private TableView<Quote> table;
@@ -45,6 +47,8 @@ public class QuoteOverviewCtrl implements Initializable {
     private TableColumn<Quote, String> colLastName;
     @FXML
     private TableColumn<Quote, String> colQuote;
+    @FXML
+    private Button languageButton;
 
     @Inject
     public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -59,11 +63,23 @@ public class QuoteOverviewCtrl implements Initializable {
         colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
     }
 
+    public void language(){
+        if(languageButton.getText().equals("EN")){
+            EN = false;
+            languageButton.setText("NL");
+        }
+        else{
+            EN = true;
+            languageButton.setText("EN");
+        }
+    }
+
+
     public void addQuote() {
         mainCtrl.showAddQuote();
     }
 
-    public void addExpense() { mainCtrl.showAddExpense(); }
+    public void addExpense() { mainCtrl.showAddExpense(EN); }
 
     public void refresh() {
         var quotes = server.getQuotes();
