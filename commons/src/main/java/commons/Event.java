@@ -19,10 +19,10 @@ public class Event {
     private long id;
     @Column(name = "event_name")
     private String title;
-    @ElementCollection
-    private List<Long> participants;
-    @ElementCollection
-    private List<Long> expenses;
+    @OneToMany(mappedBy = "event")
+    private List<Participant> participants;
+    @OneToMany(mappedBy = "event")
+    private List<Expense> expenses;
 
     public Event(String title){
         this.title = title;
@@ -52,28 +52,28 @@ public class Event {
         this.title = title;
     }
 
-    public List<Long> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Long> participants) {
+    public void setParticipants(List<Participant> participants) {
         this.participants = participants;
     }
 
     public void addParticipant(Participant participant) {
-        this.participants.add(participant.getId());
+        this.participants.add(participant);
     }
 
-    public List<Long> getExpenses() {
+    public List<Expense> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Long> expenses) {
+    public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
     }
 
     public void addExpenses(Expense expense) {
-        this.expenses.add(expense.getId());
+        this.expenses.add(expense);
     }
 
     @Override
