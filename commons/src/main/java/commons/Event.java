@@ -11,6 +11,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "event_id")
     public long id;
     public String title;
     @ElementCollection
@@ -18,14 +19,14 @@ public class Event {
     @ElementCollection
     public List<Long> expenses;
 
-    public Event(){
-
-    }
-
     public Event(String title){
         this.title = title;
         participants = new ArrayList<>();
         expenses = new ArrayList<>();
+    }
+
+    protected Event() {
+
     }
 
 

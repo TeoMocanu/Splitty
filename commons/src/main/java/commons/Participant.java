@@ -1,49 +1,55 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import commons.primary_keys.ParticipantKey;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Participant {
+    @EmbeddedId
+    private ParticipantKey participantKey;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    @ManyToOne
+    @MapsId("event_id")
+    @JoinColumn(name = "event_id")
+    public Event event;
 
     public String name;
     public String email;
     public String iban;
 
+    private String bic;
+
     public Participant(){ }
 
-    public Participant(String name){
-        this.name = name;
+    public Participant(long eventId, long id){
+        this.participantKey = new ParticipantKey(eventId, id);
     }
 
-    public Participant(String name, String email, String iban){
-        this.name = name;
+    public Participant(long eventId, long id, String email, String iban){
+        this.participantKey = new ParticipantKey(eventId, id);
         this.email = email;
         this.iban = iban;
     }
 
-    public long getId() {
-        return id;
+    public ParticipantKey getParticipantKey() {
+        return participantKey;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setParticipantKey(ParticipantKey participantKey) {
+        this.participantKey = participantKey;
     }
 
-    public String getName() {
-        return name;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public String getEmail() {
@@ -63,15 +69,18 @@ public class Participant {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Participant that)) return false;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(iban, that.iban);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, iban);
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
 }

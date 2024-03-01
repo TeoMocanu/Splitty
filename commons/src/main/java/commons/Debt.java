@@ -11,11 +11,10 @@ import java.util.Objects;
 public class Debt {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public String debtor;
+    private String debtor;
 
-    public String creditor;
-    public double amount;
+    private String creditor;
+    private double amount;
 
     @SuppressWarnings("unused")
     private Debt() {
