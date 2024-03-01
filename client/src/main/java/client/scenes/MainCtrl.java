@@ -24,6 +24,9 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
+    private StarterPageCtrl starterPageCtrl;
+    private Scene starterPage;
+
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
@@ -35,8 +38,14 @@ public class MainCtrl {
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        showOverview();
+        //showOverview();
+        showStarterPage();
         primaryStage.show();
+    }
+
+    public void starterPage(Pair<StarterPageCtrl, Parent> starterPage){
+        this.starterPageCtrl = starterPage.getKey();
+        this.starterPage = new Scene(starterPage.getValue());
     }
 
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
@@ -52,6 +61,11 @@ public class MainCtrl {
     public void addExpense(Pair<AddExpenseCtrl, Parent> addExpense){
         this.addExpenseCtrl = addExpense.getKey();
         this.addExpense = new Scene(addExpense.getValue());
+    }
+
+    public void showStarterPage() {
+        primaryStage.setTitle("Starter Page");
+        primaryStage.setScene(starterPage);
     }
 
     public void showOverview() {
