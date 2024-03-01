@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Embeddable
 public class ParticipantKey implements Serializable {
     @Id
-    @JoinColumn(name = "event_id")
+    @Column(name = "event_id")
     private long eventId;
 
     @Id

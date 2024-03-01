@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
@@ -17,6 +19,12 @@ public class Participant {
     @MapsId("event_id")
     @JoinColumn(name = "event_id")
     private Event event;
+
+    @OneToMany(mappedBy = "payer")
+    private List<Expense> expensesPaidBy;
+
+    @ManyToMany(mappedBy = "debtors")
+    private List<Expense> expensesToPay;
 
     private String name;
     private String email;

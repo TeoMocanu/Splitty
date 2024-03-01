@@ -1,23 +1,37 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import commons.primary_keys.ExpenseKey;
+import commons.primary_keys.ParticipantKey;
+import jakarta.persistence.*;
 
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 public class Expense {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
 
-    public long payerId;
-    public String title;
+    @EmbeddedId
+    private ExpenseKey expenseKey;
+
+    @ManyToOne
+    @MapsId("event_id")
+    @JoinColumn(name = "event_id")
+    private Event event;
+
+    @Column(name = "Date")
+    private LocalDate localDate;
+
+    @ManyToOne
+    private Participant payer;
+
+    @ManyToMany
+    List<Participant> debtors;
+
+    @Column(name = "title")
+    private String title;
+    @Column(name = "amount")
     public float amount;
 
-    public String type;
     //public List<Participant> splitBetween;
 
     public Expense(){
