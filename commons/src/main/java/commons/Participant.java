@@ -18,13 +18,9 @@ public class Participant {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @Column(name = "participant_name", nullable = false)
     private String name;
-    @Column(name = "participant_email", nullable = false)
     private String email;
-    @Column(name = "participant_iban")
     private String iban;
-    @Column(name = "participant_bic")
     private String bic;
 
     public Participant(){ }
