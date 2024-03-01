@@ -1,10 +1,14 @@
 package commons;
 
 import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Event {
@@ -12,12 +16,13 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "event_id")
-    public long id;
-    public String title;
+    private long id;
+    @Column(name = "event_name")
+    private String title;
     @ElementCollection
-    public List<Long> participants;
+    private List<Long> participants;
     @ElementCollection
-    public List<Long> expenses;
+    private List<Long> expenses;
 
     public Event(String title){
         this.title = title;
@@ -25,8 +30,9 @@ public class Event {
         expenses = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     protected Event() {
-
+        // for object mappers
     }
 
 
@@ -71,15 +77,18 @@ public class Event {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event event)) return false;
-        return getId() == event.getId() && Objects.equals(getTitle(), event.getTitle())
-                && Objects.equals(getParticipants(), event.getParticipants()) && Objects.equals(getExpenses(), event.getExpenses());
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getParticipants(), getExpenses());
+        return HashCodeBuilder.reflectionHashCode(this);
     }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
 }

@@ -16,32 +16,29 @@ public class Participant {
     @ManyToOne
     @MapsId("event_id")
     @JoinColumn(name = "event_id")
-    public Event event;
+    private Event event;
 
-    public String name;
-    public String email;
-    public String iban;
-
+    @Column(name = "participant_name", nullable = false)
+    private String name;
+    @Column(name = "participant_email", nullable = false)
+    private String email;
+    @Column(name = "participant_iban")
+    private String iban;
+    @Column(name = "participant_bic")
     private String bic;
 
     public Participant(){ }
 
-    public Participant(long eventId, long id){
-        this.participantKey = new ParticipantKey(eventId, id);
-    }
-
-    public Participant(long eventId, long id, String email, String iban){
-        this.participantKey = new ParticipantKey(eventId, id);
+    public Participant(long eventId, String name, String email, String iban, String bic){
+        this.participantKey = new ParticipantKey(eventId);
+        this.name = name;
         this.email = email;
         this.iban = iban;
+        this.bic = bic;
     }
 
-    public ParticipantKey getParticipantKey() {
-        return participantKey;
-    }
-
-    public void setParticipantKey(ParticipantKey participantKey) {
-        this.participantKey = participantKey;
+    public long getId() {
+        return participantKey.getId();
     }
 
     public Event getEvent() {
@@ -66,6 +63,22 @@ public class Participant {
 
     public void setIban(String iban) {
         this.iban = iban;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
     }
 
     @Override

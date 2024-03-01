@@ -8,16 +8,27 @@ import java.io.Serializable;
 public class ParticipantKey implements Serializable {
     @Id
     @Column(name = "event_id")
-    public long eventId;
+    private long eventId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "participant_id")
-    public long id;
+    private long id;
 
-    public ParticipantKey(long eventId, long id) {
+    public ParticipantKey(long eventId) {
         this.eventId = eventId;
-        this.id = id;
     }
 
+    @SuppressWarnings("unused")
+    protected ParticipantKey() {
+        // for object mappers
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public long getId() {
+        return id;
+    }
 }
