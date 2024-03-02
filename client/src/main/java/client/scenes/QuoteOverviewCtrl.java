@@ -25,6 +25,7 @@ import commons.Quote;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -64,6 +65,7 @@ public class QuoteOverviewCtrl implements Initializable {
     }
 
     public void addExpense() { mainCtrl.showAddExpense(); }
+    //public void addInvitation(){mainCtrl.showAddInvitation();}
 
     public void refresh() {
         var quotes = server.getQuotes();

@@ -24,6 +24,9 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
+    //private InvitationCtrl invitationCtrl;
+    //private Scene invitation;
+
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
@@ -54,6 +57,7 @@ public class MainCtrl {
         this.addExpense = new Scene(addExpense.getValue());
     }
 
+
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
@@ -71,4 +75,5 @@ public class MainCtrl {
         primaryStage.setScene(addExpense);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
+
 }
