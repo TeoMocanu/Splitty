@@ -23,9 +23,7 @@ import jakarta.ws.rs.WebApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
@@ -51,6 +49,22 @@ public class AddExpenseCtrl {
     @FXML
     private ChoiceBox<String> currency;
 
+    @FXML
+    private Label title;
+    @FXML
+    private Label paid;
+    @FXML
+    private Label what;
+    @FXML
+    private Label howMany;
+    @FXML
+    private Label typeL;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button cancelButton;
+
+
     @Inject
     public AddExpenseCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -63,6 +77,7 @@ public class AddExpenseCtrl {
         type.setItems(types);
         currency.setValue("EUR");
         currency.setItems(currencies);
+        en();
     }
 
 
@@ -111,5 +126,29 @@ public class AddExpenseCtrl {
             default:
                 break;
         }
+    }
+
+    public void language(boolean EN){
+        if(EN) en();
+        else nl();
+    }
+
+    public void en(){
+        title.setText("Add Expense");
+        paid.setText("Who paid?");
+        what.setText("What for?");
+        howMany.setText("How much?");
+        typeL.setText("Type:");
+        addButton.setText("Add");
+        cancelButton.setText("Cancel");
+    }
+    public void nl(){
+        title.setText("Kosten Toevoegen");
+        paid.setText("Wie heeft betaald?");
+        what.setText("Waarvoor?");
+        howMany.setText("Hoe veel?");
+        typeL.setText("Type:");
+        addButton.setText("Toevoegen");
+        cancelButton.setText("Annuleren");
     }
 }

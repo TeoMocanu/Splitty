@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import commons.Event;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -54,6 +55,22 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Quote>>() {
                 });
+    }
+
+    public Event getEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/event/getById/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<Event>(){});
+    }
+
+    public Event addEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/event/addEvent") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     public Quote addQuote(Quote quote) {
