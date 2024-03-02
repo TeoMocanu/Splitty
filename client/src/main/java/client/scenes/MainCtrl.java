@@ -24,8 +24,8 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    //private InvitationCtrl invitationCtrl;
-    //private Scene invitation;
+    private InvitationCtrl invitationCtrl;
+    private Scene invitation;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -56,8 +56,10 @@ public class MainCtrl {
         this.addExpenseCtrl = addExpense.getKey();
         this.addExpense = new Scene(addExpense.getValue());
     }
-
-
+    public void invitation(Pair<InvitationCtrl, Parent> invitation) {
+        this.invitationCtrl = invitation.getKey();
+        this.invitation = new Scene(invitation.getValue());
+    }
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
@@ -76,4 +78,9 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
+    public void showAddInvitation(){
+        primaryStage.setTitle("Invitation");
+        primaryStage.setScene(invitation);
+        addQuote.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
+    }
 }
