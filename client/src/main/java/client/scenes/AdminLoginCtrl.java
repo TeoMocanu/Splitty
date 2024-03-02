@@ -44,9 +44,14 @@ public class AdminLoginCtrl {
             }
             if(passwordsMatch) {
                 System.out.println("Welcome, admin");
+                mainCtrl.showAdminOverview();
+
+            }
+            else {
+                System.out.println("Admin credentials are wrong, restart the app to try again");
+                mainCtrl.showOverview();
             }
         } catch (WebApplicationException e) {
-
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());
@@ -55,7 +60,7 @@ public class AdminLoginCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview();
+
     }
     private void clearFields() {
         password.clear();

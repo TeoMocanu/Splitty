@@ -12,6 +12,6 @@
          </font></Label>
       <TextField fx:id="password" layoutX="167.0" layoutY="117.0" prefHeight="25.0" prefWidth="266.0" />
       <Label layoutX="67.0" layoutY="117.0" prefHeight="25.0" prefWidth="58.0" text="Password" />
-      <Button layoutX="220.0" layoutY="278.0" mnemonicParsing="false" text="Enter" />
+      <Button layoutX="220.0" layoutY="278.0" mnemonicParsing="false" text="Enter" onAction="#checkPassword"/>
    </children>
 </AnchorPane>

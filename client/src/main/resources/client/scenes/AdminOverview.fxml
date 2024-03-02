@@ -4,11 +4,18 @@
 <!--<?import java.util.*?>-->
 <!--<?import javafx.scene.*?>-->
 <!--<?import javafx.scene.control.*?>-->
+
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.scenes.AdminOverview"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
+   <children>
+      <Label layoutX="105.0" layoutY="34.0" prefHeight="60.0" prefWidth="391.0" text="Here you can manage the servers">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

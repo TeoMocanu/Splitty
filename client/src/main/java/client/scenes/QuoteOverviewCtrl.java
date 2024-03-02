@@ -84,6 +84,8 @@ public class QuoteOverviewCtrl implements Initializable {
     // this method maps to the mainCtrl, method tied to the button is adminLogin
     public void adminLogin() { mainCtrl.showAdminLogin(); }
 
+    public void adminOverview() { mainCtrl.showAdminOverview(); }
+
     public void refresh() {
         var quotes = server.getQuotes();
         data = FXCollections.observableList(quotes);
