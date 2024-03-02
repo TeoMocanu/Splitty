@@ -29,7 +29,7 @@ public class InvitationCtrl {
 
     public void ok() {
         try {
-            //server.addInvitation(getInvitation());
+            server.addInvitation(getInvitation());
         } catch (WebApplicationException e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
