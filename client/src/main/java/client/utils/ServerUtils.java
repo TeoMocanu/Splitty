@@ -107,4 +107,11 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
     }
+    public String addInvitation(String invitation) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/invitation") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+    }
 }
