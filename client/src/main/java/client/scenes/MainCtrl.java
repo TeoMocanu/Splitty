@@ -66,9 +66,10 @@ public class MainCtrl {
         addQuote.setOnKeyPressed(e -> addQuoteCtrl.keyPressed(e));
     }
 
-    public void showAddExpense() {
+    public void showAddExpense(boolean EN) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
+        addExpenseCtrl.language(EN);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 }
