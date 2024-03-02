@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package server;
+package server.database;
 
-import java.util.Random;
+import commons.Event;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class Config {
-
-    @Bean
-    public Random getRandom() {
-        return new Random();
-    }
-
-    /*@Bean
-    public CounterService getCounterService(){
-        return new CounterService();
-    }*/
-}
+public interface EventRepository extends JpaRepository<Event, Long> { }

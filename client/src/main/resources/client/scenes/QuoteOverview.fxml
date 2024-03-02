@@ -18,5 +18,6 @@
         </columns>
        </TableView>
       <Button fx:id="addExpenseButton" layoutX="28.0" layoutY="360.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
+      <Button fx:id="languageButton" layoutX="229.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
    </children>
 </AnchorPane>

@@ -156,7 +156,7 @@ public class EventTest {
         list.add(e1.getId());
         list.add(e2.getId());
         a.setExpenses(list);
-        a.addExpenses(e3);
+        a.addExpense(e3);
         assertEquals(4, a.getExpenses().size());
         assertEquals(e0.getId(), a.getExpenses().get(0));
         assertEquals(e1.getId(), a.getExpenses().get(1));

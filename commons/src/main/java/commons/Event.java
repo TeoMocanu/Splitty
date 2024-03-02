@@ -13,9 +13,13 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
     public String title;
-    @ElementCollection
+    //@OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "PARTICIPANTS?")
+    @ElementCollection//(targetClass = List.class)
     public List<Long> participants;
-    @ElementCollection
+    //@OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "EXPENSES?")
+    @ElementCollection//(targetClass = List.class)
     public List<Long> expenses;
 
     public Event(){
@@ -28,6 +32,12 @@ public class Event {
         expenses = new ArrayList<>();
     }
 
+    public Event(Long id, String title, List<Long> participants, List<Long> expenses){
+        this.id = id;
+        this.title = title;
+        this.participants = participants;
+        this.expenses = expenses;
+    }
 
     public long getId() {
         return id;
@@ -65,7 +75,7 @@ public class Event {
         this.expenses = expenses;
     }
 
-    public void addExpenses(Expense expense) {
+    public void addExpense(Expense expense) {
         this.expenses.add(expense.getId());
     }
 
