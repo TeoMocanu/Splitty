@@ -33,6 +33,7 @@ public class StarterPageCtrl {
     public StarterPageCtrl(ServerUtils server) {
         this.server = server;
         this.eventList = new ArrayList<>();
+        this.listView = new ListView<>();
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -76,8 +77,9 @@ public class StarterPageCtrl {
         Event newEvent = new Event(eventName);
         eventList.add(newEvent);
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
-        listView.setItems(observableEventList);
-        //refresh();
+
+        listView.setItems(FXCollections.observableList(observableEventList));
+        listView.refresh();
     }
 
     public void joinEvent() {
@@ -101,6 +103,6 @@ public class StarterPageCtrl {
 
     public void refresh() {
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
-        listView.setItems(observableEventList);
+        //listView.setItems(observableEventList);
     }
 }

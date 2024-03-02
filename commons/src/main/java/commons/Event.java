@@ -81,4 +81,9 @@ public class Event {
     public int hashCode() {
         return Objects.hash(getId(), getTitle(), getParticipants(), getExpenses());
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

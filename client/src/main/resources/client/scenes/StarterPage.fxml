@@ -23,6 +23,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <ListView layoutX="23.0" layoutY="178.0" prefHeight="172.0" prefWidth="330.0" />
+      <ListView fx:id="listView" layoutX="23.0" layoutY="178.0" prefHeight="172.0" prefWidth="330.0" />
    </children>
 </AnchorPane>
