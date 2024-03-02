@@ -48,22 +48,6 @@ public class ServerUtils {
         }
     }
 
-    public Event getEvent(Long id){
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/getById/"+id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<Event>(){});
-    }
-
-    public Event addEvent(Event event){
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/addEvent") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
-    }
-
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
