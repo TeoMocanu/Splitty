@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 import commons.Event;
@@ -113,5 +115,16 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+    }
+    /**
+     * Generates a secure random password.
+     * @param length The desired length of the generated password.
+     * @return A Base64 encoded secure random password.
+     */
+    public String generateRandomPassword(int length) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[length];
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }

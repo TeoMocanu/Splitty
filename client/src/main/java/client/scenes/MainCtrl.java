@@ -34,6 +34,11 @@ public class MainCtrl {
     private Scene addQuote;
     private AddExpenseCtrl addExpenseCtrl;
     private Scene addExpense;
+    private Scene adminLogin;
+    private AdminLoginCtrl adminLoginCtrl;
+
+    public MainCtrl() {
+    }
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -41,7 +46,10 @@ public class MainCtrl {
         showOverview();
         primaryStage.show();
     }
-
+    public void adminLogin(Pair<AdminLoginCtrl, Parent> adminLogin){
+        this.adminLoginCtrl = adminLogin.getKey();
+        this.adminLogin = new Scene(adminLogin.getValue());
+    }
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
         this.addQuoteCtrl = addQuote.getKey();
         this.addQuote = new Scene(addQuote.getValue());
@@ -72,6 +80,11 @@ public class MainCtrl {
         addQuote.setOnKeyPressed(e -> addQuoteCtrl.keyPressed(e));
     }
 
+    public void showAdminLogin() {
+        primaryStage.setTitle("Admin Login");
+        primaryStage.setScene(adminLogin);
+        adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+    }
     public void showAddExpense(boolean EN) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
