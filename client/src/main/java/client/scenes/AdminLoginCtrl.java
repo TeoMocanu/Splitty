@@ -21,7 +21,6 @@ public class AdminLoginCtrl {
     public AdminLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
     @FXML
     private void initialize(){
@@ -31,18 +30,18 @@ public class AdminLoginCtrl {
         System.out.println("Admin Password: " + randomPassword);
     }
     public void cancel() {
+        System.out.println("Existed admin login");
         clearFields();
         mainCtrl.showOverview();
     }
     public void checkPassword() {
         try {
-
             String inputPassword = password.getText();
-            boolean passwordsMatch = false;
+            boolean passwordMatch = false;
             if(inputPassword.equals(this.adminPassword)) {
-                passwordsMatch=true;
+                passwordMatch=true;
             }
-            if(passwordsMatch) {
+            if(passwordMatch) {
                 System.out.println("Welcome, admin");
                 mainCtrl.showAdminOverview();
 
@@ -60,11 +59,9 @@ public class AdminLoginCtrl {
         }
 
         clearFields();
-
     }
     private void clearFields() {
         password.clear();
-
     }
 
     public void keyPressed(KeyEvent e) {

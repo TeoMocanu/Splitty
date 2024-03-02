@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
@@ -22,7 +21,6 @@ public class AdminOverviewCtrl {
     }
     @FXML
     private void initialize(){
-        System.out.println("Admin Overview");
     }
     public void cancel() {
         clearFields();
@@ -30,6 +28,7 @@ public class AdminOverviewCtrl {
     }
     public void ok() {
         try {
+            // TODO: Add admin functionality, like seeing server instances
 
 
         } catch (WebApplicationException e) {

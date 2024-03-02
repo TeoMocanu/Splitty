@@ -95,8 +95,6 @@ public class MainCtrl {
     {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
-//        System.out.println("Admin Overview");
-//        adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
     public void showAddExpense(boolean EN) {
