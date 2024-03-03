@@ -20,14 +20,20 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Participant> participants;
     @OneToMany(mappedBy = "event")
-    @ElementCollection
     private List<Expense> expenses;
 
     public Event(String title){
         this.title = title;
-        participants = new ArrayList<>();
-        expenses = new ArrayList<>();
+        this.participants = new ArrayList<>();
+        this.expenses = new ArrayList<>();
     }
+
+//    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
+//        this.title = title;
+//        this.participants = new ArrayList<>();
+//        this.expenses = new ArrayList<>();
+//    }
+
 
     @SuppressWarnings("unused")
     protected Event() {

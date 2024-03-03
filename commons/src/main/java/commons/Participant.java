@@ -45,6 +45,10 @@ public class Participant {
         this.bic = bic;
     }
 
+//    public Participant(String name){
+//        this.name = name;
+//    }
+
     public ParticipantKey getParticipantKey() {
         return participantKey;
     }
