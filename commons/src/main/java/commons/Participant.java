@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -33,11 +34,11 @@ public class Participant {
 
     public Participant(){ }
 
-    public Participant(Event event, List<Expense> expensesPaidBy, List<Expense> expensesToPay, String name, String email, String iban, String bic){
+    public Participant(Event event, String name, String email, String iban, String bic){
         this.participantKey = new ParticipantKey(event.getId());
         this.event = event;
-        this.expensesPaidBy = expensesPaidBy;
-        this.expensesToPay = expensesToPay;
+        this.expensesPaidBy = new ArrayList<>();
+        this.expensesToPay = new ArrayList<>();
         this.name = name;
         this.email = email;
         this.iban = iban;

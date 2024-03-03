@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -37,6 +38,11 @@ public class MainCtrl {
 
         showOverview();
         primaryStage.show();
+    }
+
+    //TODO implement
+    public Event getEvent(){
+        return null;
     }
 
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){

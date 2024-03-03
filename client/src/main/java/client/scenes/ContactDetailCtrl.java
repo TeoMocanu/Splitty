@@ -59,12 +59,11 @@ public class ContactDetailCtrl {
         initFields();
     }
 
-    //TODO also add the BIC field
     public void initFields(){
         this.nameField.setText(participant.getName());
         this.emailField.setText(participant.getEmail());
         this.ibanField.setText(participant.getIban());
-        this.bicField.setText(null);
+        this.bicField.setText(participant.getBic());
     }
 
     public void abort() {
@@ -93,11 +92,12 @@ public class ContactDetailCtrl {
         mainCtrl.showOverview();
     }
 
-    //TODO also add the BIC field
     private Participant getParticipant() {
-        return new Participant(nameField.getText(),
+        return new Participant(mainCtrl.getEvent(),
+                nameField.getText(),
                 emailField.getText(),
-                ibanField.getText());
+                ibanField.getText(),
+                bicField.getText());
     }
 
     private void clearFields() {
