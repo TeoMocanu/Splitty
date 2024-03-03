@@ -4,25 +4,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="360.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
+<AnchorPane prefHeight="399.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
    <children>
-      <Label layoutX="21.0" layoutY="14.0" prefHeight="27.0" prefWidth="250.0" text="Create New Event">
+      <Label fx:id="createNewEventLabel" layoutX="21.0" layoutY="14.0" prefHeight="27.0" prefWidth="250.0" text="Create New Event">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <Label layoutX="21.0" layoutY="80.0" prefHeight="27.0" prefWidth="250.0" text="Join Event">
+      <Label fx:id="joinEventLabel" layoutX="21.0" layoutY="80.0" prefHeight="27.0" prefWidth="250.0" text="Join Event">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <TextField fx:id="createNewEvent" layoutX="21.0" layoutY="47.0" prefHeight="25.0" prefWidth="250.0" />
-      <TextField fx:id="joinEvent" layoutX="21.0" layoutY="114.0" prefHeight="25.0" prefWidth="250.0" />
-      <Button layoutX="283.0" layoutY="47.0" mnemonicParsing="false" onAction="#createNewEvent" prefHeight="25.0" prefWidth="83.0" text="Create" />
-      <Button layoutX="283.0" layoutY="114.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="25.0" prefWidth="83.0" text="Join" />
-      <Label layoutX="21.0" layoutY="150.0" prefHeight="27.0" prefWidth="250.0" text="Recently viewed events">
+      <TextField fx:id="createNewEvent" layoutX="21.0" layoutY="47.0" onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="250.0" />
+      <TextField fx:id="joinEvent" layoutX="21.0" layoutY="114.0" onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="250.0" />
+      <Button fx:id="createButton" layoutX="283.0" layoutY="47.0" mnemonicParsing="false" onAction="#createNewEvent" prefHeight="25.0" prefWidth="83.0" text="Create" />
+      <Button fx:id="joinButton" layoutX="283.0" layoutY="114.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="25.0" prefWidth="83.0" text="Join" />
+      <Label fx:id="recentlyViewedEventsLabel" layoutX="21.0" layoutY="150.0" prefHeight="27.0" prefWidth="343.0" text="Recently viewed events">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <ListView fx:id="listView" layoutX="23.0" layoutY="178.0" prefHeight="172.0" prefWidth="330.0" />
+      <ListView fx:id="listView" layoutX="23.0" layoutY="178.0" prefHeight="172.0" prefWidth="343.0" />
+      <Button fx:id="languageButtonStart" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
    </children>
 </AnchorPane>

@@ -27,6 +27,9 @@ public class MainCtrl {
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
 
+    private InvitationCtrl invitationCtrl;
+    private Scene invitation;
+
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
@@ -34,6 +37,13 @@ public class MainCtrl {
     private Scene addQuote;
     private AddExpenseCtrl addExpenseCtrl;
     private Scene addExpense;
+    private Scene adminLogin;
+    private AdminLoginCtrl adminLoginCtrl;
+    private Scene adminOverview;
+    private AdminOverviewCtrl adminOverviewCtrl;
+
+    public MainCtrl() {
+    }
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -48,6 +58,14 @@ public class MainCtrl {
         this.starterPage = new Scene(starterPage.getValue());
     }
 
+    public void adminLogin(Pair<AdminLoginCtrl, Parent> adminLogin){
+        this.adminLoginCtrl = adminLogin.getKey();
+        this.adminLogin = new Scene(adminLogin.getValue());
+    }
+    public void adminOverview(Pair<AdminOverviewCtrl, Parent> adminOverview){
+        this.adminOverviewCtrl = adminOverview.getKey();
+        this.adminOverview = new Scene(adminOverview.getValue());
+    }
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
         this.addQuoteCtrl = addQuote.getKey();
         this.addQuote = new Scene(addQuote.getValue());
@@ -68,6 +86,10 @@ public class MainCtrl {
         primaryStage.setScene(starterPage);
     }
 
+    public void invitation(Pair<InvitationCtrl, Parent> invitation) {
+        this.invitationCtrl = invitation.getKey();
+        this.invitation = new Scene(invitation.getValue());
+    }
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
@@ -80,10 +102,27 @@ public class MainCtrl {
         addQuote.setOnKeyPressed(e -> addQuoteCtrl.keyPressed(e));
     }
 
+    public void showAdminLogin() {
+        primaryStage.setTitle("Admin Login");
+        primaryStage.setScene(adminLogin);
+        adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+    }
+    public void showAdminOverview()
+    {
+        primaryStage.setTitle("Admin Overview");
+        primaryStage.setScene(adminOverview);
+    }
+
     public void showAddExpense(boolean EN) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
         addExpenseCtrl.language(EN);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showAddInvitation(){
+        primaryStage.setTitle("Invitation");
+        primaryStage.setScene(invitation);
+        addQuote.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 }

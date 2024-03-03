@@ -5,10 +5,8 @@ import commons.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import com.google.inject.Inject;
@@ -31,8 +29,27 @@ public class StarterPageCtrl {
     @FXML
     private ListView<Event> listView;
 
+    @FXML
+    private Button languageButtonStart;
+
+    @FXML
+    private Button createButton;
+
+    @FXML
+    private Button joinButton;
+
+    @FXML
+    private Label createNewEventLabel;
+
+    @FXML
+    private Label joinEventLabel;
+
+    @FXML
+    private Label recentlyViewedEventsLabel;
+
     private String eventName;
     private List<Event> eventList;
+    private boolean EN = true;
 
     @Inject
     public StarterPageCtrl(ServerUtils server) {
@@ -125,24 +142,53 @@ public class StarterPageCtrl {
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
             ErrorMessage.showError("No event with this invitation code was found.");
+        } catch (java.lang.NumberFormatException e) {
+            // Handle the number format exception
+            ErrorMessage.showError("Invalid code.");
         }
     }
 
     public void keyPressed(KeyEvent e) {
-        switch(e.getCode()) {
-            case ENTER:
-                if(createNewEvent.getText() == null || createNewEvent.getText().equals(""))
-                    joinEvent();
-                else
-                    createNewEvent();
-                break;
-            default:
-                break;
+        TextField source = (TextField) e.getSource();
+        if (e.getCode() == KeyCode.ENTER) {
+            if (source == createNewEvent) {
+                createNewEvent();
+            } else if (source == joinEvent) {
+                joinEvent();
+            }
         }
+    }
+
+    public void language(){
+        if(languageButtonStart.getText().equals("EN")){
+            EN = false;
+            nl();
+        }
+        else{
+            EN = true;
+            en();
+        }
+    }
+
+    public void en(){
+        languageButtonStart.setText("EN");
+        createButton.setText("Create");
+        joinButton.setText("Join");
+        createNewEventLabel.setText("Create New Event");
+        joinEventLabel.setText("Join Event");
+        recentlyViewedEventsLabel.setText("Recently viewed events");
+    }
+    public void nl(){
+        languageButtonStart.setText("NL");
+        createButton.setText("Creëren");
+        joinButton.setText("Meedoen");
+        createNewEventLabel.setText("Nieuw evenement maken");
+        joinEventLabel.setText("Doe mee aan evenement");
+        recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
     }
 
     public void refresh() {
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
-        //listView.setItems(observableEventList);
+        listView.setItems(observableEventList);
     }
 }
