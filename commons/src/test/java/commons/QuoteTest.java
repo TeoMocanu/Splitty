@@ -55,4 +55,18 @@ public class QuoteTest {
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("person"));
     }
+
+    @Test
+    public void equals() {
+        var a = new Quote(new Person("a", "b"), "c");
+        var b = new Quote(new Person("a", "b"), "c");
+        assertEquals(a, b);
+    }
+
+    @Test
+    public void notEquals() {
+        var a = new Quote(new Person("a", "b"), "c");
+        var b = new Quote(new Person("a", "b"), "d");
+        assertNotEquals(a, b);
+    }
 }

@@ -53,4 +53,11 @@ public class PersonTest {
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("firstName"));
     }
+
+    @Test
+    public void equals() {
+        var a = new Person("a", "b");
+        var b = new Person("a", "b");
+        assertTrue(a.equals(b));
+    }
 }
