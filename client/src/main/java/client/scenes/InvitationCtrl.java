@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -15,6 +17,16 @@ public class InvitationCtrl {
 
     @FXML
     private TextField emails;
+    @FXML
+    private Label string1;
+    @FXML
+    private Label string2;
+    @FXML
+    private Label string3;
+    @FXML
+    private Button sendInvites;
+    @FXML
+    private Button cancelButton;
 
     @Inject
     public InvitationCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -67,5 +79,23 @@ public class InvitationCtrl {
             default:
                 break;
         }
+    }
+    public void language(boolean EN){
+        if(EN) en();
+        else nl();
+    }
+    public void en(){
+        string1.setText("New Year Party");
+        string2.setText("Give people the following invite code");
+        string3.setText("Invite the following people by email (one address per line)");
+        sendInvites.setText("send invites");
+        cancelButton.setText("cancel");
+    }
+    public void nl(){
+        string1.setText("nieuwjaarsfeest");
+        string2.setText("Geef mensen de volgende uitnodigingscode");
+        string3.setText("Nodig de volgende mensen uit per e-mail (één adres per regel)");
+        sendInvites.setText("stuur uitnodigingen");
+        cancelButton.setText("annuleren");
     }
 }
