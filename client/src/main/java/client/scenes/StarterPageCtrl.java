@@ -39,6 +39,9 @@ public class StarterPageCtrl {
     private Button joinButton;
 
     @FXML
+    private Button deleteHistoryButton;
+
+    @FXML
     private Label createNewEventLabel;
 
     @FXML
@@ -141,10 +144,16 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            ErrorMessage.showError("No event with this invitation code was found.");
+            if(EN == true)
+                ErrorMessage.showError("No event with this invitation code was found.");
+            else
+                ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.");
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            ErrorMessage.showError("Invalid code.");
+            if(EN == true)
+                ErrorMessage.showError("Invalid code.");
+            else
+                ErrorMessage.showError("Ongeldige code.");
         }
     }
 
@@ -174,6 +183,7 @@ public class StarterPageCtrl {
         languageButtonStart.setText("EN");
         createButton.setText("Create");
         joinButton.setText("Join");
+        deleteHistoryButton.setText("Delete history");
         createNewEventLabel.setText("Create New Event");
         joinEventLabel.setText("Join Event");
         recentlyViewedEventsLabel.setText("Recently viewed events");
@@ -182,6 +192,7 @@ public class StarterPageCtrl {
         languageButtonStart.setText("NL");
         createButton.setText("Creëren");
         joinButton.setText("Meedoen");
+        deleteHistoryButton.setText("Verwijder geschiedenis");
         createNewEventLabel.setText("Nieuw evenement maken");
         joinEventLabel.setText("Doe mee aan evenement");
         recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
@@ -190,5 +201,17 @@ public class StarterPageCtrl {
     public void refresh() {
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(observableEventList);
+    }
+
+    public void clear() {
+        createNewEvent.clear();
+        joinEvent.clear();
+        eventList.clear();
+        listView.getItems().clear();
+    }
+
+    public void deleteHistory() {
+        eventList.clear();
+        listView.getItems().clear();
     }
 }
