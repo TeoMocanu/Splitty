@@ -1,7 +1,6 @@
 package commons;
 
 import commons.primary_keys.ExpenseKey;
-import commons.primary_keys.ParticipantKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,7 +22,7 @@ public class Expense {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @Column(name = "Date")
+    @Column(name = "date")
     private LocalDate localDate;
 
     @ManyToOne
@@ -37,10 +36,9 @@ public class Expense {
     @Column(name = "amount")
     private float amount;
 
-    //public List<Participant> splitBetween;
-
+    @SuppressWarnings("unused")
     public Expense(){
-
+        // for object mappers
     }
 
     public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount){
@@ -57,16 +55,16 @@ public class Expense {
         return expenseKey;
     }
 
-    public void setExpenseKey(ExpenseKey expenseKey) {
-        this.expenseKey = expenseKey;
+    public long getId(){
+        return expenseKey.getId();
     }
 
     public Event getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public long getEventId() {
+        return expenseKey.getEventId();
     }
 
     public LocalDate getLocalDate() {

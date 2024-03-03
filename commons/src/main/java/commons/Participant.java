@@ -48,8 +48,16 @@ public class Participant {
         return participantKey;
     }
 
-    public void setParticipantKey(ParticipantKey participantKey) {
-        this.participantKey = participantKey;
+    public long getId() {
+        return participantKey.getId();
+    }
+
+    public long getEventId() {
+        return participantKey.getEventId();
+    }
+
+    public Event getEvent() {
+        return event;
     }
 
     public List<Expense> getExpensesPaidBy() {
@@ -66,18 +74,6 @@ public class Participant {
 
     public void setExpensesToPay(List<Expense> expensesToPay) {
         this.expensesToPay = expensesToPay;
-    }
-
-    public long getId() {
-        return participantKey.getId();
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 
     public String getEmail() {

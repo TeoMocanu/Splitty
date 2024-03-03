@@ -2,12 +2,9 @@ package commons;
 
 import commons.primary_keys.DebtKey;
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.Objects;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
@@ -48,16 +45,16 @@ public class Debt {
         return debtKey;
     }
 
-    public void setDebtKey(DebtKey debtKey) {
-        this.debtKey = debtKey;
-    }
-
     public Event getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public long getEventId() {
+        return debtKey.getEventId();
+    }
+
+    public long getId(){
+        return debtKey.getId();
     }
 
     public Participant getDebtor() {
