@@ -33,12 +33,39 @@ public class Participant {
 
     public Participant(){ }
 
-    public Participant(long eventId, String name, String email, String iban, String bic){
-        this.participantKey = new ParticipantKey(eventId);
+    public Participant(Event event, List<Expense> expensesPaidBy, List<Expense> expensesToPay, String name, String email, String iban, String bic){
+        this.participantKey = new ParticipantKey(event.getId());
+        this.event = event;
+        this.expensesPaidBy = expensesPaidBy;
+        this.expensesToPay = expensesToPay;
         this.name = name;
         this.email = email;
         this.iban = iban;
         this.bic = bic;
+    }
+
+    public ParticipantKey getParticipantKey() {
+        return participantKey;
+    }
+
+    public void setParticipantKey(ParticipantKey participantKey) {
+        this.participantKey = participantKey;
+    }
+
+    public List<Expense> getExpensesPaidBy() {
+        return expensesPaidBy;
+    }
+
+    public void setExpensesPaidBy(List<Expense> expensesPaidBy) {
+        this.expensesPaidBy = expensesPaidBy;
+    }
+
+    public List<Expense> getExpensesToPay() {
+        return expensesToPay;
+    }
+
+    public void setExpensesToPay(List<Expense> expensesToPay) {
+        this.expensesToPay = expensesToPay;
     }
 
     public long getId() {

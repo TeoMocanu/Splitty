@@ -20,13 +20,13 @@ public class Debt {
     @ManyToOne
     @MapsId("event_id")
     @JoinColumn(name = "event_id")
-    public Event event;
+    private Event event;
 
-    @Column(name = "debtor")
-    private String debtor;
+    @ManyToOne
+    private Participant debtor;
 
-    @Column(name = "creditor")
-    private String creditor;
+    @ManyToOne
+    private Participant creditor;
 
     @Column(name = "amount")
     private double amount;
@@ -36,15 +36,20 @@ public class Debt {
         // for object mapper
     }
 
-    public Debt(long eventId, String debtor, String creditor, double amount) {
-        this.debtKey = new DebtKey(eventId);
+    public Debt(Event event, Participant debtor, Participant creditor, double amount) {
+        this.debtKey = new DebtKey(event.getId());
+        this.event = event;
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
     }
 
-    public long getId() {
-        return debtKey.getId();
+    public DebtKey getDebtKey() {
+        return debtKey;
+    }
+
+    public void setDebtKey(DebtKey debtKey) {
+        this.debtKey = debtKey;
     }
 
     public Event getEvent() {
@@ -55,19 +60,19 @@ public class Debt {
         this.event = event;
     }
 
-    public String getDebtor() {
+    public Participant getDebtor() {
         return debtor;
     }
 
-    public void setDebtor(String debtor) {
+    public void setDebtor(Participant debtor) {
         this.debtor = debtor;
     }
 
-    public String getCreditor() {
+    public Participant getCreditor() {
         return creditor;
     }
 
-    public void setCreditor(String creditor) {
+    public void setCreditor(Participant creditor) {
         this.creditor = creditor;
     }
 
