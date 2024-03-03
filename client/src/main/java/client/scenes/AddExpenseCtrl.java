@@ -18,7 +18,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Expense;
-import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -102,9 +101,11 @@ public class AddExpenseCtrl {
         mainCtrl.showOverview();
     }
 
+    //TODO fix
     private Expense getExpense() {
-        var p = new Participant(name.getText());
-        return new Expense(p.getId(), content.getText(), Float.parseFloat(amount.getText()), type.getTypeSelector());
+//        var p = new Participant(name.getText());
+//        return new Expense(p.getId(), content.getText(), Float.parseFloat(amount.getText()), type.getTypeSelector());
+        return null;
     }
 
     private void clearFields() {

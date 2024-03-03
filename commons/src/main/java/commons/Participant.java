@@ -1,49 +1,84 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import commons.primary_keys.ParticipantKey;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Participant {
+    @EmbeddedId
+    private ParticipantKey participantKey;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    @ManyToOne
+    @MapsId("event_id")
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-    public String name;
-    public String email;
-    public String iban;
+    @OneToMany(mappedBy = "payer")
+    private List<Expense> expensesPaidBy;
+
+    @ManyToMany(mappedBy = "debtors")
+    private List<Expense> expensesToPay;
+
+    private String name;
+    private String email;
+    private String iban;
+    private String bic;
 
     public Participant(){ }
 
-    public Participant(String name){
-        this.name = name;
-    }
-
-    public Participant(String name, String email, String iban){
+    public Participant(Event event, String name, String email, String iban, String bic){
+        this.participantKey = new ParticipantKey(event.getId());
+        this.event = event;
+        this.expensesPaidBy = new ArrayList<>();
+        this.expensesToPay = new ArrayList<>();
         this.name = name;
         this.email = email;
         this.iban = iban;
+        this.bic = bic;
+    }
+
+//    public Participant(String name){
+//        this.name = name;
+//    }
+
+    public ParticipantKey getParticipantKey() {
+        return participantKey;
     }
 
     public long getId() {
-        return id;
+        return participantKey.getId();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public long getEventId() {
+        return participantKey.getEventId();
     }
 
-    public String getName() {
-        return name;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<Expense> getExpensesPaidBy() {
+        return expensesPaidBy;
+    }
+
+    public void setExpensesPaidBy(List<Expense> expensesPaidBy) {
+        this.expensesPaidBy = expensesPaidBy;
+    }
+
+    public List<Expense> getExpensesToPay() {
+        return expensesToPay;
+    }
+
+    public void setExpensesToPay(List<Expense> expensesToPay) {
+        this.expensesToPay = expensesToPay;
     }
 
     public String getEmail() {
@@ -62,16 +97,35 @@ public class Participant {
         this.iban = iban;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Participant that)) return false;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(iban, that.iban);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, iban);
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
 }

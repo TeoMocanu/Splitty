@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -53,6 +54,11 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    //TODO implement
+    public Event getEvent(){
+        return null;
+    }
+
     public void starterPage(Pair<StarterPageCtrl, Parent> starterPage){
         this.starterPageCtrl = starterPage.getKey();
         this.starterPage = new Scene(starterPage.getValue());
@@ -66,6 +72,7 @@ public class MainCtrl {
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminOverview = new Scene(adminOverview.getValue());
     }
+
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
         this.addQuoteCtrl = addQuote.getKey();
         this.addQuote = new Scene(addQuote.getValue());
