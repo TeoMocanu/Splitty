@@ -2,9 +2,16 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.Event;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import com.google.inject.Inject;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +26,66 @@ public class StarterPageCtrl {
     @FXML
     private TextField joinEvent;
 
+    @FXML
+    private ListView<Event> listView;
+
+    @FXML
+    private Button languageButtonStart;
+
+    @FXML
+    private Button createButton;
+
+    @FXML
+    private Button joinButton;
+
+    @FXML
+    private Label createNewEventLabel;
+
+    @FXML
+    private Label joinEventLabel;
+
+    @FXML
+    private Label recentlyViewedEventsLabel;
+
     private String eventName;
     private List<Event> eventList;
+    private boolean EN = true;
 
+    @Inject
     public StarterPageCtrl(ServerUtils server) {
         this.server = server;
         this.eventList = new ArrayList<>();
+        this.listView = new ListView<>();
     }
 
-    public StarterPageCtrl(ServerUtils server, List<Event> list) {
-        this.server = server;
-        this.eventList = list;
+//    public StarterPageCtrl(ServerUtils server, List<Event> list) {
+//        this.server = server;
+//        this.eventList = list;
+//    }
+
+    @FXML
+    public void initialize() {
+        // Set mouse click event listener for the ListView
+        listView.setOnMouseClicked(this::handleListViewClick);
+    }
+
+    private void handleListViewClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) { // Right-click
+            Event selectedEvent = listView.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                // Create ContextMenu
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem deleteMenuItem = new MenuItem("Delete");
+                deleteMenuItem.setOnAction(e -> {
+                    eventList.remove(selectedEvent);
+                    listView.setItems(FXCollections.observableList(eventList));
+                });
+                contextMenu.getItems().add(deleteMenuItem);
+
+                // Display ContextMenu
+                contextMenu.show(listView, event.getScreenX(), event.getScreenY());
+            }
+        }
     }
 
     public String getEventName() {
@@ -63,28 +119,76 @@ public class StarterPageCtrl {
         return eventList.contains(name);
     }
 
-    public void createNewEvent(ServerUtils server) {
+    public void createNewEvent() {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
         eventList.add(newEvent);
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
+        listView.setItems(FXCollections.observableList(observableEventList));
+        listView.refresh();
     }
 
-    public void joinEvent(ServerUtils server) {
-        eventName = joinEvent.getText();
-        Event newEvent = new Event(eventName);
-        eventList.add(newEvent);
+    public void joinEvent() {
+        try {
+            long eventId = Long.parseLong(joinEvent.getText());
+            Event event = server.getEvent(eventId);
+
+            if (event != null) {
+                eventList.add(event);
+                ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
+                listView.setItems(FXCollections.observableList(observableEventList));
+                listView.refresh();
+            }
+        } catch (jakarta.ws.rs.BadRequestException e) {
+            // Handle the HTTP 400 exception
+            ErrorMessage.showError("No event with this invitation code was found.");
+        } catch (java.lang.NumberFormatException e) {
+            // Handle the number format exception
+            ErrorMessage.showError("Invalid code.");
+        }
     }
 
     public void keyPressed(KeyEvent e) {
-        switch(e.getCode()) {
-            case ENTER:
-                if(createNewEvent.getText() == null || createNewEvent.getText().equals(""))
-                    joinEvent(server);
-                else
-                    createNewEvent(server);
-                break;
-            default:
-                break;
+        TextField source = (TextField) e.getSource();
+        if (e.getCode() == KeyCode.ENTER) {
+            if (source == createNewEvent) {
+                createNewEvent();
+            } else if (source == joinEvent) {
+                joinEvent();
+            }
         }
+    }
+
+    public void language(){
+        if(languageButtonStart.getText().equals("EN")){
+            EN = false;
+            nl();
+        }
+        else{
+            EN = true;
+            en();
+        }
+    }
+
+    public void en(){
+        languageButtonStart.setText("EN");
+        createButton.setText("Create");
+        joinButton.setText("Join");
+        createNewEventLabel.setText("Create New Event");
+        joinEventLabel.setText("Join Event");
+        recentlyViewedEventsLabel.setText("Recently viewed events");
+    }
+    public void nl(){
+        languageButtonStart.setText("NL");
+        createButton.setText("Creëren");
+        joinButton.setText("Meedoen");
+        createNewEventLabel.setText("Nieuw evenement maken");
+        joinEventLabel.setText("Doe mee aan evenement");
+        recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
+    }
+
+    public void refresh() {
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
+        listView.setItems(observableEventList);
     }
 }
