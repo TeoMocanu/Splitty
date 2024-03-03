@@ -20,6 +20,7 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Participant> participants;
     @OneToMany(mappedBy = "event")
+    @ElementCollection
     private List<Expense> expenses;
 
     public Event(String title){
@@ -32,7 +33,6 @@ public class Event {
     protected Event() {
         // for object mappers
     }
-
 
     public long getId() {
         return id;
@@ -84,5 +84,4 @@ public class Event {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
-
 }

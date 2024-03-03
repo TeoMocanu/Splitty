@@ -13,18 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package server;
+package server.database;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import commons.Event;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-
-@SpringBootApplication
-@EntityScan(basePackages = { "commons", "server" })
-public class Main {
-
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
-    }
-}
+public interface EventRepository extends JpaRepository<Event, Long> { }

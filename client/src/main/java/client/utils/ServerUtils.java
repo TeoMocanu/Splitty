@@ -22,8 +22,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
+import commons.Event;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -54,6 +57,22 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Quote>>() {
                 });
+    }
+
+    public Event getEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/event/getById/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<Event>(){});
+    }
+
+    public Event addEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/event/addEvent") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     public Quote addQuote(Quote quote) {
@@ -89,5 +108,23 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
+    }
+    public String addInvitation(String invitation) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/invitation") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+    }
+    /**
+     * Generates a secure random password.
+     * @param length The desired length of the generated password.
+     * @return A Base64 encoded secure random password.
+     */
+    public String generateRandomPassword(int length) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[length];
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }
