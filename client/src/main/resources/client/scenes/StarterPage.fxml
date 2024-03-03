@@ -25,5 +25,6 @@
       </Label>
       <ListView fx:id="listView" layoutX="23.0" layoutY="178.0" prefHeight="172.0" prefWidth="343.0" />
       <Button fx:id="languageButtonStart" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
+      <Button fx:id="deleteHistoryButton" layoutX="193.0" layoutY="360.0" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="25.0" prefWidth="174.0" text="Delete history" />
    </children>
 </AnchorPane>
