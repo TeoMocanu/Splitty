@@ -15,7 +15,7 @@ public class Debt {
     private DebtKey debtKey;
 
     @ManyToOne
-    @MapsId("event_id")
+    @MapsId("eventId")
     @JoinColumn(name = "event_id")
     private Event event;
 
@@ -53,7 +53,7 @@ public class Debt {
         return debtKey.getEventId();
     }
 
-    public long getId(){
+    public long getId() {
         return debtKey.getId();
     }
 

@@ -6,11 +6,9 @@ import java.io.Serializable;
 
 @Embeddable
 public class ExpenseKey implements Serializable{
-    @Id
     @Column(name = "event_id")
     private long eventId;
 
-    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "expense_id")
     private long id;
