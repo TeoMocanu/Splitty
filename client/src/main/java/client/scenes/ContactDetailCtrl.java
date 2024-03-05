@@ -53,12 +53,12 @@ public class ContactDetailCtrl {
         this.server = server;
     }
 
-    @Inject
+    /*@Inject
     public ContactDetailCtrl(ServerUtils server, MainCtrl mainCtrl, Participant participant) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.participant = participant;
-    }
+    }*/
 
     public void initialize(Event event, Boolean EN){
         this.event = event;

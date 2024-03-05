@@ -226,4 +226,8 @@ public class StarterPageCtrl {
         eventList.clear();
         listView.getItems().clear();
     }
+
+    public void admin(){
+        mainCtrl.showAdminLogin();
+    }
 }
