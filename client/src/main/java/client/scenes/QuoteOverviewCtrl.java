@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
 import commons.Quote;
+import commons.Event;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,7 +80,9 @@ public class QuoteOverviewCtrl implements Initializable {
         mainCtrl.showAddQuote();
     }
 
-    public void addExpense() { mainCtrl.showAddExpense(EN); }
+    public void addExpense() {
+
+    }
 
     // this method maps to the mainCtrl, method tied to the button is adminLogin
     public void adminLogin() { mainCtrl.showAdminLogin(); }

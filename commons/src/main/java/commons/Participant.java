@@ -45,9 +45,13 @@ public class Participant {
         this.bic = bic;
     }
 
-//    public Participant(String name){
-//        this.name = name;
-//    }
+    public Participant(String name, Event event){
+        this.participantKey = new ParticipantKey(event.getId());
+        this.expensesPaidBy = new ArrayList<>();
+        this.expensesToPay = new ArrayList<>();
+        this.event = event;
+        this.name = name;
+    }
 
     public ParticipantKey getParticipantKey() {
         return participantKey;

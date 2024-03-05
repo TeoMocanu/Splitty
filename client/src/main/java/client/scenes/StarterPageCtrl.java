@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.Event;
+import commons.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class StarterPageCtrl {
     private final ServerUtils server; //to be implemented
+    private final MainCtrl mainCtrl;
 
     @FXML
     private TextField createNewEvent;
@@ -52,11 +54,12 @@ public class StarterPageCtrl {
 
     private String eventName;
     private List<Event> eventList;
-    private boolean EN = true;
+    private boolean EN;
 
     @Inject
-    public StarterPageCtrl(ServerUtils server) {
+    public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
         this.server = server;
+        this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
         this.listView = new ListView<>();
     }
@@ -70,6 +73,9 @@ public class StarterPageCtrl {
     public void initialize() {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
+        EN = true;
+        languageButtonStart.setText("NL");
+        en();
     }
 
     private void handleListViewClick(MouseEvent event) {
@@ -129,6 +135,12 @@ public class StarterPageCtrl {
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
+
+        server.addEvent(newEvent);
+        //mainCtrl.showEventOverview();
+        newEvent.setParticipants(List.of(new Participant("John", newEvent), new Participant("Thijs", newEvent),
+                new Participant("Derek", newEvent), new Participant("George", newEvent)));
+        mainCtrl.showAddExpense(EN, newEvent);
     }
 
     public void joinEvent() {
@@ -144,13 +156,13 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            if(EN == true)
+            if(EN)
                 ErrorMessage.showError("No event with this invitation code was found.");
             else
                 ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.");
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            if(EN == true)
+            if(EN)
                 ErrorMessage.showError("Invalid code.");
             else
                 ErrorMessage.showError("Ongeldige code.");
@@ -169,7 +181,7 @@ public class StarterPageCtrl {
     }
 
     public void language(){
-        if(languageButtonStart.getText().equals("EN")){
+        if(languageButtonStart.getText().equals("NL")){
             EN = false;
             nl();
         }
@@ -180,7 +192,7 @@ public class StarterPageCtrl {
     }
 
     public void en(){
-        languageButtonStart.setText("EN");
+        languageButtonStart.setText("NL");
         createButton.setText("Create");
         joinButton.setText("Join");
         deleteHistoryButton.setText("Delete history");
@@ -189,7 +201,7 @@ public class StarterPageCtrl {
         recentlyViewedEventsLabel.setText("Recently viewed events");
     }
     public void nl(){
-        languageButtonStart.setText("NL");
+        languageButtonStart.setText("EN");
         createButton.setText("Creëren");
         joinButton.setText("Meedoen");
         deleteHistoryButton.setText("Verwijder geschiedenis");

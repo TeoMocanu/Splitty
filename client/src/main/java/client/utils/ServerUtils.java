@@ -83,13 +83,12 @@ public class ServerUtils {
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
-    //TODO modify the path
-    public Expense addExpense(Expense expense) { // path needs to be reconfigured
+    public Event addExpense(Event event, Expense expense) { //
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses") //
+                .target(SERVER).path("api/event/addExpense/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+                .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
     }
 
     //TODO modify the path

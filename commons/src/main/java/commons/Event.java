@@ -72,7 +72,7 @@ public class Event {
         this.expenses = expenses;
     }
 
-    public void addExpenses(Expense expense) {
+    public void addExpense(Expense expense) {
         this.expenses.add(expense);
     }
 

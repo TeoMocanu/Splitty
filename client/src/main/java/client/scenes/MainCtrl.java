@@ -16,6 +16,7 @@
 package client.scenes;
 
 import commons.Event;
+import commons.Expense;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -120,10 +121,10 @@ public class MainCtrl {
         primaryStage.setScene(adminOverview);
     }
 
-    public void showAddExpense(boolean EN) {
+    public void showAddExpense(boolean EN, Event event) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.language(EN);
+        addExpenseCtrl.initialize(EN, event);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
