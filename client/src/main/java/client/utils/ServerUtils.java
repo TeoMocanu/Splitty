@@ -83,22 +83,20 @@ public class ServerUtils {
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
-    //TODO modify the path
-    public Expense addExpense(Expense expense) { // path needs to be reconfigured
+    public Event addExpense(Expense expense, Event event) { //
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses") //
+                .target(SERVER).path("api/event/addExpense/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+                .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
     }
 
-    //TODO modify the path
-    public Participant addParticipant(Participant participant) {
+    public Event addParticipant(Participant participant, Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participant") //
+                .target(SERVER).path("api/event/addParticipant/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+                .post(Entity.entity(participant, APPLICATION_JSON), Event.class);
     }
 
     //TODO check the path after api is implemented and redo the method
@@ -109,6 +107,8 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
     }
+
+    //TODO implement
     public String addInvitation(String invitation) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/invitation") //

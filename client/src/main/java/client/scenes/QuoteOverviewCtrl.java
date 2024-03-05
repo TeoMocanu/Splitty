@@ -79,7 +79,9 @@ public class QuoteOverviewCtrl implements Initializable {
         mainCtrl.showAddQuote();
     }
 
-    public void addExpense() { mainCtrl.showAddExpense(EN); }
+    public void addExpense() {
+
+    }
 
     // this method maps to the mainCtrl, method tied to the button is adminLogin
     public void adminLogin() { mainCtrl.showAdminLogin(); }

@@ -17,8 +17,9 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Event;
 import commons.Expense;
-import jakarta.ws.rs.WebApplicationException;
+import commons.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,16 +27,24 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddExpenseCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private Event event;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
+    ObservableList<String> participants = FXCollections.observableArrayList();
+    ObservableList<CheckBox> splitOptions = FXCollections.observableArrayList();
+
     @FXML
-    private TextField name;
+    private ChoiceBox<String> name;
 
     @FXML
     private TextField content;
@@ -47,6 +56,8 @@ public class AddExpenseCtrl {
     private ChoiceBox<String> type;
     @FXML
     private ChoiceBox<String> currency;
+    @FXML
+    private DatePicker date_;
 
     @FXML
     private Label title;
@@ -57,11 +68,21 @@ public class AddExpenseCtrl {
     @FXML
     private Label howMany;
     @FXML
+    private Label when;
+    @FXML
+    private Label howSplit;
+    @FXML
+    private CheckBox everyone;
+    @FXML
+    private CheckBox somePeople;
+    @FXML
     private Label typeL;
     @FXML
     private Button addButton;
     @FXML
     private Button cancelButton;
+    @FXML
+    private ListView<CheckBox> menu;
 
 
     @Inject
@@ -71,24 +92,37 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    private void initialize(){
+    void initialize(boolean EN, Event event){
         type.setValue("other");
         type.setItems(types);
         currency.setValue("EUR");
         currency.setItems(currencies);
-        en();
-    }
+        participants = FXCollections.observableArrayList();
+        splitOptions = FXCollections.observableArrayList();
+        for(Participant p : event.getParticipants()){
+            participants.add(p.getName());
+            splitOptions.add(new CheckBox(p.getName()));
+        }
+        menu.setItems(splitOptions);
+        name.setItems(participants);
+        name.setValue(participants.get(0));
+        everyone.setSelected(true);
 
+        language(EN);
+        this.event = event;
+    }
 
     public void cancel() {
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
 
     public void add() {
         try {
-            server.addExpense(getExpense());
-        } catch (WebApplicationException e) {
+            Expense expense = createExpense();
+            server.addExpense(expense, event);
+
+        } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -98,21 +132,64 @@ public class AddExpenseCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
+        //mainCtrl.showEventOverview();
     }
 
-    //TODO fix
-    private Expense getExpense() {
-//        var p = new Participant(name.getText());
-//        return new Expense(p.getId(), content.getText(), Float.parseFloat(amount.getText()), type.getTypeSelector());
-        return null;
+    private Expense createExpense() {
+        float amount_;
+        LocalDate date;
+        List<Participant> debtors = new ArrayList<>();
+        Participant payer = null;
+        try{
+            amount_ = Float.parseFloat(amount.getText());
+            date = date_.getValue();
+
+            for(Participant p : event.getParticipants()){
+                if(p.getName().equals(name.getValue())) payer = p;
+            }
+
+            if(everyone.isSelected()){
+                debtors = event.getParticipants();
+            }
+            else if(somePeople.isSelected()){
+                for(CheckBox c : splitOptions){
+                    if(c.isSelected()){
+                        for(Participant p : event.getParticipants()){
+                            if(p.getName().equals(c.getText())) debtors.add(p);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+        //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
+        return new Expense(event, date, payer, debtors, content.getText(),amount_);
+    }
+
+    @FXML
+    private void handleEveryone(){
+        if(everyone.isSelected()){
+            somePeople.setSelected(false);
+        }
+    }
+    @FXML
+    private void handleSomePeople(){
+        if(somePeople.isSelected()){
+            everyone.setSelected(false);
+        }
     }
 
     private void clearFields() {
-        name.clear();
+        name.setValue(participants.get(0));
         content.clear();
         amount.clear();
-        //currency.clear();
+        currency.setValue("EUR");
         //type.clear();
     }
 
@@ -142,6 +219,11 @@ public class AddExpenseCtrl {
         typeL.setText("Type:");
         addButton.setText("Add");
         cancelButton.setText("Cancel");
+        when.setText("When?");
+        howSplit.setText("How to split?");
+        everyone.setText("With Everyone");
+        somePeople.setText("Only some people");
+
     }
     public void nl(){
         title.setText("Kosten Toevoegen");
@@ -151,5 +233,9 @@ public class AddExpenseCtrl {
         typeL.setText("Type:");
         addButton.setText("Toevoegen");
         cancelButton.setText("Annuleren");
+        when.setText("Wanneer?");
+        howSplit.setText("Hoe splitsen?");
+        everyone.setText("Met iedereen");
+        somePeople.setText("Slechts enkele mensen");
     }
 }

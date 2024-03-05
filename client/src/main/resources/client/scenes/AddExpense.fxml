@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
    <children>
-      <Button fx:id="addButton" layoutX="249.0" layoutY="242.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="63.0" text="Add" />
-      <Button fx:id="cancelButton" layoutX="165.0" layoutY="242.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-      <TextField fx:id="name" layoutX="116.0" layoutY="58.0" prefHeight="26.0" prefWidth="149.0" />
+      <Button fx:id="addButton" layoutX="259.0" layoutY="433.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="63.0" text="Add" />
+      <Button fx:id="cancelButton" layoutX="126.0" layoutY="433.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
       <TextField fx:id="amount" layoutX="116.0" layoutY="139.0" promptText="0.00" />
       <TextField fx:id="content" layoutX="116.0" layoutY="95.0" prefHeight="26.0" prefWidth="305.0" />
       <Label fx:id="howMany" layoutX="35.0" layoutY="143.0" text="How much?" />
       <Label fx:id="paid" layoutX="35.0" layoutY="63.0" prefHeight="17.0" prefWidth="78.0" text="Who paid?" />
       <Label fx:id="what" layoutX="35.0" layoutY="100.0" text="What for?" />
       <ChoiceBox fx:id="currency" layoutX="282.0" layoutY="139.0" prefHeight="25.0" prefWidth="85.0" />
-      <Label fx:id="typeL" layoutX="35.0" layoutY="188.0" text="Type:" />
-      <ChoiceBox fx:id="type" layoutX="116.0" layoutY="184.0" prefWidth="150.0" />
-      <Label fx:id="title" layoutX="161.0" layoutY="7.0" text="Add Expense">
+      <Label fx:id="typeL" layoutX="39.0" layoutY="390.0" text="Type:" />
+      <ChoiceBox fx:id="type" layoutX="112.0" layoutY="386.0" prefWidth="150.0" />
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="-3.0" layoutY="7.0" prefHeight="38.0" prefWidth="475.0" text="Add Expense">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
+      <Label fx:id="when" layoutX="35.0" layoutY="187.0" text="When?" />
+      <DatePicker fx:id="date_" layoutX="116.0" layoutY="183.0" />
+      <Label fx:id="howSplit" layoutX="35.0" layoutY="224.0" text="How to Split?" />
+      <CheckBox fx:id="everyone" layoutX="112.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleEveryone" text="With everyone" />
+      <CheckBox fx:id="somePeople" layoutX="113.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleSomePeople" text="Only some people" />
+      <ChoiceBox fx:id="name" layoutX="116.0" layoutY="59.0" prefWidth="150.0" />
+      <ListView fx:id="menu" layoutX="112.0" layoutY="278.0" prefHeight="95.0" prefWidth="149.0" />
    </children>
 </AnchorPane>

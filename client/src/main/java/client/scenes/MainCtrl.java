@@ -30,26 +30,24 @@ public class MainCtrl {
 
     private InvitationCtrl invitationCtrl;
     private Scene invitation;
-
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
-
     private AddQuoteCtrl addQuoteCtrl;
     private Scene addQuote;
     private AddExpenseCtrl addExpenseCtrl;
     private Scene addExpense;
-    private Scene adminLogin;
     private AdminLoginCtrl adminLoginCtrl;
-    private Scene adminOverview;
+    private Scene adminLogin;
     private AdminOverviewCtrl adminOverviewCtrl;
+    private Scene adminOverview;
+    private ContactDetailCtrl contactDetailCtrl;
+    private Scene contactDetails;
 
     public MainCtrl() {
     }
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-
-        //showOverview();
         showStarterPage();
         primaryStage.show();
     }
@@ -71,6 +69,11 @@ public class MainCtrl {
     public void adminOverview(Pair<AdminOverviewCtrl, Parent> adminOverview){
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminOverview = new Scene(adminOverview.getValue());
+    }
+
+    public void contactDetails(Pair<ContactDetailCtrl, Parent> contactDetails){
+        this.contactDetailCtrl = contactDetails.getKey();
+        this.contactDetails = new Scene(contactDetails.getValue());
     }
 
     public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
@@ -114,17 +117,23 @@ public class MainCtrl {
         primaryStage.setScene(adminLogin);
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
-    public void showAdminOverview()
-    {
+    public void showAdminOverview() {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
     }
 
-    public void showAddExpense(boolean EN) {
+    public void showAddExpense(Event event, boolean EN) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.language(EN);
+        addExpenseCtrl.initialize(EN, event);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showContactDetails(Event event, boolean EN){
+        primaryStage.setTitle("Add/Edit Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(event, EN);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
     public void showAddInvitation(){

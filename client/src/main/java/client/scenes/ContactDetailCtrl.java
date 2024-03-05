@@ -18,6 +18,7 @@ package client.scenes;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ public class ContactDetailCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private Event event;
 
     @FXML
     private TextField nameField;
@@ -51,15 +53,16 @@ public class ContactDetailCtrl {
         this.server = server;
     }
 
-    @Inject
+    /*@Inject
     public ContactDetailCtrl(ServerUtils server, MainCtrl mainCtrl, Participant participant) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.participant = participant;
-        initFields();
-    }
+    }*/
 
-    public void initFields(){
+    public void initialize(Event event, Boolean EN){
+        this.event = event;
+        language(EN);
         this.nameField.setText(participant.getName());
         this.emailField.setText(participant.getEmail());
         this.ibanField.setText(participant.getIban());
@@ -77,7 +80,7 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
-                server.addParticipant(getParticipant());
+                server.addParticipant(getParticipant(), event);
             }else {
                 server.editParticipant(participant, getParticipant());
             }
@@ -132,4 +135,10 @@ public class ContactDetailCtrl {
             return false;
         return true;
     }
+    public void language(boolean EN){
+        if(EN) en();
+        else nl();
+    }
+    public void en(){}
+    public void nl(){}
 }
