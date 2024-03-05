@@ -17,7 +17,7 @@ public class Participant {
     private ParticipantKey participantKey;
 
     @ManyToOne
-    @MapsId("event_id")
+    @MapsId("eventId")
     @JoinColumn(name = "event_id")
     private Event event;
 

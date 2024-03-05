@@ -18,7 +18,7 @@ public class Expense {
     private ExpenseKey expenseKey;
 
     @ManyToOne
-    @MapsId("event_id")
+    @MapsId("eventId")
     @JoinColumn(name = "event_id")
     private Event event;
 
@@ -37,11 +37,12 @@ public class Expense {
     private float amount;
 
     @SuppressWarnings("unused")
-    public Expense(){
+    public Expense() {
         // for object mappers
     }
 
-    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount){
+    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title,
+            float amount) {
         this.expenseKey = new ExpenseKey(event.getId());
         this.event = event;
         this.localDate = localDate;
@@ -55,7 +56,7 @@ public class Expense {
         return expenseKey;
     }
 
-    public long getId(){
+    public long getId() {
         return expenseKey.getId();
     }
 
