@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Event;
 import commons.Expense;
+import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
@@ -68,6 +69,23 @@ public class EventController {
         Event event = eventOptional.get();
         // add the expense
         event.addExpense(expense);
+        Event added = eventRepository.save(event);
+        return ResponseEntity.ok(added);
+    }
+
+    @PostMapping("/addParticipant/{event_id}")
+    public ResponseEntity<Event> addParticipant(@PathVariable("event_id") long id, @RequestBody Participant participant) {
+        if (participant == null || !eventRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        //Check if the event exists
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
+        Event event = eventOptional.get();
+        // add the participant
+        event.addParticipant(participant);
         Event added = eventRepository.save(event);
         return ResponseEntity.ok(added);
     }

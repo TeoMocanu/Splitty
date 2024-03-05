@@ -140,7 +140,7 @@ public class StarterPageCtrl {
         //mainCtrl.showEventOverview();
         newEvent.setParticipants(List.of(new Participant("John", newEvent), new Participant("Thijs", newEvent),
                 new Participant("Derek", newEvent), new Participant("George", newEvent)));
-        mainCtrl.showAddExpense(EN, newEvent);
+        mainCtrl.showAddExpense(newEvent, EN);
     }
 
     public void joinEvent() {

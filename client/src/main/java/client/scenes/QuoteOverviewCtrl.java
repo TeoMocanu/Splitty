@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
 import commons.Quote;
-import commons.Event;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

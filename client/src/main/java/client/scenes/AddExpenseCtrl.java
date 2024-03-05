@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
-import jakarta.ws.rs.WebApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -121,7 +120,7 @@ public class AddExpenseCtrl {
     public void add() {
         try {
             Expense expense = createExpense();
-            server.addExpense(event, expense);
+            server.addExpense(expense, event);
 
         } catch (Exception e) {
 
