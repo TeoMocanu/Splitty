@@ -27,7 +27,6 @@ import java.util.Base64;
 import java.util.List;
 
 import commons.Event;
-import org.checkerframework.checker.units.qual.C;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
