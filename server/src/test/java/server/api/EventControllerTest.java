@@ -36,8 +36,8 @@ public class EventControllerTest {
     }
 
     @Test
-    public void cannotAddNullTitle() {
-        var actual = sut.addEvent(getEvent(null));
+    public void cannotAddNullEvent() {
+        var actual = sut.addEvent(null);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
