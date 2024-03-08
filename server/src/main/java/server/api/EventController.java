@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/event")
+@RequestMapping("/api")
 public class EventController {
     private final EventRepository eventRepository;
 
@@ -46,6 +46,18 @@ public class EventController {
     @PostMapping("/addEvent")
     public ResponseEntity<Event> addEvent(@RequestBody Event event) {
         if(event == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Event added = eventRepository.save(event);
+        return ResponseEntity.ok(added);
+    }
+
+    @PostMapping("/editEvent/{id}")
+    public ResponseEntity<Event> addEvent(@PathVariable("id") Long id, @RequestBody Event event) {
+        if(event == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if(id <= 0 || !eventRepository.existsById(id)){
             return ResponseEntity.badRequest().build();
         }
         Event added = eventRepository.save(event);

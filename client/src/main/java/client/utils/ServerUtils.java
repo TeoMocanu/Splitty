@@ -59,53 +59,61 @@ public class ServerUtils {
                 });
     }
 
-    public Event getEvent(Long id){
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/getById/"+id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<Event>(){});
-    }
-
-    public Event addEvent(Event event){
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/addEvent") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
-    }
-
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void addQuote(Quote quote) {
+        ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
-    public Event addExpense(Expense expense, Event event) { //
+    public Event getEvent(Long id){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/addExpense/" + event.getId()) //
+                .target(SERVER).path("api/getById/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<Event>(){});
+    }
+
+    public void addEvent(Event event){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addEvent") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public void editEvent(Event event){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/editEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public void addExpense(Expense expense, Event event) { //
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addExpense/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
     }
 
-    public Event addParticipant(Participant participant, Event event) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/addParticipant/" + event.getId()) //
+    public void addParticipant(Participant participant, Event event) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addParticipant/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(participant, APPLICATION_JSON), Event.class);
     }
 
     //TODO check the path after api is implemented and redo the method
-    public Participant editParticipant(Participant oldParticipant, Participant newParticipant) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participant") //
+    public void editParticipant(Participant oldParticipant, Participant newParticipant) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/editParticipant/" + oldParticipant.getName()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
+                .put(Entity.entity(newParticipant, APPLICATION_JSON), Event.class);
     }
 
     //TODO implement
