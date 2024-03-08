@@ -36,7 +36,7 @@ public class InvitationCtrl {
     //nimic
     public void cancel() {
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
 
     public void ok() {
@@ -52,7 +52,7 @@ public class InvitationCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
 
     private String getInvitation() {
