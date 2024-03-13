@@ -128,7 +128,6 @@ public class MainCtrl {
         primaryStage.setTitle("Server");
         primaryStage.setScene(changeServer);
         changeServerCtrl.language(EN);
-        changeServer.setOnKeyPressed(e -> changeServerCtrl.keyPressed(e));
     }
 
     public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }

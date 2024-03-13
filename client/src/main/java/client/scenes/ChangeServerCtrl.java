@@ -4,10 +4,12 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-import java.awt.*;
 
 public class ChangeServerCtrl {
     private final ServerUtils server;
@@ -18,9 +20,9 @@ public class ChangeServerCtrl {
     @FXML
     private Label title;
     @FXML
-    private Button save;
+    private Button saveButton;
     @FXML
-    private Button cancel;
+    private Button cancelButton;
 
     @Inject
     public ChangeServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -42,7 +44,7 @@ public class ChangeServerCtrl {
             server.changeServer("localhost:8080");
             return;
         }
-        mainCtrl.getStarterPageCtrl().getServerLabel().setText(savedServer);
+        mainCtrl.getStarterPageCtrl().getServerLabel().setText(server.getServer());
         this.serverField.setText("");
         mainCtrl.showStarterPage();
     }
@@ -67,13 +69,13 @@ public class ChangeServerCtrl {
         else nl();
     }
     public void en(){
-        save.setLabel("Save");
-        cancel.setLabel("Cancel");
+        saveButton.setText("Save");
+        cancelButton.setText("Cancel");
         title.setText("Change Server");
     }
     public void nl(){
-        save.setLabel("Redden");
-        cancel.setLabel("Annuleren");
+        saveButton.setText("Redden");
+        cancelButton.setText("Annuleren");
         title.setText("Server Wijzigen");
     }
 }

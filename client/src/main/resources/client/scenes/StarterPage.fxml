@@ -31,6 +31,6 @@
       <Button fx:id="deleteHistoryButton" layoutX="193.0" layoutY="360.0" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="25.0" prefWidth="174.0" text="Delete history" />
       <Button layoutX="95.0" layoutY="360.0" mnemonicParsing="false" onAction="#admin" text="Admin" />
       <Button fx:id="changeServerButton" layoutX="265.0" layoutY="409.0" mnemonicParsing="false" onAction="#changeServer" prefHeight="25.0" prefWidth="101.0" text="Change Server" />
-      <Label fx:id="serverLabel" layoutX="302.0" layoutY="392.0" text="Server" />
+      <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="25.0" layoutY="392.0" prefHeight="17.0" prefWidth="343.0" text="Server" />
    </children>
 </AnchorPane>

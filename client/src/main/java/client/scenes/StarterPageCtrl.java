@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class StarterPageCtrl {
-    private final ServerUtils server; //to be implemented
+    private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     @FXML
@@ -65,7 +65,6 @@ public class StarterPageCtrl {
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
         this.listView = new ListView<>();
-        this.serverLabel.setText(server.getServer());
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -80,6 +79,7 @@ public class StarterPageCtrl {
         EN = true;
         languageButtonStart.setText("NL");
         en();
+        this.serverLabel.setText(server.getServer());
     }
 
     private void handleListViewClick(MouseEvent event) {
