@@ -31,7 +31,18 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private static String SERVER = "http://localhost:8080/";
+    private static String webSocketServer = "ws://localhost:8080/websocket";
+
+    public String getServer(){
+        return SERVER;
+    }
+
+    public void changeServer(String server) {
+        this.SERVER = "http://"+ server + "/";
+        //this.webSocketServer = "ws://" + server + "/websocket";
+        //this.session = connect(webSocketServer);
+    }
 
     /*
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {

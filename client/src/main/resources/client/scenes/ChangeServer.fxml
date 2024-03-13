@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="166.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ChangeServerCtrl">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="24.0" prefHeight="20.0" prefWidth="112.0" text="Change Server" AnchorPane.leftAnchor="69.0" AnchorPane.rightAnchor="69.0" AnchorPane.topAnchor="24.0">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+        <TextField fx:id="serverField" layoutX="50.0" layoutY="68.0" minHeight="25.0" minWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="localhost:8080" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="70.0" />
+        <Button fx:id="saveServer" layoutX="130.0" layoutY="110.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="60.0" text="Save" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="110.0" />
+        <Button fx:id="cancelServer" layoutX="60.0" layoutY="110.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="60.0" text="Cancel" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="110.0" />
+    </children>
+
+</AnchorPane>

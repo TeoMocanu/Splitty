@@ -51,7 +51,10 @@ public class StarterPageCtrl {
 
     @FXML
     private Label recentlyViewedEventsLabel;
-
+    @FXML
+    private Label serverLabel;
+    @FXML
+    private Button changeServerButton;
     private String eventName;
     private List<Event> eventList;
     private boolean EN;
@@ -62,6 +65,7 @@ public class StarterPageCtrl {
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
         this.listView = new ListView<>();
+        this.serverLabel.setText(server.getServer());
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -199,6 +203,7 @@ public class StarterPageCtrl {
         createNewEventLabel.setText("Create New Event");
         joinEventLabel.setText("Join Event");
         recentlyViewedEventsLabel.setText("Recently viewed events");
+        changeServerButton.setText("Change Server");
     }
     public void nl(){
         languageButtonStart.setText("EN");
@@ -208,6 +213,7 @@ public class StarterPageCtrl {
         createNewEventLabel.setText("Nieuw evenement maken");
         joinEventLabel.setText("Doe mee aan evenement");
         recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
+        changeServerButton.setText("Server Wijzigen");
     }
 
     public void refresh() {
@@ -230,4 +236,9 @@ public class StarterPageCtrl {
     public void admin(){
         mainCtrl.showAdminLogin();
     }
+
+    public void changeServer(){ mainCtrl.showChangeServer(EN); }
+
+    public Label getServerLabel() { return serverLabel; }
+
 }
