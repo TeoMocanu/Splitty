@@ -21,6 +21,9 @@ public class AdminLoginCtrl {
     private Button backButton;
 
     @FXML
+    private Button helpButton;
+
+    @FXML
     private Button enterButton;
 
     @FXML
@@ -58,11 +61,13 @@ public class AdminLoginCtrl {
         languageButton.setText("EN");
         enterButton.setText("ENTER");
         backButton.setText("BACK");
+        helpButton.setText("HELP");
     }
     public void nl(){
         languageButton.setText("NL");
         enterButton.setText("INVOEREN");
         backButton.setText("TERUG");
+        helpButton.setText("HELP");
     }
     public void cancel() {
         System.out.println("Exited admin login");
@@ -113,7 +118,6 @@ public class AdminLoginCtrl {
     }
 
     public void backToStart(ActionEvent actionEvent) {
-        System.out.println("Exited admin login");
         clearFields();
         mainCtrl.showStarterPage();
     }
