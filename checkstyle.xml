@@ -5,7 +5,6 @@
 
 <module name="Checker">
     <property name="fileExtensions" value="java"/>
-    <property name="severity" value="warning"/>
     <module name="FileTabCharacter"/>
     <module name="TreeWalker">
         <module name="MissingJavadocMethod">
