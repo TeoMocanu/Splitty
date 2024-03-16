@@ -17,19 +17,12 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.List;
 
 import commons.Event;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.Quote;
 import commons.Participant;
 import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -40,6 +33,7 @@ public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
+    /*
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
         var url = new URI("http://localhost:8080/api/quotes").toURL();
         var is = url.openConnection().getInputStream();
@@ -48,24 +42,7 @@ public class ServerUtils {
         while ((line = br.readLine()) != null) {
             System.out.println(line);
         }
-    }
-
-    public List<Quote> getQuotes() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {
-                });
-    }
-
-    public void addQuote(Quote quote) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-    }
+    }*/
 
     public Event getEvent(Long id){
         return ClientBuilder.newClient(new ClientConfig()) //

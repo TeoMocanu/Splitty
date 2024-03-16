@@ -24,7 +24,7 @@ public class AdminOverviewCtrl {
     }
     public void cancel() {
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
     public void ok() {
         try {
@@ -40,7 +40,7 @@ public class AdminOverviewCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
     private void clearFields() {
     }

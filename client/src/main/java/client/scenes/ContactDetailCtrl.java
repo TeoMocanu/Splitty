@@ -71,7 +71,7 @@ public class ContactDetailCtrl {
 
     public void abort() {
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
 
     //TODO Maybe we can create custom exceptions?
@@ -92,7 +92,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
 
     private Participant getParticipant() {

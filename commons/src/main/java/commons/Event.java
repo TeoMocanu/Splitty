@@ -15,7 +15,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public long id;
     private String title;
     @OneToMany(mappedBy = "event")
     private List<Participant> participants;
