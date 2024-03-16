@@ -80,18 +80,18 @@ public class InvitationCtrl {
                 break;
         }
     }
-    public void language(boolean EN){
-        if(EN) en();
-        else nl();
+    public void language(boolean en){
+        if(en) makeEn();
+        else makeNl();
     }
-    public void en(){
+    public void makeEn(){
         string1.setText("New Year Party");
         string2.setText("Give people the following invite code");
         string3.setText("Invite the following people by email (one address per line)");
         sendInvites.setText("send invites");
         cancelButton.setText("cancel");
     }
-    public void nl(){
+    public void makeNl(){
         string1.setText("nieuwjaarsfeest");
         string2.setText("Geef mensen de volgende uitnodigingscode");
         string3.setText("Nodig de volgende mensen uit per e-mail (één adres per regel)");

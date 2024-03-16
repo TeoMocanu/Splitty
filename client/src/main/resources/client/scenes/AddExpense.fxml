@@ -28,7 +28,7 @@
          </font>
       </Label>
       <Label fx:id="when" layoutX="35.0" layoutY="187.0" text="When?" />
-      <DatePicker fx:id="date_" layoutX="116.0" layoutY="183.0" />
+      <DatePicker fx:id="date" layoutX="116.0" layoutY="183.0" />
       <Label fx:id="howSplit" layoutX="35.0" layoutY="224.0" text="How to Split?" />
       <CheckBox fx:id="everyone" layoutX="112.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleEveryone" text="With everyone" />
       <CheckBox fx:id="somePeople" layoutX="113.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleSomePeople" text="Only some people" />

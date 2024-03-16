@@ -1,6 +1,6 @@
 package commons;
 
-import commons.primary_keys.ParticipantKey;
+import commons.primaryKeys.ParticipantKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

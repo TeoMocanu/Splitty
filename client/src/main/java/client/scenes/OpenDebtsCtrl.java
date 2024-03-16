@@ -59,7 +59,7 @@ public class OpenDebtsCtrl {
 */
     @FXML
     private void initialize(){
-        en();
+        makeEn();
     }
     public void cancel() {
         clearFields();
@@ -105,19 +105,19 @@ public class OpenDebtsCtrl {
         }
     }
 
-    public void language(boolean EN){
-        if(EN) en();
-        else nl();
+    public void language(boolean en){
+        if(en) makeEn();
+        else makeNl();
     }
 
-    public void en(){
+    public void makeEn(){
         cancelButton.setText("Cancel");
         markReceived.setText("mark received");
         sendReminder.setText("send reminder");
         gives.setText("gives");
         to.setText("to");
     }
-    public void nl(){
+    public void makeNl(){
         cancelButton.setText("Annuleren");
         markReceived.setText("merk ontvangen");
         sendReminder.setText("herinnering sturen");

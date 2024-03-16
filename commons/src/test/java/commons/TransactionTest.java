@@ -1,17 +1,19 @@
 package commons;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+
 class TransactionTest {
 
     @Test
     void getPayer() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getPayer(),"Mario");
+        assertEquals(transaction.getPayer(), "Mario");
 
     }
 
@@ -20,14 +22,14 @@ class TransactionTest {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setPayer("Alex");
-        assertEquals(transaction.getPayer(),"Alex");
+        assertEquals(transaction.getPayer(), "Alex");
     }
 
     @Test
     void getPayee() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getPayee(),"Mihai");
+        assertEquals(transaction.getPayee(), "Mihai");
     }
 
     @Test
@@ -35,14 +37,14 @@ class TransactionTest {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setPayee("Alex");
-        assertEquals(transaction.getPayee(),"Alex");
+        assertEquals(transaction.getPayee(), "Alex");
     }
 
     @Test
     void getAmount() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getAmount(),150);
+        assertEquals(transaction.getAmount(), 150);
     }
 
     @Test
@@ -50,14 +52,14 @@ class TransactionTest {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setAmount(200);
-        assertEquals(transaction.getAmount(),200);
+        assertEquals(transaction.getAmount(), 200);
     }
 
     @Test
     void getCurrency() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getCurrency(),"$");
+        assertEquals(transaction.getCurrency(), "$");
     }
 
     @Test
@@ -65,14 +67,14 @@ class TransactionTest {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setCurrency("€");
-        assertEquals(transaction.getCurrency(),"€");
+        assertEquals(transaction.getCurrency(), "€");
     }
 
     @Test
     void getDescription() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getDescription(),"money for shopping");
+        assertEquals(transaction.getDescription(), "money for shopping");
     }
 
     @Test
@@ -80,14 +82,14 @@ class TransactionTest {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setDescription("money for pizza");
-        assertEquals(transaction.getDescription(),"money for pizza");
+        assertEquals(transaction.getDescription(), "money for pizza");
     }
 
     @Test
     void getTimestamp() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.getTimestamp(),specificTimestamp);
+        assertEquals(transaction.getTimestamp(), specificTimestamp);
     }
 
     @Test
@@ -96,7 +98,7 @@ class TransactionTest {
         LocalDateTime specificTimestamp1 = LocalDateTime.of(2023, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         transaction.setTimestamp(specificTimestamp1);
-        assertEquals(transaction.getTimestamp(),specificTimestamp1);
+        assertEquals(transaction.getTimestamp(), specificTimestamp1);
     }
 
     @Test
@@ -114,14 +116,15 @@ class TransactionTest {
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
         LocalDateTime specificTimestamp1 = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction1 = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.hashCode(),transaction1.hashCode());
+        assertEquals(transaction.hashCode(), transaction1.hashCode());
     }
 
     @Test
     void testToString() {
         LocalDateTime specificTimestamp = LocalDateTime.of(2024, 2, 23, 20, 04);
         Transaction transaction = new Transaction("Mario", "Mihai", 150, "$", "money for shopping", specificTimestamp);
-        assertEquals(transaction.toString(),"Transaction{payer='Mario', payee='Mihai', amount=150.0, currency='$', description='money for shopping', timestamp=2024-02-23T20:04}");
+        assertEquals(transaction.toString(), "Transaction{payer='Mario', payee='Mihai', amount=150.0, currency='$', " +
+                "description='money for shopping', timestamp=2024-02-23T20:04}");
     }
 
 

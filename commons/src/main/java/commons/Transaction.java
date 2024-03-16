@@ -89,7 +89,12 @@ public class Transaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return Double.compare(amount, that.amount) == 0 && Objects.equals(payer, that.payer) && Objects.equals(payee, that.payee) && Objects.equals(currency, that.currency) && Objects.equals(description, that.description) && Objects.equals(timestamp, that.timestamp);
+        return Double.compare(amount, that.amount) == 0 &&
+                Objects.equals(payer, that.payer) &&
+                Objects.equals(payee, that.payee) &&
+                Objects.equals(currency, that.currency) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(timestamp, that.timestamp);
     }
 
     @Override

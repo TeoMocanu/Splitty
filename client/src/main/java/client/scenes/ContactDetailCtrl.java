@@ -60,9 +60,9 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event, Boolean EN){
+    public void initialize(Event event, Boolean en){
         this.event = event;
-        language(EN);
+        language(en);
         this.nameField.setText(participant.getName());
         this.emailField.setText(participant.getEmail());
         this.ibanField.setText(participant.getIban());
@@ -135,10 +135,10 @@ public class ContactDetailCtrl {
             return false;
         return true;
     }
-    public void language(boolean EN){
-        if(EN) en();
-        else nl();
+    public void language(boolean en){
+        if(en) makeEn();
+        else makeNl();
     }
-    public void en(){}
-    public void nl(){}
+    public void makeEn(){}
+    public void makeNl(){}
 }

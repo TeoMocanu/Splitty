@@ -57,7 +57,7 @@ public class AddExpenseCtrl {
     @FXML
     private ChoiceBox<String> currency;
     @FXML
-    private DatePicker date_;
+    private DatePicker date;
 
     @FXML
     private Label title;
@@ -92,7 +92,7 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    void initialize(boolean EN, Event event){
+    void initialize(boolean en, Event event){
         type.setValue("other");
         type.setItems(types);
         currency.setValue("EUR");
@@ -108,7 +108,7 @@ public class AddExpenseCtrl {
         name.setValue(participants.get(0));
         everyone.setSelected(true);
 
-        language(EN);
+        language(en);
         this.event = event;
     }
 
@@ -137,13 +137,13 @@ public class AddExpenseCtrl {
     }
 
     private Expense createExpense() {
-        float amount_;
+        float amount;
         LocalDate date;
         List<Participant> debtors = new ArrayList<>();
         Participant payer = null;
         try{
-            amount_ = Float.parseFloat(amount.getText());
-            date = date_.getValue();
+            amount = Float.parseFloat(this.amount.getText());
+            date = this.date.getValue();
 
             for(Participant p : event.getParticipants()){
                 if(p.getName().equals(name.getValue())) payer = p;
@@ -169,7 +169,7 @@ public class AddExpenseCtrl {
             return null;
         }
         //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
-        return new Expense(event, date, payer, debtors, content.getText(),amount_);
+        return new Expense(event, date, payer, debtors, content.getText(),amount);
     }
 
     @FXML
@@ -206,12 +206,12 @@ public class AddExpenseCtrl {
         }
     }
 
-    public void language(boolean EN){
-        if(EN) en();
-        else nl();
+    public void language(boolean en){
+        if(en) makeEn();
+        else makeNl();
     }
 
-    public void en(){
+    public void makeEn(){
         title.setText("Add Expense");
         paid.setText("Who paid?");
         what.setText("What for?");
@@ -225,7 +225,7 @@ public class AddExpenseCtrl {
         somePeople.setText("Only some people");
 
     }
-    public void nl(){
+    public void makeNl(){
         title.setText("Kosten Toevoegen");
         paid.setText("Wie heeft betaald?");
         what.setText("Waarvoor?");

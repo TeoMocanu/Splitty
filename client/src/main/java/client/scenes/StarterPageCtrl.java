@@ -54,7 +54,7 @@ public class StarterPageCtrl {
 
     private String eventName;
     private List<Event> eventList;
-    private boolean EN;
+    private boolean en;
 
     @Inject
     public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
@@ -73,7 +73,7 @@ public class StarterPageCtrl {
     public void initialize() {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
-        EN = true;
+        en = true;
         languageButtonStart.setText("NL");
         en();
     }
@@ -140,7 +140,7 @@ public class StarterPageCtrl {
         //mainCtrl.showEventOverview();
         newEvent.setParticipants(List.of(new Participant("John", newEvent), new Participant("Thijs", newEvent),
                 new Participant("Derek", newEvent), new Participant("George", newEvent)));
-        mainCtrl.showAddExpense(newEvent, EN);
+        mainCtrl.showAddExpense(newEvent, en);
     }
 
     public void joinEvent() {
@@ -156,13 +156,13 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            if(EN)
+            if(en)
                 ErrorMessage.showError("No event with this invitation code was found.");
             else
                 ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.");
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            if(EN)
+            if(en)
                 ErrorMessage.showError("Invalid code.");
             else
                 ErrorMessage.showError("Ongeldige code.");
@@ -182,11 +182,11 @@ public class StarterPageCtrl {
 
     public void language(){
         if(languageButtonStart.getText().equals("NL")){
-            EN = false;
+            en = false;
             nl();
         }
         else{
-            EN = true;
+            en = true;
             en();
         }
     }

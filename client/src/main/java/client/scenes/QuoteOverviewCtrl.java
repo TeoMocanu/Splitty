@@ -37,7 +37,7 @@ public class QuoteOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private ObservableList<Quote> data;
-    private boolean EN = true;
+    private boolean en = true;
 
     @FXML
     private TableView<Quote> table;
@@ -65,11 +65,11 @@ public class QuoteOverviewCtrl implements Initializable {
 
     public void language(){
         if(languageButton.getText().equals("EN")){
-            EN = false;
+            en = false;
             languageButton.setText("NL");
         }
         else{
-            EN = true;
+            en = true;
             languageButton.setText("EN");
         }
     }
