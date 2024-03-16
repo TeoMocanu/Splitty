@@ -207,11 +207,11 @@ public class AddExpenseCtrl {
     }
 
     public void language(boolean en){
-        if(en) makeEn();
-        else makeNl();
+        if(en) en();
+        else nl();
     }
 
-    public void makeEn(){
+    public void en(){
         title.setText("Add Expense");
         paid.setText("Who paid?");
         what.setText("What for?");
@@ -225,7 +225,7 @@ public class AddExpenseCtrl {
         somePeople.setText("Only some people");
 
     }
-    public void makeNl(){
+    public void nl(){
         title.setText("Kosten Toevoegen");
         paid.setText("Wie heeft betaald?");
         what.setText("Waarvoor?");

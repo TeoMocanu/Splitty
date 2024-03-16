@@ -9,7 +9,7 @@ public class ExpenseKey implements Serializable{
     @Column(name = "event_id")
     private long eventId;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "expense_id")
     private long id;
 

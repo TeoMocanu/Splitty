@@ -136,9 +136,9 @@ public class ContactDetailCtrl {
         return true;
     }
     public void language(boolean en){
-        if(en) makeEn();
-        else makeNl();
+        if(en) en();
+        else nl();
     }
-    public void makeEn(){}
-    public void makeNl(){}
+    public void en(){}
+    public void nl(){}
 }
