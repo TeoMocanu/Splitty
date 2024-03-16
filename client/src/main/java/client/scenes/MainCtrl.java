@@ -121,7 +121,6 @@ public class MainCtrl {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
-        adminOverviewCtrl.showServerInfo();
     }
 
     public void showAddExpense(Event event, boolean EN) {
