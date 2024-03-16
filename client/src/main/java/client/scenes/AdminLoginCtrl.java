@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.Map;
+
 public class AdminLoginCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -87,8 +89,8 @@ public class AdminLoginCtrl {
 
             }
             else {
-                System.out.println("Admin credentials are wrong, restart the app to try again");
-                mainCtrl.showOverview();
+                System.out.println("Admin credentials are wrong, restart the session to try again");
+                mainCtrl.showStarterPage();
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);

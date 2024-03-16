@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.Map;
+
 public class AdminOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -21,6 +23,7 @@ public class AdminOverviewCtrl {
     }
     @FXML
     private void initialize(){
+
     }
     public void cancel() {
         clearFields();
@@ -55,6 +58,16 @@ public class AdminOverviewCtrl {
                 break;
             default:
                 break;
+        }
+    }
+
+    public void showServerInfo() {
+        try {
+            Map<String, Object> serverInfo = server.fetchServerInfo();
+            System.out.println("Server Info: " + serverInfo);
+        } catch (Exception e) {
+            System.out.println("Failed to fetch server info: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -27,8 +27,10 @@ import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import commons.Event;
+import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -126,6 +128,17 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
     }
+
+    public Map<String, Object> fetchServerInfo() {
+        // Perform the GET request and expect a response of type Map<String, Object>
+        return ClientBuilder.newClient(new ClientConfig()) // Create a new client with a configuration.
+                .target(SERVER) // Target the server base URL defined by the SERVER constant.
+                .path("custom/info") // Specify the path to the server info endpoint.
+                .request(MediaType.APPLICATION_JSON) // Create a request indicating you're sending JSON.
+                .accept(MediaType.APPLICATION_JSON) // Specify that you expect to receive JSON in response.
+                .get(new GenericType<Map<String, Object>>(){}); // Perform the GET request expecting a Map in return.
+    }
+
     /**
      * Generates a secure random password.
      * @param length The desired length of the generated password.
