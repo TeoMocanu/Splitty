@@ -1,4 +1,4 @@
-package commons.primary_keys;
+package commons.primaryKeys;
 
 import jakarta.persistence.*;
 
