@@ -20,18 +20,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import commons.Event;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import server.database.EventRepository;
 
-import commons.Quote;
-import server.database.QuoteRepository;
 
-public class TestQuoteRepository implements QuoteRepository {
+public class TestEventRepository implements EventRepository {
 
-    public final List<Quote> quotes = new ArrayList<>();
+    public final List<Event> events = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
 
     private void call(String name) {
@@ -39,25 +39,25 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public List<Quote> findAll() {
+    public List<Event> findAll() {
         calledMethods.add("findAll");
-        return quotes;
+        return events;
     }
 
     @Override
-    public List<Quote> findAll(Sort sort) {
+    public List<Event> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Quote> findAllById(Iterable<Long> ids) {
+    public List<Event> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Event> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -69,19 +69,19 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public <S extends Quote> S saveAndFlush(S entity) {
+    public <S extends Event> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Event> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<Quote> entities) {
+    public void deleteAllInBatch(Iterable<Event> entities) {
         // TODO Auto-generated method stub
 
     }
@@ -99,55 +99,55 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public Quote getOne(Long id) {
+    public Event getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Quote getById(Long id) {
+    public Event getById(Long id) {
         call("getById");
         return find(id).get();
     }
 
     @Override
-    public Quote getReferenceById(Long id) {
+    public Event getReferenceById(Long id) {
         call("getReferenceById");
         return find(id).get();
     }
 
-    private Optional<Quote> find(Long id) {
-        return quotes.stream().filter(q -> q.id == id).findFirst();
+    private Optional<Event> find(Long id) {
+        return events.stream().filter(q -> q.getId() == id).findFirst();
     }
 
     @Override
-    public <S extends Quote> List<S> findAll(Example<S> example) {
+    public <S extends Event> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Event> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Page<Quote> findAll(Pageable pageable) {
+    public Page<Event> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> S save(S entity) {
+    public <S extends Event> S save(S entity) {
         call("save");
-        entity.id = (long) quotes.size();
-        quotes.add(entity);
+        entity.id = (long) events.size();
+        events.add(entity);
         return entity;
     }
 
     @Override
-    public Optional<Quote> findById(Long id) {
+    public Optional<Event> findById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -160,7 +160,7 @@ public class TestQuoteRepository implements QuoteRepository {
 
     @Override
     public long count() {
-        return quotes.size();
+        return events.size();
     }
 
     @Override
@@ -170,7 +170,7 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public void delete(Quote entity) {
+    public void delete(Event entity) {
         // TODO Auto-generated method stub
 
     }
@@ -182,7 +182,7 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Quote> entities) {
+    public void deleteAll(Iterable<? extends Event> entities) {
         // TODO Auto-generated method stub
 
     }
@@ -194,31 +194,31 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public <S extends Quote> Optional<S> findOne(Example<S> example) {
+    public <S extends Event> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Event> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <S extends Quote> long count(Example<S> example) {
+    public <S extends Event> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <S extends Quote> boolean exists(Example<S> example) {
+    public <S extends Event> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public <S extends Quote, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Event, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -38,8 +38,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var addQuote = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
         var addExpense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
         var starterPage = FXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
 
@@ -51,8 +49,6 @@ public class Main extends Application {
         mainCtrl.starterPage(starterPage);
         mainCtrl.adminLogin(adminLogin);
         mainCtrl.adminOverview(adminOverview);
-        mainCtrl.addOverview(overview);
-        mainCtrl.addQuote(addQuote);
         mainCtrl.addExpense(addExpense);
         mainCtrl.contactDetails(contactDetails);
 

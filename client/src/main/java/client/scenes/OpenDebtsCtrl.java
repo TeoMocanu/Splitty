@@ -15,7 +15,7 @@
  */
 package client.scenes;
 
-import commons.Quote;
+import commons.Debt;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +37,7 @@ public class OpenDebtsCtrl {
 
 
     @FXML
-    private TableView<Quote> table;
+    private TableView<Debt> table;
     @FXML
     private Button cancelButton;
     @FXML

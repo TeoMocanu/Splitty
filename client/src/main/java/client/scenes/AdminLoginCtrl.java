@@ -32,7 +32,7 @@ public class AdminLoginCtrl {
     public void cancel() {
         System.out.println("Existed admin login");
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showStarterPage();
     }
     public void checkPassword() {
         try {
@@ -48,7 +48,7 @@ public class AdminLoginCtrl {
             }
             else {
                 System.out.println("Admin credentials are wrong, restart the app to try again");
-                mainCtrl.showOverview();
+                mainCtrl.showStarterPage();
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
