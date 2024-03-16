@@ -8,6 +8,19 @@
     <property name="severity" value="warning"/>
     <module name="FileTabCharacter"/>
     <module name="TreeWalker">
+        <module name="MissingJavadocMethod">
+            <property name="severity" value="warning"/>
+            <property name="scope" value="public"/>
+            <property name="minLineCount" value="0"/>
+            <property name="allowedAnnotations" value="Main"/>
+            <property name="tokens" value="METHOD_DEF, CTOR_DEF, COMPACT_CTOR_DEF"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="severity" value="warning"/>
+            <property name="accessModifiers" value="public"/>
+            <property name="allowMissingParamTags" value="false"/>
+            <property name="allowMissingReturnTag" value="false"/>
+        </module>
         <module name="UnusedImports"/>
         <module name="Indentation">
             <property name="basicOffset" value="4"/>
@@ -19,6 +32,7 @@
         </module>
         <module name="DefaultComesLast"/>
         <module name="OneStatementPerLine"/>
+
 
         <!--  Naming conventions, following the CamelCase style -->
         <module name="PackageName">
