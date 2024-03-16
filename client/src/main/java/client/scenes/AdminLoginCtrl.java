@@ -11,8 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-import java.util.Map;
-
 public class AdminLoginCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
