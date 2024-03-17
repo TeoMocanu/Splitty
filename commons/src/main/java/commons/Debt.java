@@ -17,7 +17,7 @@ public class Debt {
     @Column(name = "debt_id")
     private long id;
 
-//    @Id
+    @Id
     @Column(name = "event_id")
     private long eventId;
 
@@ -56,10 +56,6 @@ public class Debt {
 
     public DebtKey getDebtKey() {
         return new DebtKey(eventId, id);
-    }
-
-    public void setDebtKey(DebtKey debtKey) {
-        this.debtKey = debtKey;
     }
 
     public void setEvent(Event event) {

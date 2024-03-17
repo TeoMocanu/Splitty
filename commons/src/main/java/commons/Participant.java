@@ -20,7 +20,7 @@ public class Participant {
     @Column(name = "participant_id")
     private long id;
 
-//    @Id
+    @Id
     @Column(name = "event_id")
     private long eventId;
 
@@ -63,10 +63,6 @@ public class Participant {
 
     public ParticipantKey getParticipantKey() {
         return new ParticipantKey(eventId, id);
-    }
-
-    public void setParticipantKey(ParticipantKey participantKey) {
-        this.participantKey = participantKey;
     }
 
     public void setEvent(Event event) {
