@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+
+import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,6 +42,7 @@ public class MainCtrl {
     private Scene contactDetails;
     private ChangeServerCtrl changeServerCtrl;
     private Scene changeServer;
+
 
     public MainCtrl() {
     }
@@ -112,17 +115,30 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showContactDetails(Event event, boolean en){
-        primaryStage.setTitle("Add/Edit Participant");
+    public void showAddInvitation(){
+        primaryStage.setTitle("Invitation");
+        primaryStage.setScene(invitation);
+        invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
+    }
+
+    public void showContactDetailsAdd(Event event, boolean en) {
+        primaryStage.setTitle("Add Participant");
         primaryStage.setScene(contactDetails);
         contactDetailCtrl.initialize(event, en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showAddInvitation(){
-        primaryStage.setTitle("Invitation");
-        primaryStage.setScene(invitation);
-        invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
+    public void showContactDetailsEdit(Participant participant, boolean en) {
+        primaryStage.setTitle("Edit Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
+        contactDetailCtrl.setParticipant(participant);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
+
+    }
+
+    public void showOpenDebts(Event event, boolean en) {
+        //TODO when page exists :)
     }
 
     public void showChangeServer(boolean en) {
