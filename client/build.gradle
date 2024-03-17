@@ -32,5 +32,5 @@ dependencies {
 	implementation 'com.google.inject:guice:7.0.0'
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
-	
+    testImplementation 'junit:junit:4.13.1'
 }
