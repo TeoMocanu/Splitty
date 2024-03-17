@@ -6,7 +6,6 @@ import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
-import server.database.ExpenseRepository;
 
 import java.util.List;
 import java.util.Optional;

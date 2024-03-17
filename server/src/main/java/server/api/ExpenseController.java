@@ -1,13 +1,9 @@
 package server.api;
 
 import commons.Expense;
-import commons.primary_keys.ExpenseKey;
-import commons.Event;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.EventRepository;
 import server.database.ExpenseRepository;
 
 import java.util.List;
