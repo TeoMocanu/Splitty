@@ -51,6 +51,11 @@ public class AdminEventCtrl {
         clearFields();
         //mainCtrl.showOverview();
     }
+
+    public void initialize(Event event, Boolean EN){
+        this.event = event;
+        language(EN);
+    }
     public void add() {
         try {
             //server.addExpense(getExpense());
@@ -84,5 +89,22 @@ public class AdminEventCtrl {
             default:
                 break;
         }
+    }
+
+    public void language(boolean EN){
+        if(EN) en();
+        else nl();
+    }
+    public void en(){
+        title.setText("Title");
+        date.setText("Date");
+        lastActivity.setText("Last seen activities");
+        delete.setText("Delete event");
+    }
+    public void nl(){
+        title.setText("Titel");
+        date.setText("Datum");
+        lastActivity.setText("Laatst geziene activiteiten");
+        delete.setText("Evenement verwijderen");
     }
 }
