@@ -121,4 +121,15 @@ public class EventController {
 
         return ResponseEntity.ok((Expense) expenses);
     }
+
+    // TODO send invitations to email list
+    @PostMapping("/invitation")
+    public void sendInvitations(@RequestBody List<String> emails) {
+        String code = emails.getLast();
+        String text = "Join my splitty event, using code " + code + " in the app.";
+        for(String e : emails){
+            // send text to email
+        }
+        return;
+    }
 }

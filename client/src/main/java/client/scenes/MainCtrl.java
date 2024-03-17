@@ -42,6 +42,8 @@ public class MainCtrl {
     private Scene contactDetails;
     private ChangeServerCtrl changeServerCtrl;
     private Scene changeServer;
+    private EventOverviewCtrl eventOverviewCtrl;
+    private Scene eventOverview;
 
 
     public MainCtrl() {
@@ -51,11 +53,6 @@ public class MainCtrl {
         this.primaryStage = primaryStage;
         showStarterPage();
         primaryStage.show();
-    }
-
-    //TODO implement
-    public Event getEvent(){
-        return null;
     }
 
     public void starterPage(Pair<StarterPageCtrl, Parent> starterPage){
@@ -80,6 +77,11 @@ public class MainCtrl {
     public void addExpense(Pair<AddExpenseCtrl, Parent> addExpense){
         this.addExpenseCtrl = addExpense.getKey();
         this.addExpense = new Scene(addExpense.getValue());
+    }
+
+    public void eventOverview(Pair<EventOverviewCtrl, Parent> eventOverview){
+        this.eventOverviewCtrl = eventOverview.getKey();
+        this.eventOverview = new Scene(eventOverview.getValue());
     }
 
     public void invitation(Pair<InvitationCtrl, Parent> invitation) {
@@ -115,9 +117,18 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showAddInvitation(){
+    public void showEventOverview(Event event, boolean en) {
+        primaryStage.setTitle("Create/Edit Event");
+        primaryStage.setScene(eventOverview);
+        eventOverviewCtrl.initializeEvent(event, en);
+        eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
+    }
+
+
+    public void showInvitation(Event event, boolean en){
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
+        invitationCtrl.initialize(event, en);
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 

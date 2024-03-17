@@ -8,46 +8,46 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
-      <Label layoutX="39.0" layoutY="14.0" text="Event Title">
+      <Label fx:id="eventTitleLabel" layoutX="39.0" layoutY="14.0" text="Event Title">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
       </Label>
-      <Button layoutX="432.0" layoutY="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="142.0" text="Send Invites">
+      <Button fx:id="sendInvitesButton" layoutX="432.0" layoutY="28.0" mnemonicParsing="false" onAction="#sendInvites" prefHeight="42.0" prefWidth="142.0" text="Send Invites">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="39.0" layoutY="105.0" text="Participants">
+      <Label fx:id="participantsLabel" layoutX="39.0" layoutY="105.0" text="Participants">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ListView layoutX="39.0" layoutY="146.0" orientation="HORIZONTAL" prefHeight="70.0" prefWidth="535.0" />
-      <Button layoutX="187.0" layoutY="110.0" mnemonicParsing="false" text="Edit">
+      <ListView fx:id="participantsListView" layoutX="39.0" layoutY="146.0" orientation="HORIZONTAL" prefHeight="70.0" prefWidth="535.0" />
+      <Button fx:id="participantEditButton" layoutX="187.0" layoutY="110.0" mnemonicParsing="false" onAction="#editParticipant" text="Edit">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="231.0" layoutY="110.0" mnemonicParsing="false" text="Add">
+      <Button fx:id="participantAddButton" layoutX="231.0" layoutY="110.0" mnemonicParsing="false" onAction="#addParticipant" text="Add">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <ComboBox layoutX="39.0" layoutY="288.0" prefHeight="30.0" prefWidth="181.0" />
-      <Label layoutX="39.0" layoutY="242.0" prefHeight="46.0" prefWidth="225.0" text="Expenses">
+      <ComboBox fx:id="eventPayersComboBox" layoutX="39.0" layoutY="288.0" prefHeight="30.0" prefWidth="181.0" />
+      <Label fx:id="expensesLabel" layoutX="39.0" layoutY="242.0" prefHeight="46.0" prefWidth="225.0" text="Expenses">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="489.0" layoutY="290.0" mnemonicParsing="false" text="Add Expense">
+      <Button fx:id="addExpenseButton" layoutX="489.0" layoutY="290.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="493.0" layoutY="666.0" mnemonicParsing="false" text="Settle Debts">
+      <Button fx:id="settleDebtsButton" layoutX="493.0" layoutY="666.0" mnemonicParsing="false" onAction="#settleDebts" text="Settle Debts">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
@@ -57,5 +57,15 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="209.0" />
         </content>
       </ScrollPane>
+      <Button fx:id="Save" layoutX="104.0" layoutY="666.0" mnemonicParsing="false" onAction="#ok" text="Save">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="backButton" layoutX="39.0" layoutY="666.0" mnemonicParsing="false" onAction="#back" text="Back">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

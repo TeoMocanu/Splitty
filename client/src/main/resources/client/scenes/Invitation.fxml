@@ -6,32 +6,33 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InvitationCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InvitationCtrl">
     <children>
-        <Label layoutX="28.0" layoutY="14.0" text="New Year Party" textAlignment="CENTER">
+        <Label fx:id="title" layoutX="28.0" layoutY="14.0" text="New Year Party" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="23.0" />
             </font></Label>
-        <Label layoutX="28.0" layoutY="48.0" text="Give people the following invite Code: ">
+        <Label fx:id="text1" layoutX="28.0" layoutY="48.0" text="Give people the following invite Code: ">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label layoutX="319.0" layoutY="48.0" text="AC74ED">
+        <Label fx:id="code" layoutX="319.0" layoutY="48.0" text="AC74ED">
             <font>
                 <Font name="System Bold" size="17.0" />
             </font>
         </Label>
-        <Label layoutX="28.0" layoutY="74.0" text="Invite the following people by email (one adderss per line):">
+        <Label fx:id="text2" layoutX="28.0" layoutY="74.0" text="Invite the following people by email (one adderss per line):">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField layoutX="28.0" layoutY="99.0" prefHeight="75.0" prefWidth="414.0" />
-        <Button layoutX="354.0" layoutY="177.0" mnemonicParsing="false" text="Send Invites">
+        <TextField fx:id="emails" layoutX="28.0" layoutY="99.0" prefHeight="75.0" prefWidth="414.0" />
+        <Button fx:id="sendInvites" layoutX="354.0" layoutY="177.0" mnemonicParsing="false" onAction="#send" text="Send Invites">
             <font>
                 <Font size="13.0" />
             </font>
         </Button>
+      <Button fx:id="cancelButton" layoutX="28.0" layoutY="178.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
     </children>
 </AnchorPane>

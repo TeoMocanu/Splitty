@@ -19,6 +19,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -116,12 +117,12 @@ public class ServerUtils {
     }
 
     //TODO implement
-    public String addInvitation(String invitation) {
+    public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/invitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+                .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
     public Map<String, Object> fetchServerInfo() {

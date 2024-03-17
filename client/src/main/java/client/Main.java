@@ -26,6 +26,8 @@ import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import javax.naming.InitialContext;
+
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
@@ -45,6 +47,9 @@ public class Main extends Application {
         var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var contactDetails = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
         var changeServer = FXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
+        var eventOverview = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
+        var invitation = FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         mainCtrl.starterPage(starterPage);
@@ -53,6 +58,8 @@ public class Main extends Application {
         mainCtrl.addExpense(addExpense);
         mainCtrl.contactDetails(contactDetails);
         mainCtrl.changeServer(changeServer);
+        mainCtrl.eventOverview(eventOverview);
+        mainCtrl.invitation(invitation);
 
         mainCtrl.initialize(primaryStage);
     }

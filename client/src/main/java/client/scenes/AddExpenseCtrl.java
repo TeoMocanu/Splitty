@@ -36,6 +36,7 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
+    private boolean en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
@@ -105,16 +106,17 @@ public class AddExpenseCtrl {
         }
         menu.setItems(splitOptions);
         name.setItems(participants);
-        name.setValue(participants.get(0));
+        name.setValue(" ");
         everyone.setSelected(true);
 
+        this.en = en;
         language(en);
         this.event = event;
     }
 
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
     public void add() {
@@ -186,7 +188,7 @@ public class AddExpenseCtrl {
     }
 
     private void clearFields() {
-        name.setValue(participants.get(0));
+        name.setValue(" ");
         content.clear();
         amount.clear();
         currency.setValue("EUR");

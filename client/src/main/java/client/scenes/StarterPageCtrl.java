@@ -141,10 +141,7 @@ public class StarterPageCtrl {
         listView.refresh();
 
         server.addEvent(newEvent);
-        //mainCtrl.showEventOverview();
-        newEvent.setParticipants(List.of(new Participant("John", newEvent), new Participant("Thijs", newEvent),
-                new Participant("Derek", newEvent), new Participant("George", newEvent)));
-        mainCtrl.showAddExpense(newEvent, en);
+        mainCtrl.showEventOverview(newEvent, en);
     }
 
     public void joinEvent() {
