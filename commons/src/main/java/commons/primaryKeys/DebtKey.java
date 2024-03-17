@@ -5,17 +5,14 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-public class DebtKey implements Serializable{
-    @Column(name = "event_id")
-    private long eventId;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "debt_id")
+public class DebtKey implements Serializable{
+    private long eventId;
     private long id;
 
-    public DebtKey(long eventId) {
+    public DebtKey(long eventId, long id) {
         this.eventId = eventId;
+        this.id = id;
     }
 
     @SuppressWarnings("unused")

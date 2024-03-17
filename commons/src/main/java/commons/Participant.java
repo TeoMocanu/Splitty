@@ -12,9 +12,16 @@ import java.util.List;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
+@IdClass(ParticipantKey.class)
 public class Participant {
-    @EmbeddedId
-    private ParticipantKey participantKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "participant_id")
+    private long id;
+
+//    @Id
+    @Column(name = "event_id")
+    private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
@@ -35,8 +42,8 @@ public class Participant {
     public Participant(){ }
 
     public Participant(Event event, String name, String email, String iban, String bic){
-        this.participantKey = new ParticipantKey(event.getId());
         this.event = event;
+        this.eventId = event.getId();
         this.expensesPaidBy = new ArrayList<>();
         this.expensesToPay = new ArrayList<>();
         this.name = name;
@@ -46,23 +53,23 @@ public class Participant {
     }
 
     public Participant(String name, Event event){
-        this.participantKey = new ParticipantKey(event.getId());
         this.expensesPaidBy = new ArrayList<>();
         this.expensesToPay = new ArrayList<>();
         this.event = event;
+        this.eventId = event.getId();
         this.name = name;
     }
 
     public ParticipantKey getParticipantKey() {
-        return participantKey;
+        return new ParticipantKey(eventId, id);
     }
 
     public long getId() {
-        return participantKey.getId();
+        return id;
     }
 
     public long getEventId() {
-        return participantKey.getEventId();
+        return eventId;
     }
 
     public Event getEvent() {

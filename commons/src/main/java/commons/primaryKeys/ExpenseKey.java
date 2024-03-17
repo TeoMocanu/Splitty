@@ -5,17 +5,13 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class ExpenseKey implements Serializable{
-    @Column(name = "event_id")
     private long eventId;
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "expense_id")
     private long id;
 
-    public ExpenseKey(long eventId) {
+    public ExpenseKey(long eventId, long id) {
         this.eventId = eventId;
+        this.id = id;
     }
 
     @SuppressWarnings("unused")

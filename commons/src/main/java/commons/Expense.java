@@ -12,10 +12,16 @@ import java.util.*;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
+@IdClass(ExpenseKey.class)
 public class Expense {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "expense_id")
+    private long id;
 
-    @EmbeddedId
-    private ExpenseKey expenseKey;
+//    @Id
+    @Column(name = "event_id")
+    private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
@@ -54,7 +60,7 @@ public class Expense {
 
     public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> owings, String title,
                    float amount) {
-        this.expenseKey = new ExpenseKey(event.getId());
+        this.eventId = event.getId();
         this.event = event;
         this.localDate = localDate;
         this.payer = payer;
@@ -64,11 +70,11 @@ public class Expense {
     }
 
     public ExpenseKey getExpenseKey() {
-        return expenseKey;
+        return new ExpenseKey(eventId, id);
     }
 
     public long getId() {
-        return expenseKey.getId();
+        return id;
     }
 
     public Event getEvent() {
@@ -76,7 +82,7 @@ public class Expense {
     }
 
     public long getEventId() {
-        return expenseKey.getEventId();
+        return eventId;
     }
 
     public LocalDate getLocalDate() {
