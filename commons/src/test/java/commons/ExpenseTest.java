@@ -74,11 +74,31 @@ public class ExpenseTest {
     }
 
     @Test
+    public void getPayerTest() {
+        assertEquals(participant, e.getPayer());
+    }
+
+    @Test
     public void setPayerTest() {
         var part = new Participant("name1", event);
         e.setPayer(part);
         assertEquals(part, e.getPayer());
         e.setPayer(participant);
+    }
+
+    @Test
+    public void getDebtorsTest() {
+        assertEquals(participant, e.getDebtors().get(0));
+    }
+
+    @Test
+    public void setDebtorsTest() {
+        var participant1 = new Participant(event, "name1", "email1", "iban1", "bic1");
+        var participant2 = new Participant(event, "name1", "email1", "iban1", "bic1");
+        e.setDebtors(List.of(participant1, participant2));
+        assertEquals(2, e.getDebtors().size());
+        assertEquals(participant1, e.getDebtors().get(0));
+        assertEquals(participant2, e.getDebtors().get(1));
     }
 
     @Test
@@ -96,5 +116,33 @@ public class ExpenseTest {
     @Test
     public void getAmountTest() {
         assertEquals(12.5f, e.getAmount());
+    }
+
+    @Test
+    public void setAmountTest() {
+        e.setAmount(15.5f);
+        assertEquals(15.5f, e.getAmount());
+    }
+
+    @Test
+    public void getDateTest() {
+        assertEquals(date, e.getLocalDate());
+    }
+
+    @Test
+    public void setDateTest() {
+        var newDate = LocalDate.of(2024, 12, 13);
+        e.setLocalDate(newDate);
+        assertEquals(newDate, e.getLocalDate());
+    }
+
+    @Test
+    public void getEventTest() {
+        assertEquals(event, e.getEvent());
+    }
+
+    @Test
+    public void getEventIdTest() {
+        assertEquals(event.getId(), e.getEventId());
     }
 }
