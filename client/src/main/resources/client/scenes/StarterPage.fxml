@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="399.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
+<AnchorPane prefHeight="448.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
    <children>
       <Label fx:id="createNewEventLabel" layoutX="21.0" layoutY="14.0" prefHeight="27.0" prefWidth="250.0" text="Create New Event">
          <font>
@@ -30,5 +30,7 @@
       <Button fx:id="languageButtonStart" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
       <Button fx:id="deleteHistoryButton" layoutX="193.0" layoutY="360.0" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="25.0" prefWidth="174.0" text="Delete history" />
       <Button layoutX="95.0" layoutY="360.0" mnemonicParsing="false" onAction="#admin" text="Admin" />
+      <Button fx:id="changeServerButton" layoutX="265.0" layoutY="409.0" mnemonicParsing="false" onAction="#changeServer" prefHeight="25.0" prefWidth="101.0" text="Change Server" />
+      <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="25.0" layoutY="392.0" prefHeight="17.0" prefWidth="343.0" text="Server" />
    </children>
 </AnchorPane>

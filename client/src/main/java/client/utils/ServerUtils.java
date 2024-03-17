@@ -20,6 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 
 import commons.Event;
@@ -32,9 +33,27 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private static String SERVER = "http://localhost:8080/";
+    private static String webSocketServer = "ws://localhost:8080/websocket";
+    private StompSession session;
+
+    public String getServer(){
+        return SERVER;
+    }
+
+    public void changeServer(String server) {
+        this.SERVER = "http://"+ server + "/";
+        this.webSocketServer = "ws://" + server + "/websocket";
+        this.session = connect(webSocketServer);
+    }
 
     /*
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
@@ -125,5 +144,20 @@ public class ServerUtils {
         byte[] bytes = new byte[length];
         random.nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    private StompSession connect(String url) {
+        var client =  new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try{
+            return stomp.connect(url, new StompSessionHandlerAdapter(){}).get();
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e){
+            throw new RuntimeException(e);
+        }
+        throw new IllegalStateException();
     }
 }

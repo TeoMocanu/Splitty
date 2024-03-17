@@ -56,7 +56,7 @@ public class EventController {
     }
 
     @PostMapping("/editEvent/{id}")
-    public ResponseEntity<Event> addEvent(@PathVariable("id") Long id, @RequestBody Event event) {
+    public ResponseEntity<Event> editEvent(@PathVariable("id") Long id, @RequestBody Event event) {
         if(event == null) {
             return ResponseEntity.badRequest().build();
         }
