@@ -9,13 +9,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.time.LocalDate;
 import java.util.*;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 @IdClass(ExpenseKey.class)
 public class Expense {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = SEQUENCE)
     @Column(name = "expense_id")
     private long id;
 
