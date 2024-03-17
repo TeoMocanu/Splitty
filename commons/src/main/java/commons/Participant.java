@@ -24,7 +24,7 @@ public class Participant {
     @OneToMany(mappedBy = "payer")
     private List<Expense> expensesPaidBy;
 
-    @ManyToMany(mappedBy = "debtors")
+    @ManyToMany(mappedBy = "splitters")
     private List<Expense> expensesToPay;
 
     private String name;

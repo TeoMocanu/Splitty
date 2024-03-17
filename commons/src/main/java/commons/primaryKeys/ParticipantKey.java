@@ -3,6 +3,7 @@ package commons.primaryKeys;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class ParticipantKey implements Serializable {
@@ -28,5 +29,18 @@ public class ParticipantKey implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParticipantKey that = (ParticipantKey) o;
+        return eventId == that.eventId && id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId, id);
     }
 }

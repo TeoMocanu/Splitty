@@ -26,10 +26,21 @@ public class Expense {
     private LocalDate localDate;
 
     @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "payer_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "payer_id", referencedColumnName = "participant_id")})
     private Participant payer;
 
     @ManyToMany
-    List<Participant> debtors;
+    @JoinTable(name = "expense_splitter",
+            joinColumns = {
+                @JoinColumn(name = "expense_id", referencedColumnName = "expense_id"),
+                @JoinColumn(name = "expense_event_id", referencedColumnName = "event_id")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "splitter_event_id", referencedColumnName = "event_id"),
+                @JoinColumn(name = "splitter_id", referencedColumnName = "participant_id")})
+    List<Participant> splitters;
 
     @Column(name = "title")
     private String title;
@@ -41,13 +52,13 @@ public class Expense {
         // for object mappers
     }
 
-    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title,
-            float amount) {
+    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> owings, String title,
+                   float amount) {
         this.expenseKey = new ExpenseKey(event.getId());
         this.event = event;
         this.localDate = localDate;
         this.payer = payer;
-        this.debtors = debtors;
+        this.splitters = owings;
         this.title = title;
         this.amount = amount;
     }
@@ -84,12 +95,12 @@ public class Expense {
         this.payer = payer;
     }
 
-    public List<Participant> getDebtors() {
-        return debtors;
+    public List<Participant> getSplitters() {
+        return splitters;
     }
 
-    public void setDebtors(List<Participant> debtors) {
-        this.debtors = debtors;
+    public void setSplitters(List<Participant> debtors) {
+        this.splitters = debtors;
     }
 
     public String getTitle() {

@@ -20,9 +20,15 @@ public class Debt {
     private Event event;
 
     @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "debtor_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "debtor_id", referencedColumnName = "participant_id")})
     private Participant debtor;
 
     @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "creditor_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "creditor_id", referencedColumnName = "participant_id")})
     private Participant creditor;
 
     @Column(name = "amount")
