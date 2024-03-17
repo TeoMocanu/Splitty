@@ -71,7 +71,6 @@ public class AdminEventCtrl {
         clearFields();
         //mainCtrl.showOverview();
     }
-
     private void clearFields() {
         title.clear();
         date.clear();
