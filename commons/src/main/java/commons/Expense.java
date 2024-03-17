@@ -1,7 +1,7 @@
 package commons;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import commons.primary_keys.ExpenseKey;
+import commons.primaryKeys.ExpenseKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

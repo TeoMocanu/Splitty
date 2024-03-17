@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
    <children>
-      <Label layoutX="67.0" layoutY="35.0" prefHeight="60.0" prefWidth="467.0" text="Here you can manage the server instances">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="119.0" layoutY="148.0" prefHeight="60.0" prefWidth="467.0" text="TO BE IMPLEMENTED!">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
+      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="EXIT" />
+
+      <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" prefWidth="151.0" text="Show server information" />
+      <TableView fx:id="tableView" layoutX="148.0" layoutY="21.0" prefHeight="245.0" prefWidth="248.0">
+         <columns>
+            <TableColumn fx:id="column1" text="Column 1">
+               <cellValueFactory>
+                  <PropertyValueFactory property="column1" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="column2" text="Column 2">
+               <cellValueFactory>
+                  <PropertyValueFactory property="column2" />
+               </cellValueFactory>
+            </TableColumn>
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>

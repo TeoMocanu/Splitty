@@ -95,19 +95,20 @@ public class MainCtrl {
     public void showAdminOverview() {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
+        adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
-    public void showAddExpense(Event event, boolean EN) {
+    public void showAddExpense(Event event, boolean en) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.initialize(EN, event);
+        addExpenseCtrl.initialize(en, event);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showContactDetails(Event event, boolean EN){
+    public void showContactDetails(Event event, boolean en){
         primaryStage.setTitle("Add/Edit Participant");
         primaryStage.setScene(contactDetails);
-        contactDetailCtrl.initialize(event, EN);
+        contactDetailCtrl.initialize(event, en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
