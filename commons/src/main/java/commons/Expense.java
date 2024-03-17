@@ -1,6 +1,5 @@
 package commons;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import commons.primary_keys.ExpenseKey;
 import jakarta.persistence.*;
