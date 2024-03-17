@@ -88,17 +88,17 @@ public class ExpenseTest {
 
     @Test
     public void getDebtorsTest() {
-        assertEquals(participant, e.getDebtors().get(0));
+        assertEquals(participant, e.getSplitters().get(0));
     }
 
     @Test
     public void setDebtorsTest() {
         var participant1 = new Participant(event, "name1", "email1", "iban1", "bic1");
         var participant2 = new Participant(event, "name1", "email1", "iban1", "bic1");
-        e.setDebtors(List.of(participant1, participant2));
-        assertEquals(2, e.getDebtors().size());
-        assertEquals(participant1, e.getDebtors().get(0));
-        assertEquals(participant2, e.getDebtors().get(1));
+        e.setSplitters(List.of(participant1, participant2));
+        assertEquals(2, e.getSplitters().size());
+        assertEquals(participant1, e.getSplitters().get(0));
+        assertEquals(participant2, e.getSplitters().get(1));
     }
 
     @Test
