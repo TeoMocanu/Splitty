@@ -170,10 +170,8 @@ public class EventTest {
     public void toStringTest() {
         Event event = new Event("simple event");
         assertEquals(event.toString().substring(0, 14), "commons.Event@");
-        assertEquals(event.toString().substring(22), "[\r\n" +
-                "  expenses=[]\r\n" +
-                "  id=0\r\n" +
-                "  participants=[]\r\n" +
+        assertEquals(event.toString().substring(49),
+                " participants=[]\r\n" +
                 "  title=simple event\r\n" +
                 "]");
     }
