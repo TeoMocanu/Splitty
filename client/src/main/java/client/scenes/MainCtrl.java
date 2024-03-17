@@ -30,10 +30,6 @@ public class MainCtrl {
 
     private InvitationCtrl invitationCtrl;
     private Scene invitation;
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-    private AddQuoteCtrl addQuoteCtrl;
-    private Scene addQuote;
     private AddExpenseCtrl addExpenseCtrl;
     private Scene addExpense;
     private AdminLoginCtrl adminLoginCtrl;
@@ -76,16 +72,6 @@ public class MainCtrl {
         this.contactDetails = new Scene(contactDetails.getValue());
     }
 
-    public void addQuote(Pair<AddQuoteCtrl, Parent> addQuote){
-        this.addQuoteCtrl = addQuote.getKey();
-        this.addQuote = new Scene(addQuote.getValue());
-    }
-
-    public void addOverview(Pair<QuoteOverviewCtrl, Parent> overview){
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-    }
-
     public void addExpense(Pair<AddExpenseCtrl, Parent> addExpense){
         this.addExpenseCtrl = addExpense.getKey();
         this.addExpense = new Scene(addExpense.getValue());
@@ -99,17 +85,6 @@ public class MainCtrl {
     public void invitation(Pair<InvitationCtrl, Parent> invitation) {
         this.invitationCtrl = invitation.getKey();
         this.invitation = new Scene(invitation.getValue());
-    }
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
-    public void showAddQuote() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(addQuote);
-        addQuote.setOnKeyPressed(e -> addQuoteCtrl.keyPressed(e));
     }
 
     public void showAdminLogin() {
@@ -140,6 +115,6 @@ public class MainCtrl {
     public void showAddInvitation(){
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
-        addQuote.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
+        invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 }
