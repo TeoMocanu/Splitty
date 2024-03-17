@@ -69,4 +69,15 @@ public class ParticipantTest {
         // Assert that the toString() method returns a non-null string
         assertNotNull(participant.toString());
     }
+
+    @Test
+    public void testEquals() {
+        // Create two participants with the same attributes
+        Event event1 = new Event();
+        Event event2 = new Event();
+        Participant participant1 = new Participant(event1, "John Doe", "5678", "1234", "ABCD");
+        Participant participant2 = new Participant(event2, "John Doe", "5678", "1234", "ABCD");
+        assertEquals(participant1, participant2);
+    }
+
 }

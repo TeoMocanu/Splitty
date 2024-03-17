@@ -3,18 +3,16 @@ package commons.primaryKeys;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-@Embeddable
+
 public class DebtKey implements Serializable{
-    @Column(name = "event_id")
     private long eventId;
-
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "debt_id")
     private long id;
 
-    public DebtKey(long eventId) {
+    public DebtKey(long eventId, long id) {
         this.eventId = eventId;
+        this.id = id;
     }
 
     @SuppressWarnings("unused")
@@ -28,5 +26,26 @@ public class DebtKey implements Serializable{
 
     public long getEventId() {
         return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DebtKey debtKey = (DebtKey) o;
+        return eventId == debtKey.eventId && id == debtKey.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId, id);
     }
 }
