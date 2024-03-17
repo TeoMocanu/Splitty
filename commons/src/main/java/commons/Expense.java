@@ -1,47 +1,95 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import commons.primary_keys.ExpenseKey;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Expense {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
 
-    public long payerId;
-    public String title;
-    public float amount;
-    //public List<Participant> splitBetween;
+    @EmbeddedId
+    private ExpenseKey expenseKey;
 
-    public Expense(){
+    @ManyToOne
+    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
+    private Event event;
 
+    @Column(name = "date")
+    private LocalDate localDate;
+
+    @ManyToOne
+    private Participant payer;
+
+    @ManyToMany
+    List<Participant> debtors;
+
+    @Column(name = "title")
+    private String title;
+    @Column(name = "amount")
+    private float amount;
+
+    @SuppressWarnings("unused")
+    public Expense() {
+        // for object mappers
     }
 
-    public Expense(long payerId, String title, float amount){
-        this.payerId = payerId;
+    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title,
+            float amount) {
+        this.expenseKey = new ExpenseKey(event.getId());
+        this.event = event;
+        this.localDate = localDate;
+        this.payer = payer;
+        this.debtors = debtors;
         this.title = title;
         this.amount = amount;
     }
 
+    public ExpenseKey getExpenseKey() {
+        return expenseKey;
+    }
+
     public long getId() {
-        return id;
+        return expenseKey.getId();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Event getEvent() {
+        return event;
     }
 
-    public long getPayer() {
-        return payerId;
+    public long getEventId() {
+        return expenseKey.getEventId();
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
+    }
+
+    public Participant getPayer() {
+        return payer;
     }
 
     public void setPayer(Participant payer) {
-        this.payerId = payerId;
+        this.payer = payer;
+    }
+
+    public List<Participant> getDebtors() {
+        return debtors;
+    }
+
+    public void setDebtors(List<Participant> debtors) {
+        this.debtors = debtors;
     }
 
     public String getTitle() {
@@ -61,17 +109,17 @@ public class Expense {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Expense expense)) return false;
-        return id == expense.id && Float.compare(expense.amount, amount) == 0
-                && Objects.equals(payerId, expense.payerId) && Objects.equals(title, expense.title);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, payerId, title, amount);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
-
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
 }

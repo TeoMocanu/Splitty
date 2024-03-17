@@ -1,10 +1,14 @@
 package commons;
 
 import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Event {
@@ -12,29 +16,32 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
-    public String title;
-    @ElementCollection
-    public List<Long> participants;
-    @ElementCollection
-    public List<Long> expenses;
-
-    public Event(){
-
-    }
+    private String title;
+    @OneToMany(mappedBy = "event")
+    private List<Participant> participants;
+    @OneToMany(mappedBy = "event")
+    private List<Expense> expenses;
 
     public Event(String title){
         this.title = title;
-        participants = new ArrayList<>();
-        expenses = new ArrayList<>();
+        this.participants = new ArrayList<>();
+        this.expenses = new ArrayList<>();
     }
 
+//    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
+//        this.title = title;
+//        this.participants = new ArrayList<>();
+//        this.expenses = new ArrayList<>();
+//    }
+
+
+    @SuppressWarnings("unused")
+    protected Event() {
+        // for object mappers
+    }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -45,40 +52,42 @@ public class Event {
         this.title = title;
     }
 
-    public List<Long> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Long> participants) {
+    public void setParticipants(List<Participant> participants) {
         this.participants = participants;
     }
 
     public void addParticipant(Participant participant) {
-        this.participants.add(participant.getId());
+        this.participants.add(participant);
     }
 
-    public List<Long> getExpenses() {
+    public List<Expense> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Long> expenses) {
+    public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
     }
 
-    public void addExpenses(Expense expense) {
-        this.expenses.add(expense.getId());
+    public void addExpense(Expense expense) {
+        this.expenses.add(expense);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event event)) return false;
-        return getId() == event.getId() && Objects.equals(getTitle(), event.getTitle())
-                && Objects.equals(getParticipants(), event.getParticipants()) && Objects.equals(getExpenses(), event.getExpenses());
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getParticipants(), getExpenses());
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }

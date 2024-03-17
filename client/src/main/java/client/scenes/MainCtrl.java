@@ -15,7 +15,9 @@
  */
 package client.scenes;
 
+
 import commons.Participant;
+import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,51 +27,105 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    private StarterPageCtrl starterPageCtrl;
+    private Scene starterPage;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
-
-    private Scene contactDetail;
+    private InvitationCtrl invitationCtrl;
+    private Scene invitation;
+    private AddExpenseCtrl addExpenseCtrl;
+    private Scene addExpense;
+    private AdminLoginCtrl adminLoginCtrl;
+    private Scene adminLogin;
+    private AdminOverviewCtrl adminOverviewCtrl;
+    private Scene adminOverview;
     private ContactDetailCtrl contactDetailCtrl;
+    private Scene contactDetails;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<ContactDetailCtrl, Parent> contactDetail) {
+
+    public MainCtrl() {
+    }
+
+    public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
-
-        this.contactDetail = new Scene(contactDetail.getValue());
-        this.contactDetailCtrl = contactDetail.getKey();
-
-        showOverview();
+        showStarterPage();
         primaryStage.show();
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    //TODO implement
+    public Event getEvent(){
+        return null;
     }
 
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    public void starterPage(Pair<StarterPageCtrl, Parent> starterPage){
+        this.starterPageCtrl = starterPage.getKey();
+        this.starterPage = new Scene(starterPage.getValue());
     }
 
-    public void showContactDetailAdd() {
-        primaryStage.setTitle("Contact Details");
-        primaryStage.setScene(contactDetail);
+    public void adminLogin(Pair<AdminLoginCtrl, Parent> adminLogin){
+        this.adminLoginCtrl = adminLogin.getKey();
+        this.adminLogin = new Scene(adminLogin.getValue());
+    }
+    public void adminOverview(Pair<AdminOverviewCtrl, Parent> adminOverview){
+        this.adminOverviewCtrl = adminOverview.getKey();
+        this.adminOverview = new Scene(adminOverview.getValue());
     }
 
-    public void showContactDetailEdit(Participant participant) {
-        primaryStage.setTitle("Contact Details");
-        primaryStage.setScene(contactDetail);
+    public void contactDetails(Pair<ContactDetailCtrl, Parent> contactDetails){
+        this.contactDetailCtrl = contactDetails.getKey();
+        this.contactDetails = new Scene(contactDetails.getValue());
+    }
+
+    public void addExpense(Pair<AddExpenseCtrl, Parent> addExpense){
+        this.addExpenseCtrl = addExpense.getKey();
+        this.addExpense = new Scene(addExpense.getValue());
+    }
+
+    public void showStarterPage() {
+        primaryStage.setTitle("Starter Page");
+        primaryStage.setScene(starterPage);
+    }
+
+    public void invitation(Pair<InvitationCtrl, Parent> invitation) {
+        this.invitationCtrl = invitation.getKey();
+        this.invitation = new Scene(invitation.getValue());
+    }
+
+    public void showAdminLogin() {
+        primaryStage.setTitle("Admin Login");
+        primaryStage.setScene(adminLogin);
+        adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+    }
+    public void showAdminOverview() {
+        primaryStage.setTitle("Admin Overview");
+        primaryStage.setScene(adminOverview);
+    }
+
+    public void showAddExpense(Event event, boolean EN) {
+        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setScene(addExpense);
+        addExpenseCtrl.initialize(EN, event);
+        addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showAddInvitation(){
+        primaryStage.setTitle("Invitation");
+        primaryStage.setScene(invitation);
+        invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
+    }
+
+    public void showContactDetailAdd(Event event, boolean en) {
+        primaryStage.setTitle("Add Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(event, en);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
+    }
+
+    public void showContactDetailEdit(Participant participant, boolean en) {
+        primaryStage.setTitle("Edit Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
+
     }
 }

@@ -1,46 +1,75 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import commons.primary_keys.DebtKey;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Debt {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public String debtor;
+    @EmbeddedId
+    private DebtKey debtKey;
 
-    public String creditor;
-    public double amount;
+    @ManyToOne
+    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
+    private Event event;
+
+    @ManyToOne
+    private Participant debtor;
+
+    @ManyToOne
+    private Participant creditor;
+
+    @Column(name = "amount")
+    private double amount;
 
     @SuppressWarnings("unused")
-    private Debt() {
+    protected Debt() {
         // for object mapper
     }
 
-    public Debt(String debtor, String creditor, double amount) {
+    public Debt(Event event, Participant debtor, Participant creditor, double amount) {
+        this.debtKey = new DebtKey(event.getId());
+        this.event = event;
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
     }
 
-    public String getDebtor() {
+    public DebtKey getDebtKey() {
+        return debtKey;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public long getEventId() {
+        return debtKey.getEventId();
+    }
+
+    public long getId() {
+        return debtKey.getId();
+    }
+
+    public Participant getDebtor() {
         return debtor;
     }
 
-    public void setDebtor(String debtor) {
+    public void setDebtor(Participant debtor) {
         this.debtor = debtor;
     }
 
-    public String getCreditor() {
+    public Participant getCreditor() {
         return creditor;
     }
 
-    public void setCreditor(String creditor) {
+    public void setCreditor(Participant creditor) {
         this.creditor = creditor;
     }
 
@@ -53,24 +82,17 @@ public class Debt {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Debt debt = (Debt) o;
-        return Double.compare(amount, debt.amount) == 0 && Objects.equals(debtor, debt.debtor) && Objects.equals(creditor, debt.creditor);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(debtor, creditor, amount);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "Debt{" +
-                "debtor='" + debtor + '\'' +
-                ", creditor='" + creditor + '\'' +
-                ", amount=" + amount +
-                '}';
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }

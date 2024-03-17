@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
+   <children>
+      <Label layoutX="67.0" layoutY="35.0" prefHeight="60.0" prefWidth="467.0" text="Here you can manage the server instances">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="119.0" layoutY="148.0" prefHeight="60.0" prefWidth="467.0" text="TO BE IMPLEMENTED!">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

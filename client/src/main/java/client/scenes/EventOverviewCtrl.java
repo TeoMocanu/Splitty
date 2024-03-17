@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import commons.Quote;
@@ -22,7 +23,8 @@ public class EventOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private ObservableList<Quote> data;
+    private boolean en;
+    private Event event;
 
     @FXML
     private HBox participants;
@@ -54,10 +56,10 @@ public class EventOverviewCtrl implements Initializable {
     }
 
     public void addParticipant() {
-        mainCtrl.showContactDetailAdd();
+        mainCtrl.showContactDetailAdd(event, en);
     }
 
     public void editParticipant() {
-        mainCtrl.showContactDetailEdit(new Participant("name", "email", "iibun"));
+        mainCtrl.showContactDetailEdit(new Participant(), en);
     }
 }

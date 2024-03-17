@@ -17,17 +17,14 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.security.SecureRandom;
+import java.util.Base64;
 
+import commons.Event;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.Quote;
 import commons.Participant;
+import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -36,6 +33,7 @@ public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
+    /*
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
         var url = new URI("http://localhost:8080/api/quotes").toURL();
         var is = url.openConnection().getInputStream();
@@ -44,40 +42,74 @@ public class ServerUtils {
         while ((line = br.readLine()) != null) {
             System.out.println(line);
         }
-    }
+    }*/
 
-    public List<Quote> getQuotes() {
+    public Event getEvent(Long id){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
+                .target(SERVER).path("api/getById/"+id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {
-                });
+                .get(new GenericType<Event>(){});
     }
 
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
+    public void addEvent(Event event){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addEvent") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    //TODO modify the path
-    public Participant addParticipant(Participant participant) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participant") //
+    public void editEvent(Event event){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public void addExpense(Expense expense, Event event) { //
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addExpense/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
+    }
+
+    public void addParticipant(Participant participant, Event event) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/addParticipant/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(participant, APPLICATION_JSON), Event.class);
     }
 
     //TODO check the path after api is implemented and redo the method
-    public Participant editParticipant(Participant oldParticipant, Participant newParticipant) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participant") //
+    public void editParticipant(Participant oldParticipant, Participant newParticipant) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/editParticipant/" + oldParticipant.getName()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(newParticipant, APPLICATION_JSON), Participant.class);
+                .put(Entity.entity(newParticipant, APPLICATION_JSON), Event.class);
+    }
+
+    //TODO implement
+    public String addInvitation(String invitation) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/invitation") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+    }
+    /**
+     * Generates a secure random password.
+     * @param length The desired length of the generated password.
+     * @return A Base64 encoded secure random password.
+     */
+    public String generateRandomPassword(int length) {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[length];
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }
