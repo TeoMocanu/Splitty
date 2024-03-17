@@ -1,5 +1,6 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import commons.primaryKeys.ExpenseKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -20,15 +21,18 @@ public class Expense {
     @ManyToOne
     @MapsId("eventId")
     @JoinColumn(name = "event_id")
+    @JsonIgnoreProperties({"participants", "expenses"})
     private Event event;
 
     @Column(name = "date")
     private LocalDate localDate;
 
     @ManyToOne
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     private Participant payer;
 
     @ManyToMany
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     List<Participant> debtors;
 
     @Column(name = "title")

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="263.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ChangeServerCtrl">
+   <children>
+      <Button fx:id="saveButton" layoutX="168.0" layoutY="111.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="63.0" text="Save" />
+      <Button fx:id="cancelButton" layoutX="46.0" layoutY="111.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="38.0" prefWidth="263.0" text="Change Server">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="serverField" layoutX="57.0" layoutY="66.0" promptText="localhost:8080" />
+   </children>
+</AnchorPane>

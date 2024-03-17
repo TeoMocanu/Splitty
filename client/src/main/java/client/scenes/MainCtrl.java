@@ -40,6 +40,8 @@ public class MainCtrl {
     private Scene adminOverview;
     private ContactDetailCtrl contactDetailCtrl;
     private Scene contactDetails;
+    private ChangeServerCtrl changeServerCtrl;
+    private Scene changeServer;
 
 
     public MainCtrl() {
@@ -80,14 +82,19 @@ public class MainCtrl {
         this.addExpense = new Scene(addExpense.getValue());
     }
 
-    public void showStarterPage() {
-        primaryStage.setTitle("Starter Page");
-        primaryStage.setScene(starterPage);
-    }
-
     public void invitation(Pair<InvitationCtrl, Parent> invitation) {
         this.invitationCtrl = invitation.getKey();
         this.invitation = new Scene(invitation.getValue());
+    }
+
+    public void changeServer(Pair<ChangeServerCtrl, Parent> changeServer){
+        this.changeServerCtrl = changeServer.getKey();
+        this.changeServer = new Scene(changeServer.getValue());
+    }
+
+    public void showStarterPage() {
+        primaryStage.setTitle("Starter Page");
+        primaryStage.setScene(starterPage);
     }
 
     public void showAdminLogin() {
@@ -133,4 +140,12 @@ public class MainCtrl {
     public void showOpenDebts(Event event, boolean en) {
         //TODO when page exists :)
     }
+
+    public void showChangeServer(boolean en) {
+        primaryStage.setTitle("Server");
+        primaryStage.setScene(changeServer);
+        changeServerCtrl.language(en);
+    }
+
+    public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
 }

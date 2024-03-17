@@ -44,6 +44,7 @@ public class Main extends Application {
         var adminOverview = FXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
         var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var contactDetails = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
+        var changeServer = FXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         mainCtrl.starterPage(starterPage);
@@ -51,6 +52,7 @@ public class Main extends Application {
         mainCtrl.adminOverview(adminOverview);
         mainCtrl.addExpense(addExpense);
         mainCtrl.contactDetails(contactDetails);
+        mainCtrl.changeServer(changeServer);
 
         mainCtrl.initialize(primaryStage);
     }
