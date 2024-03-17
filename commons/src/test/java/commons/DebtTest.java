@@ -1,67 +1,72 @@
-//package commons;
-//
-//import org.junit.jupiter.api.Test;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class DebtTest {
-//
-//    @Test
-//    void getDebtor() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        assertEquals(debt.getDebtor(),"Matei");
-//    }
-//
-//    @Test
-//    void setDebtor() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        debt.setDebtor("Mario");
-//        assertEquals(debt.getDebtor(),"Mario");
-//    }
-//
-//    @Test
-//    void getCreditor() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        assertEquals(debt.getCreditor(),"Andrei");
-//    }
-//
-//    @Test
-//    void setCreditor() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        debt.setCreditor("Mario");
-//        assertEquals(debt.getCreditor(),"Mario");
-//    }
-//
-//    @Test
-//    void getAmount() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        assertEquals(debt.getAmount(),200);
-//    }
-//
-//    @Test
-//    void setAmount() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        debt.setAmount(100.00);
-//        assertEquals(debt.getAmount(),100.00);
-//    }
-//
-//    @Test
-//    void testEquals() {
-//        Debt debt1 = new Debt("Matei", "Andrei", 200.00);
-//        Debt debt2 = new Debt("Matei", "Andrei", 200.00);
-//        assertTrue(debt1.equals(debt2));
-//    }
-//
-//    @Test
-//    void testHashCode() {
-//        Debt debt1 = new Debt("Matei", "Andrei", 200.00);
-//        Debt debt2 = new Debt("Matei", "Andrei", 200.00);
-//        assertEquals(debt1.hashCode(),debt2.hashCode());
-//    }
-//
-//    @Test
-//    void testToString() {
-//        Debt debt = new Debt("Matei", "Andrei", 200.00);
-//        assertEquals(debt.toString(),"Debt{debtor='Matei', creditor='Andrei', amount=200.0}");
-//    }
-//}
+package commons;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DebtTest {
+    @Test
+    public void testGettersAndSetters() {
+        // Create a debt
+        Event event = new Event();
+        Participant debtor = new Participant();
+        Participant creditor = new Participant();
+        Debt debt = new Debt(event, debtor, creditor, 50.0);
+
+        // Test getters
+        assertEquals(event, debt.getEvent());
+        assertEquals(debtor, debt.getDebtor());
+        assertEquals(creditor, debt.getCreditor());
+        assertEquals(50.0, debt.getAmount());
+
+        // Test setters
+        Event newEvent = new Event();
+        Participant newDebtor = new Participant();
+        Participant newCreditor = new Participant();
+        debt.setEvent(newEvent);
+        debt.setDebtor(newDebtor);
+        debt.setCreditor(newCreditor);
+        debt.setAmount(75.0);
+        assertEquals(newEvent, debt.getEvent());
+        assertEquals(newDebtor, debt.getDebtor());
+        assertEquals(newCreditor, debt.getCreditor());
+        assertEquals(75.0, debt.getAmount());
+    }
+    @Test
+    public void testNotEquals() {
+        // Create two debts with different attributes
+        Event event1 = new Event();
+        Event event2 = new Event();
+        Participant debtor1 = new Participant();
+        Participant debtor2 = new Participant();
+        Participant creditor = new Participant();
+        Debt debt1 = new Debt(event1, debtor1, creditor, 100.0);
+        Debt debt2 = new Debt(event2, debtor2, creditor, 100.0);
+
+        // Test not equals method
+        assertNotEquals(debt1, debt2);
+    }
+    @Test
+    public void testHashCode() {
+        // Create a debt
+        Event event = new Event();
+        Participant debtor = new Participant();
+        Participant creditor = new Participant();
+        Debt debt = new Debt(event, debtor, creditor, 100.0);
+
+        // Calculate hash code
+        int expectedHashCode = debt.hashCode();
+
+        assertEquals(expectedHashCode, debt.hashCode());
+    }
+    @Test
+    public void testToString() {
+        // Create a debt
+        Event event = new Event();
+        Participant debtor = new Participant();
+        Participant creditor = new Participant();
+        Debt debt = new Debt(event, debtor, creditor, 100.0);
+
+        assertNotNull(debt.toString());
+    }
+}
