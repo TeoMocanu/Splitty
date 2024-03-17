@@ -7,15 +7,14 @@ import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
 import commons.Event;
-import commons.Expense;
+
 import commons.Participant;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyEvent;
+
 
 public class EventOverviewCtrl implements Initializable {
 
@@ -26,17 +25,29 @@ public class EventOverviewCtrl implements Initializable {
     private Event event;
 
     @FXML
-    private HBox participants;
+    private ListView participantsListView;
     @FXML
-    private ComboBox eventPayers;
+    private ComboBox eventPayersComboBox;
     @FXML
-    private TableView table;
+    private Label eventTitleLabel;
     @FXML
-    private TableColumn<Expense, String> expense;
-//    @FXML
-//    private TableColumn<Quote, String> colLastName;
-//    @FXML
-//    private TableColumn<Quote, String> colQuote;
+    private Button sendInvitesButton;
+    @FXML
+    private Label participantsLabel;
+    @FXML
+    private Button participantAddButton;
+    @FXML
+    private Button participantEditButton;
+    @FXML
+    private Label expensesLabel;
+    @FXML
+    private Button addExpenseButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button settleDebtsButton;
+
+
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -52,13 +63,39 @@ public class EventOverviewCtrl implements Initializable {
 //        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
 //        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
 //        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+        // participantsListView.setItems(ParticipantController.getParticipantsByEvent(event));
     }
 
     public void addParticipant() {
-        mainCtrl.showContactDetailAdd(event, en);
+        mainCtrl.showContactDetailsAdd(event, en);
     }
 
     public void editParticipant() {
-        mainCtrl.showContactDetailEdit(new Participant(), en);
+        mainCtrl.showContactDetailsEdit(new Participant(), en);
+    }
+
+    public void addExpense() {
+        mainCtrl.showAddExpense(event, en);
+    }
+
+    public void settleDebts() {
+        mainCtrl.showOpenDebts(event, en);
+    }
+
+    public void back() {
+        mainCtrl.showStarterPage();
+    }
+
+    public void keyPressed(KeyEvent e) {
+        switch (e.getCode()) {
+            case ESCAPE:
+                back();
+                break;
+            default:
+                break;
+        }
+    }
+    public void nl() {
+        //TODO
     }
 }

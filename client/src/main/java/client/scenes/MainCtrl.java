@@ -114,19 +114,23 @@ public class MainCtrl {
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
-    public void showContactDetailAdd(Event event, boolean en) {
+    public void showContactDetailsAdd(Event event, boolean en) {
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(contactDetails);
         contactDetailCtrl.initialize(event, en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showContactDetailEdit(Participant participant, boolean en) {
+    public void showContactDetailsEdit(Participant participant, boolean en) {
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(contactDetails);
         contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
 
+    }
+
+    public void showOpenDebts(Event event, boolean en) {
+        //TODO when page exists :)
     }
 }
