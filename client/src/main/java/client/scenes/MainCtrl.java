@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+
+import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -38,6 +40,9 @@ public class MainCtrl {
     private Scene adminOverview;
     private ContactDetailCtrl contactDetailCtrl;
     private Scene contactDetails;
+    private ChangeServerCtrl changeServerCtrl;
+    private Scene changeServer;
+
 
     public MainCtrl() {
     }
@@ -77,14 +82,19 @@ public class MainCtrl {
         this.addExpense = new Scene(addExpense.getValue());
     }
 
-    public void showStarterPage() {
-        primaryStage.setTitle("Starter Page");
-        primaryStage.setScene(starterPage);
-    }
-
     public void invitation(Pair<InvitationCtrl, Parent> invitation) {
         this.invitationCtrl = invitation.getKey();
         this.invitation = new Scene(invitation.getValue());
+    }
+
+    public void changeServer(Pair<ChangeServerCtrl, Parent> changeServer){
+        this.changeServerCtrl = changeServer.getKey();
+        this.changeServer = new Scene(changeServer.getValue());
+    }
+
+    public void showStarterPage() {
+        primaryStage.setTitle("Starter Page");
+        primaryStage.setScene(starterPage);
     }
 
     public void showAdminLogin() {
@@ -95,6 +105,7 @@ public class MainCtrl {
     public void showAdminOverview() {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
+        adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
     public void showAddExpense(Event event, boolean en) {
@@ -104,16 +115,37 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showContactDetails(Event event, boolean en){
-        primaryStage.setTitle("Add/Edit Participant");
-        primaryStage.setScene(contactDetails);
-        contactDetailCtrl.initialize(event, en);
-        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
-    }
-
     public void showAddInvitation(){
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
+
+    public void showContactDetailsAdd(Event event, boolean en) {
+        primaryStage.setTitle("Add Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(event, en);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
+    }
+
+    public void showContactDetailsEdit(Participant participant, boolean en) {
+        primaryStage.setTitle("Edit Participant");
+        primaryStage.setScene(contactDetails);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
+        contactDetailCtrl.setParticipant(participant);
+        contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
+
+    }
+
+    public void showOpenDebts(Event event, boolean en) {
+        //TODO when page exists :)
+    }
+
+    public void showChangeServer(boolean en) {
+        primaryStage.setTitle("Server");
+        primaryStage.setScene(changeServer);
+        changeServerCtrl.language(en);
+    }
+
+    public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
 }

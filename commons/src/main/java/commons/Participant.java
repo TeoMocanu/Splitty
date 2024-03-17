@@ -65,6 +65,14 @@ public class Participant {
         return new ParticipantKey(eventId, id);
     }
 
+    public void setParticipantKey(ParticipantKey participantKey) {
+        this.participantKey = participantKey;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public long getId() {
         return id;
     }

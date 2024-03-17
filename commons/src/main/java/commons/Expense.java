@@ -1,5 +1,6 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import commons.primaryKeys.ExpenseKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -7,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -20,25 +21,28 @@ public class Expense {
     @Column(name = "expense_id")
     private long id;
 
-//    @Id
+    @Id
     @Column(name = "event_id")
     private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
     @JoinColumn(name = "event_id")
+    @JsonIgnoreProperties({"participants", "expenses"})
     private Event event;
 
     @Column(name = "date")
     private LocalDate localDate;
 
     @ManyToOne
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     @JoinColumns({
         @JoinColumn(name = "payer_event_id", referencedColumnName = "event_id"),
         @JoinColumn(name = "payer_id", referencedColumnName = "participant_id")})
     private Participant payer;
 
     @ManyToMany
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     @JoinTable(name = "expense_splitter",
             joinColumns = {
                 @JoinColumn(name = "expense_id", referencedColumnName = "expense_id"),
@@ -48,6 +52,9 @@ public class Expense {
                 @JoinColumn(name = "splitter_event_id", referencedColumnName = "event_id"),
                 @JoinColumn(name = "splitter_id", referencedColumnName = "participant_id")})
     List<Participant> splitters;
+
+    @ManyToMany
+    List<Participant> debtors;
 
     @Column(name = "title")
     private String title;

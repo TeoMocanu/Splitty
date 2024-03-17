@@ -103,6 +103,10 @@ public class ContactDetailCtrl {
                 bicField.getText());
     }
 
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+
     private void clearFields() {
         nameField.clear();
         emailField.clear();

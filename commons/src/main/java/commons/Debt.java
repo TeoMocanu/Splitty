@@ -58,6 +58,14 @@ public class Debt {
         return new DebtKey(eventId, id);
     }
 
+    public void setDebtKey(DebtKey debtKey) {
+        this.debtKey = debtKey;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public Event getEvent() {
         return event;
     }

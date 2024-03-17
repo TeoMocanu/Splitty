@@ -18,6 +18,7 @@ package commons;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -25,10 +26,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventTest {
+
+    public Event e;
+    public Participant p0, p1, p2, p3;
+    public Expense e0, e1, e2, e3;
+    @BeforeEach
+    public void initialize(){
+        e = new Event("title");
+        p0 = new Participant(e, "name1", "email1", "iban1", "bic1");
+        p1 = new Participant(e, "name2", "email2", "iban2", "bic2");
+        p2 = new Participant(e, "name3", "email3", "iban3", "bic3");
+        p3 = new Participant(e, "name4", "email4", "iban4", "bic4");
+        e.addParticipant(p0);
+        e.addParticipant(p1);
+        e.addParticipant(p2);
+        e.addParticipant(p3);
+        e0 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title1", 1);
+        e1 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title2", 2);
+        e2 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title3", 3);
+        e3 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title4", 4);
+        e.addExpense(e0);
+        e.addExpense(e1);
+        e.addExpense(e2);
+        e.addExpense(e3);
+    }
     @Test
     public void checkConstructor() {
-        var e = new Event("title");
-        assertEquals("title", e.getTitle());
+        var a = new Event("title");
+        assertEquals("title", a.getTitle());
     }
 
     @Test
@@ -62,83 +87,89 @@ public class EventTest {
 
     @Test
     public void getParticipantsTest() {
-        var a = new Event("title1");
-        var p0 = new Participant(a, "name1", "email1", "iban1", "bic1");
-        var p1 = new Participant(a, "name2", "email2", "iban2", "bic2");
-        var p2 = new Participant(a, "name3", "email3", "iban3", "bic3");
-        var p3 = new Participant(a, "name4", "email4", "iban4", "bic4");
-        a.addParticipant(p0);
-        a.addParticipant(p1);
-        a.addParticipant(p2);
-        a.addParticipant(p3);
-        assertEquals(4, a.getParticipants().size());
-        assertEquals(p0, a.getParticipants().get(0));
-        assertEquals(p1, a.getParticipants().get(1));
-        assertEquals(p2, a.getParticipants().get(2));
-        assertEquals(p3, a.getParticipants().get(3));
+        assertEquals(4, e.getParticipants().size());
+        assertEquals(p0, e.getParticipants().get(0));
+        assertEquals(p1, e.getParticipants().get(1));
+        assertEquals(p2, e.getParticipants().get(2));
+        assertEquals(p3, e.getParticipants().get(3));
     }
 
     @Test
     public void setParticipantsTest() {
-        var a = new Event("title1");
-        var p0 = new Participant(a, "name1", "email1", "iban1", "bic1");
-        var p1 = new Participant(a, "name2", "email2", "iban2", "bic2");
-        var p2 = new Participant(a, "name3", "email3", "iban3", "bic3");
-        var p3 = new Participant(a, "name4", "email4", "iban4", "bic4");
-        List<Participant> list = new ArrayList<>();
-        list.add(p0);
-        list.add(p1);
-        list.add(p2);
-        list.add(p3);
-        a.setParticipants(list);
-        assertEquals(4, a.getParticipants().size());
-        assertEquals(p0, a.getParticipants().get(0));
-        assertEquals(p1, a.getParticipants().get(1));
-        assertEquals(p2, a.getParticipants().get(2));
-        assertEquals(p3, a.getParticipants().get(3));
+        List<Participant> list = List.of(p3, p1, p2, p0);
+        e.setParticipants(list);
+        assertEquals(4, e.getParticipants().size());
+        assertEquals(p3, e.getParticipants().get(0));
+        assertEquals(p1, e.getParticipants().get(1));
+        assertEquals(p2, e.getParticipants().get(2));
+        assertEquals(p0, e.getParticipants().get(3));
     }
 
     @Test
-    public void getSetExpensesTest() {
-        var a = new Event("title1");
-        var p0 = new Participant(a, "name0", "email0", "iban0", "bic0");
-        var p1 = new Participant(a, "name1", "email1", "iban1", "bic1");
-        var e0 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title1", 1);
-        var e1 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title2", 2);
-        var e2 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title3", 3);
-        var e3 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title4", 4);
-        List<Expense> list = new ArrayList<>();
-        list.add(e0);
-        list.add(e1);
-        list.add(e2);
-        list.add(e3);
-        a.setExpenses(list);
-        assertEquals(4, a.getExpenses().size());
-        assertEquals(e0, a.getExpenses().get(0));
-        assertEquals(e1, a.getExpenses().get(1));
-        assertEquals(e2, a.getExpenses().get(2));
-        assertEquals(e3, a.getExpenses().get(3));
+    public void addParticipantTest() {
+        var p = new Participant(e, "name", "email", "000", "ABC");
+        e.addParticipant(p);
+        assertEquals(5, e.getParticipants().size());
+        assertEquals(p3, e.getParticipants().get(3));
+        assertEquals(p, e.getParticipants().get(4));
+    }
+
+    @Test
+    public void getExpensesTest() {
+        assertEquals(4, e.getExpenses().size());
+        assertEquals(e0, e.getExpenses().get(0));
+        assertEquals(e1, e.getExpenses().get(1));
+        assertEquals(e2, e.getExpenses().get(2));
+        assertEquals(e3, e.getExpenses().get(3));
+    }
+
+    @Test
+    public void setExpensesTest() {
+        List<Expense> list = List.of(e3, e2, e1, e0);
+        e.setExpenses(list);
+        assertEquals(4, e.getExpenses().size());
+        assertEquals(e3, e.getExpenses().get(0));
+        assertEquals(e2, e.getExpenses().get(1));
+        assertEquals(e1, e.getExpenses().get(2));
+        assertEquals(e0, e.getExpenses().get(3));
     }
 
     @Test
     public void addExpenseTest() {
-        var a = new Event("title1");
-        var p0 = new Participant(a, "name0", "email0", "iban0", "bic0");
-        var p1 = new Participant(a, "name1", "email1", "iban1", "bic1");
-        var e0 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title1", 1);
-        var e1 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title2", 2);
-        var e2 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title3", 3);
-        var e3 = new Expense(a, LocalDate.now(), p0, List.of(p1), "title4", 4);
         List<Expense> list = new ArrayList<>();
-        list.add(e0);
-        list.add(e1);
-        list.add(e2);
-        a.setExpenses(list);
-        a.addExpense(e3);
-        assertEquals(4, a.getExpenses().size());
-        assertEquals(e0, a.getExpenses().get(0));
-        assertEquals(e1, a.getExpenses().get(1));
-        assertEquals(e2, a.getExpenses().get(2));
-        assertEquals(e3, a.getExpenses().get(3));
+        e.setExpenses(list);
+        e.addExpense(e1);
+        // size is 1 before the addition
+        assertEquals(1, e.getExpenses().size());
+        assertEquals(e1, e.getExpenses().get(0));
+        e.addExpense(e3);
+        // size is 2 after addition
+        assertEquals(2, e.getExpenses().size());
+        assertEquals(e1, e.getExpenses().get(0));
+        assertEquals(e3, e.getExpenses().get(1));
     }
+
+    @Test
+    public void getIdTest() {
+        Long id = e.id;
+        assertEquals(id, e.getId());
+    }
+
+    // TODO bug including the uniqueness of the generated ids
+    @Test
+    public void uniqueIdTest() {
+        var event = new Event("other event");
+        //assertNotEquals(e.getId(), event.getId());
+
+        var a = new Event("event");
+        var b = new Event("event");
+        //assertNotEquals(a.getId(), b.getId());
+    }
+
+    @Test
+    public void toStringTest() {
+        Event event = new Event("simple event");
+        assertEquals(event.toString().substring(0, 14), "commons.Event@");
+    }
+
 }
