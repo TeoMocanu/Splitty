@@ -52,9 +52,9 @@ public class AdminEventCtrl {
         //mainCtrl.showOverview();
     }
 
-    public void initialize(Event event, Boolean EN){
+    public void initialize(Event event, Boolean en){
         this.event = event;
-        language(EN);
+        language(en);
     }
     public void add() {
         try {
@@ -90,8 +90,8 @@ public class AdminEventCtrl {
         }
     }
 
-    public void language(boolean EN){
-        if(EN) en();
+    public void language(boolean en){
+        if(en) en();
         else nl();
     }
     public void en(){
