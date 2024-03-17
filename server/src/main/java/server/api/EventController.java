@@ -6,6 +6,7 @@ import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
+import server.database.ExpenseRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +16,11 @@ import java.util.Optional;
 public class EventController {
     private final EventRepository eventRepository;
 
+    private final ExpenseController expenseController;
+
     public EventController(EventRepository e){
         this.eventRepository = e;
+        expenseController = null;
     }
 
     @GetMapping("/hey")
@@ -100,5 +104,22 @@ public class EventController {
         event.addParticipant(participant);
         Event added = eventRepository.save(event);
         return ResponseEntity.ok(added);
+    }
+
+    @PostMapping("/{id}/getExpenses")
+    public ResponseEntity<Expense> getExpensesById(@PathVariable("id") Long id) {
+        if(!eventRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if(eventOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Event event = eventOptional.get();
+        List<Expense> expenses = event.getExpenses();
+
+        return ResponseEntity.ok((Expense) expenses);
     }
 }
