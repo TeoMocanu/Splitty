@@ -6,13 +6,20 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
+@IdClass(DebtKey.class)
 public class Debt {
+    @Id
+    @GeneratedValue(strategy = SEQUENCE)
+    @Column(name = "debt_id")
+    private long id;
 
-    @EmbeddedId
-    private DebtKey debtKey;
+    @Id
+    @Column(name = "event_id")
+    private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
@@ -20,9 +27,15 @@ public class Debt {
     private Event event;
 
     @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "debtor_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "debtor_id", referencedColumnName = "participant_id")})
     private Participant debtor;
 
     @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "creditor_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "creditor_id", referencedColumnName = "participant_id")})
     private Participant creditor;
 
     @Column(name = "amount")
@@ -34,7 +47,7 @@ public class Debt {
     }
 
     public Debt(Event event, Participant debtor, Participant creditor, double amount) {
-        this.debtKey = new DebtKey(event.getId());
+        this.eventId = event.getId();
         this.event = event;
         this.debtor = debtor;
         this.creditor = creditor;
@@ -42,11 +55,7 @@ public class Debt {
     }
 
     public DebtKey getDebtKey() {
-        return debtKey;
-    }
-
-    public void setDebtKey(DebtKey debtKey) {
-        this.debtKey = debtKey;
+        return new DebtKey(eventId, id);
     }
 
     public void setEvent(Event event) {
@@ -58,11 +67,11 @@ public class Debt {
     }
 
     public long getEventId() {
-        return debtKey.getEventId();
+        return eventId;
     }
 
     public long getId() {
-        return debtKey.getId();
+        return id;
     }
 
     public Participant getDebtor() {

@@ -8,15 +8,22 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
+@IdClass(ExpenseKey.class)
 public class Expense {
+    @Id
+    @GeneratedValue(strategy = SEQUENCE)
+    @Column(name = "expense_id")
+    private long id;
 
-    @EmbeddedId
-    private ExpenseKey expenseKey;
+    @Id
+    @Column(name = "event_id")
+    private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
@@ -29,10 +36,24 @@ public class Expense {
 
     @ManyToOne
     @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
+    @JoinColumns({
+        @JoinColumn(name = "payer_event_id", referencedColumnName = "event_id"),
+        @JoinColumn(name = "payer_id", referencedColumnName = "participant_id")})
     private Participant payer;
 
     @ManyToMany
     @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
+    @JoinTable(name = "expense_splitter",
+            joinColumns = {
+                @JoinColumn(name = "expense_id", referencedColumnName = "expense_id"),
+                @JoinColumn(name = "expense_event_id", referencedColumnName = "event_id")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "splitter_event_id", referencedColumnName = "event_id"),
+                @JoinColumn(name = "splitter_id", referencedColumnName = "participant_id")})
+    List<Participant> splitters;
+
+    @ManyToMany
     List<Participant> debtors;
 
     @Column(name = "title")
@@ -45,23 +66,23 @@ public class Expense {
         // for object mappers
     }
 
-    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> debtors, String title,
-            float amount) {
-        this.expenseKey = new ExpenseKey(event.getId());
+    public Expense(Event event, LocalDate localDate, Participant payer, List<Participant> owings, String title,
+                   float amount) {
+        this.eventId = event.getId();
         this.event = event;
         this.localDate = localDate;
         this.payer = payer;
-        this.debtors = debtors;
+        this.splitters = owings;
         this.title = title;
         this.amount = amount;
     }
 
     public ExpenseKey getExpenseKey() {
-        return expenseKey;
+        return new ExpenseKey(eventId, id);
     }
 
     public long getId() {
-        return expenseKey.getId();
+        return id;
     }
 
     public Event getEvent() {
@@ -69,7 +90,7 @@ public class Expense {
     }
 
     public long getEventId() {
-        return expenseKey.getEventId();
+        return eventId;
     }
 
     public LocalDate getLocalDate() {
@@ -88,12 +109,12 @@ public class Expense {
         this.payer = payer;
     }
 
-    public List<Participant> getDebtors() {
-        return debtors;
+    public List<Participant> getSplitters() {
+        return splitters;
     }
 
-    public void setDebtors(List<Participant> debtors) {
-        this.debtors = debtors;
+    public void setSplitters(List<Participant> debtors) {
+        this.splitters = debtors;
     }
 
     public String getTitle() {

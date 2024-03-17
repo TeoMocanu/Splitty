@@ -9,12 +9,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
+@IdClass(ParticipantKey.class)
 public class Participant {
-    @EmbeddedId
-    private ParticipantKey participantKey;
+    @Id
+    @GeneratedValue(strategy = SEQUENCE)
+    @Column(name = "participant_id")
+    private long id;
+
+    @Id
+    @Column(name = "event_id")
+    private long eventId;
 
     @ManyToOne
     @MapsId("eventId")
@@ -24,7 +32,7 @@ public class Participant {
     @OneToMany(mappedBy = "payer")
     private List<Expense> expensesPaidBy;
 
-    @ManyToMany(mappedBy = "debtors")
+    @ManyToMany(mappedBy = "splitters")
     private List<Expense> expensesToPay;
 
     private String name;
@@ -35,8 +43,8 @@ public class Participant {
     public Participant(){ }
 
     public Participant(Event event, String name, String email, String iban, String bic){
-        this.participantKey = new ParticipantKey(event.getId());
         this.event = event;
+        this.eventId = event.getId();
         this.expensesPaidBy = new ArrayList<>();
         this.expensesToPay = new ArrayList<>();
         this.name = name;
@@ -46,19 +54,15 @@ public class Participant {
     }
 
     public Participant(String name, Event event){
-        this.participantKey = new ParticipantKey(event.getId());
         this.expensesPaidBy = new ArrayList<>();
         this.expensesToPay = new ArrayList<>();
         this.event = event;
+        this.eventId = event.getId();
         this.name = name;
     }
 
     public ParticipantKey getParticipantKey() {
-        return participantKey;
-    }
-
-    public void setParticipantKey(ParticipantKey participantKey) {
-        this.participantKey = participantKey;
+        return new ParticipantKey(eventId, id);
     }
 
     public void setEvent(Event event) {
@@ -66,11 +70,11 @@ public class Participant {
     }
 
     public long getId() {
-        return participantKey.getId();
+        return id;
     }
 
     public long getEventId() {
-        return participantKey.getEventId();
+        return eventId;
     }
 
     public Event getEvent() {

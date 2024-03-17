@@ -15,7 +15,8 @@
  */
 package server.database;
 
-import commons.Expense;
+import commons.Debt;
+import commons.primaryKeys.DebtKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ExpenseRepository extends JpaRepository<Expense, Long> { }
+public interface DebtRepository extends JpaRepository<Debt, DebtKey> { }

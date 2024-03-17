@@ -8,13 +8,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = SEQUENCE)
     public long id;
     private String title;
     @OneToMany(mappedBy = "event")
