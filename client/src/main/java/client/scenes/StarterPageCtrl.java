@@ -237,7 +237,7 @@ public class StarterPageCtrl {
         mainCtrl.showAdminLogin();
     }
 
-    public void changeServer(){ mainCtrl.showChangeServer(EN); }
+    public void changeServer(){ mainCtrl.showChangeServer(en); }
 
     public Label getServerLabel() { return serverLabel; }
 

@@ -107,11 +107,11 @@ public class EventTest {
 
     @Test
     public void addParticipantTest() {
-        var P = new Participant(e, "name", "email", "000", "ABC");
-        e.addParticipant(P);
+        var p = new Participant(e, "name", "email", "000", "ABC");
+        e.addParticipant(p);
         assertEquals(5, e.getParticipants().size());
         assertEquals(p3, e.getParticipants().get(3));
-        assertEquals(P, e.getParticipants().get(4));
+        assertEquals(p, e.getParticipants().get(4));
     }
 
     @Test
@@ -169,7 +169,8 @@ public class EventTest {
     @Test
     public void toStringTest() {
         Event event = new Event("simple event");
-        assertEquals(event.toString(), "commons.Event@17ca8b92[\r\n" +
+        assertEquals(event.toString().substring(0, 14), "commons.Event@");
+        assertEquals(event.toString().substring(22), "[\r\n" +
                 "  expenses=[]\r\n" +
                 "  id=0\r\n" +
                 "  participants=[]\r\n" +

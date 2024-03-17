@@ -64,8 +64,8 @@ public class ChangeServerCtrl {
                 break;
         }
     }
-    public void language(boolean EN){
-        if(EN) en();
+    public void language(boolean en){
+        if(en) en();
         else nl();
     }
     public void en(){

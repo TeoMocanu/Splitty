@@ -125,10 +125,10 @@ public class MainCtrl {
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
-    public void showChangeServer(boolean EN) {
+    public void showChangeServer(boolean en) {
         primaryStage.setTitle("Server");
         primaryStage.setScene(changeServer);
-        changeServerCtrl.language(EN);
+        changeServerCtrl.language(en);
     }
 
     public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
