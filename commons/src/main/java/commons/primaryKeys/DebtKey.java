@@ -31,6 +31,14 @@ public class DebtKey implements Serializable{
         return eventId;
     }
 
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

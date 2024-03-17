@@ -62,16 +62,16 @@ public class ExpenseTest {
         assertNotEquals(a.hashCode(), e.hashCode());
     }
     // TODO THIS IS A BUG, NEEDS TO BE FIXED
-//    @Test
-//    public void getIdTest() {
-//        var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-//        var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f);
-//
-//        // same properties, should still be a different id
-//        assertNotEquals(e.getId(), a.getId());
-//        // different properties, should be different id
-//        assertNotEquals(e.getId(), b.getId());
-//    }
+    @Test
+    public void getIdTest() {
+        var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+        var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f);
+
+        // same properties, should still be a different id
+        assertNotEquals(e.getId(), a.getId());
+        // different properties, should be different id
+        assertNotEquals(e.getId(), b.getId());
+    }
 
     @Test
     public void setPayerTest() {
