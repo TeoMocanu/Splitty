@@ -75,24 +75,25 @@ public class ServerUtils {
                 .get(new GenericType<Event>(){});
     }
 
-    public void addEvent(Event event){
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event addEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addEvent") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void editEvent(Event event){
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event editEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void addExpense(Expense expense, Event event) { //
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event addExpense(Expense expense, Event event) {
+        //event.addExpense(expense);
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addExpense/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //

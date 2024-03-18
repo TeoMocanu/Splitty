@@ -47,7 +47,7 @@ public class EventOverviewCtrl implements Initializable {
     @FXML
     private Button settleDebtsButton;
     @FXML
-    private Button Save;
+    private Button save;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -67,7 +67,7 @@ public class EventOverviewCtrl implements Initializable {
     }
 
     public void initializeEvent(Event event, boolean en){
-        this.event = event;//server.getEvent(event.getId()); // updates the event every instance of the window
+        this.event = server.getEvent(event.getId()); // updates the event every instance of the window
         this.en = en;
         eventTitleLabel.setText(event.getTitle());
     }

@@ -111,7 +111,8 @@ public class AddExpenseCtrl {
 
         this.en = en;
         language(en);
-        this.event = event;
+        this.event = server.getEvent(event.getId());
+        System.out.println("the id is again: " + event.getId());
     }
 
     public void cancel() {
@@ -122,7 +123,10 @@ public class AddExpenseCtrl {
     public void add() {
         try {
             Expense expense = createExpense();
-            server.addExpense(expense, event);
+            //LocalDate date = LocalDate.of(2024, 12, 12);
+            //Participant participant = new Participant("John", event);
+            //Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            event = server.addExpense(expense, event);
 
         } catch (Exception e) {
 
@@ -134,8 +138,7 @@ public class AddExpenseCtrl {
         }
 
         clearFields();
-        mainCtrl.showStarterPage();
-        //mainCtrl.showEventOverview();
+        mainCtrl.showEventOverview(event, en);
     }
 
     private Expense createExpense() {
@@ -171,7 +174,7 @@ public class AddExpenseCtrl {
             return null;
         }
         //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
-        return new Expense(event, date, payer, debtors, content.getText(),amount);
+        return new Expense(event, date, payer, debtors, content.getText(), amount);
     }
 
     @FXML

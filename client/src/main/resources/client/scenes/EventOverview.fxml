@@ -57,7 +57,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="209.0" />
         </content>
       </ScrollPane>
-      <Button fx:id="Save" layoutX="104.0" layoutY="666.0" mnemonicParsing="false" onAction="#ok" text="Save">
+      <Button fx:id="save" layoutX="104.0" layoutY="666.0" mnemonicParsing="false" onAction="#ok" text="Save">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>

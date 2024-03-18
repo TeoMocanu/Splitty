@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.Event;
-import commons.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,13 +57,12 @@ public class StarterPageCtrl {
     private String eventName;
     private List<Event> eventList;
     private boolean en;
-
     @Inject
     public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
-        this.listView = new ListView<>();
+        this.listView= new ListView<>();
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -81,6 +79,7 @@ public class StarterPageCtrl {
         en();
         this.serverLabel.setText(server.getServer());
     }
+
 
     private void handleListViewClick(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) { // Right-click
@@ -135,13 +134,14 @@ public class StarterPageCtrl {
     public void createNewEvent() {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
+
         eventList.add(newEvent);
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
 
-        server.addEvent(newEvent);
-        mainCtrl.showEventOverview(newEvent, en);
+        Event repEvent = server.addEvent(newEvent);
+        mainCtrl.showEventOverview(repEvent, en);
     }
 
     public void joinEvent() {
