@@ -27,8 +27,8 @@ public class Event {
 
     public Event(String title){
         this.title = title;
-        this.participants = new ArrayList<>();
-        this.expenses = new ArrayList<>();
+        this.participants = new ArrayList<Participant>(0);
+        this.expenses = new ArrayList<Expense>(0);
     }
 
 //    public Event(long id, String title, List<Long> participants, List<Long> expenses) {

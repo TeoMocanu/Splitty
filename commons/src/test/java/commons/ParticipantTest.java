@@ -11,7 +11,7 @@ public class ParticipantTest {
     @Test
     public void testGettersAndSetters() {
         // Create a participant
-        Event event = new Event();
+        Event event = new Event("title");
         Participant participant = new Participant(event, "Mario", "mario.nicolae2004@gmail.com", "123", "abc");
 
         // Test getters
@@ -22,7 +22,7 @@ public class ParticipantTest {
         assertEquals("abc", participant.getBic());
 
         // Test setters
-        Event newEvent = new Event();
+        Event newEvent = new Event("title");
         participant.setEvent(newEvent);
         participant.setName("Mario");
         participant.setEmail("mario.nicolae2004@gmail.com");
@@ -39,8 +39,8 @@ public class ParticipantTest {
     @Test
     public void testNotEquals() {
         // Create two participants with different attributes
-        Event event1 = new Event();
-        Event event2 = new Event();
+        Event event1 = new Event("title");
+        Event event2 = new Event("title");
         Participant participant1 = new Participant(event1, "John Doe", "john@example.com", "123456789", "ABCD1234");
         Participant participant2 = new Participant(event2, "Jane Doe", "jane@example.com", "987654321", "EFGH5678");
 
@@ -51,7 +51,7 @@ public class ParticipantTest {
     @Test
     public void testHashCode() {
         // Create a participant
-        Event event = new Event();
+        Event event = new Event("title");
         Participant participant = new Participant(event, "John Doe", "john@example.com", "123456789", "ABCD1234");
 
         // Calculate hash code manually
@@ -63,7 +63,7 @@ public class ParticipantTest {
     @Test
     public void testToString() {
         // Create a participant
-        Event event = new Event();
+        Event event = new Event("title");
         Participant participant = new Participant(event, "John Doe", "john@example.com", "123456789", "ABCD1234");
 
         // Assert that the toString() method returns a non-null string
@@ -73,8 +73,8 @@ public class ParticipantTest {
     @Test
     public void testEquals() {
         // Create two participants with the same attributes
-        Event event1 = new Event();
-        Event event2 = new Event();
+        Event event1 = new Event("title");
+        Event event2 = new Event("title");
         Participant participant1 = new Participant(event1, "John Doe", "5678", "1234", "ABCD");
         Participant participant2 = new Participant(event2, "John Doe", "5678", "1234", "ABCD");
         assertEquals(participant1, participant2);
