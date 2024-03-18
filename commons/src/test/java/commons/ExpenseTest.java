@@ -62,16 +62,21 @@ public class ExpenseTest {
         assertNotEquals(a.hashCode(), e.hashCode());
     }
     // TODO THIS IS A BUG, NEEDS TO BE FIXED
-    /*@Test
+    @Test
     public void getIdTest() {
         var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
         var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f);
 
         // same properties, should still be a different id
-        assertNotEquals(e.getId(), a.getId());
+//        assertNotEquals(e.getId(), a.getId());
         // different properties, should be different id
-        assertNotEquals(e.getId(), b.getId());
-    }*/
+//        assertNotEquals(e.getId(), b.getId());
+    }
+
+    @Test
+    public void getPayerTest() {
+        assertEquals(participant, e.getPayer());
+    }
 
     @Test
     public void setPayerTest() {
@@ -79,6 +84,21 @@ public class ExpenseTest {
         e.setPayer(part);
         assertEquals(part, e.getPayer());
         e.setPayer(participant);
+    }
+
+    @Test
+    public void getDebtorsTest() {
+        assertEquals(participant, e.getSplitters().get(0));
+    }
+
+    @Test
+    public void setDebtorsTest() {
+        var participant1 = new Participant(event, "name1", "email1", "iban1", "bic1");
+        var participant2 = new Participant(event, "name1", "email1", "iban1", "bic1");
+        e.setSplitters(List.of(participant1, participant2));
+        assertEquals(2, e.getSplitters().size());
+        assertEquals(participant1, e.getSplitters().get(0));
+        assertEquals(participant2, e.getSplitters().get(1));
     }
 
     @Test
@@ -96,5 +116,33 @@ public class ExpenseTest {
     @Test
     public void getAmountTest() {
         assertEquals(12.5f, e.getAmount());
+    }
+
+    @Test
+    public void setAmountTest() {
+        e.setAmount(15.5f);
+        assertEquals(15.5f, e.getAmount());
+    }
+
+    @Test
+    public void getDateTest() {
+        assertEquals(date, e.getLocalDate());
+    }
+
+    @Test
+    public void setDateTest() {
+        var newDate = LocalDate.of(2024, 12, 13);
+        e.setLocalDate(newDate);
+        assertEquals(newDate, e.getLocalDate());
+    }
+
+    @Test
+    public void getEventTest() {
+        assertEquals(event, e.getEvent());
+    }
+
+    @Test
+    public void getEventIdTest() {
+        assertEquals(event.getId(), e.getEventId());
     }
 }
