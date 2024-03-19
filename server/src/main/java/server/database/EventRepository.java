@@ -16,6 +16,17 @@
 package server.database;
 
 import commons.Event;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-public interface EventRepository extends JpaRepository<Event, Long> { }
+@Repository
+public interface EventRepository extends JpaRepository<Event, Long> {
+    @Modifying
+    @Query(value = "insert into  EVENT_EXPENSES(EVENT_ID, EXPENSE_ID) VALUES (:event_id,:expense_id)", nativeQuery = true)
+    @Transactional
+    void addExpenseToEvent(@Param("event_id") long eventId, @Param("expense_id") long expenseId);
+}

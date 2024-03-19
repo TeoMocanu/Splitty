@@ -112,7 +112,6 @@ public class AddExpenseCtrl {
         this.en = en;
         language(en);
         this.event = server.getEvent(event.getId());
-        System.out.println("the id is again: " + event.getId());
     }
 
     public void cancel() {
@@ -122,17 +121,17 @@ public class AddExpenseCtrl {
 
     public void add() {
         try {
-            Expense expense = createExpense();
-            //LocalDate date = LocalDate.of(2024, 12, 12);
-            //Participant participant = new Participant("John", event);
-            //Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            //Expense expense = createExpense();
+            LocalDate date = LocalDate.of(2024, 12, 12);
+            Participant participant = new Participant("John", event);
+            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
             event = server.addExpense(expense, event);
 
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
+            alert.setContentText(e.getMessage() + " server.addExpense didn't work out :/");
             alert.showAndWait();
             return;
         }

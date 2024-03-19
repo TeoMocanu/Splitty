@@ -20,18 +20,18 @@ public class ExpenseController {
         this.expenseRepository = expenseRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/getAll")
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<Expense> getExpenseById(@PathVariable("id") Long id) {
         Optional<Expense> expenseOptional = expenseRepository.findById(id);
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/")
+    @PostMapping("/addExpense")
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
         if (expense == null) {
             return ResponseEntity.badRequest().build();
@@ -40,7 +40,7 @@ public class ExpenseController {
         return ResponseEntity.ok(added);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/editExpense/{id}")
     public ResponseEntity<Expense> updateExpense(@PathVariable("id") Long id, @RequestBody Expense expense) {
         if (expense == null) {
             return ResponseEntity.badRequest().build();
@@ -52,7 +52,7 @@ public class ExpenseController {
         return ResponseEntity.ok(updatedExpense);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteExpense/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable("id") Long id) {
         if (!expenseRepository.existsById(id)) {
             return ResponseEntity.notFound().build();

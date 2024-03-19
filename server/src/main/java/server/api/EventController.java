@@ -3,6 +3,7 @@ package server.api;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class EventController {
+    @Autowired
     private final EventRepository eventRepository;
 
     private final ExpenseController expenseController;
@@ -102,8 +104,8 @@ public class EventController {
             return ResponseEntity.badRequest().build();
         Event event = eventOptional.get();
         // add the expense
-        eventRepository.deleteById(id);
         event.addExpense(expense);
+        //eventRepository.addExpenseToEvent(id, expense.getId());
         Event added = eventRepository.save(event);
         return ResponseEntity.ok(added);
     }
@@ -147,7 +149,7 @@ public class EventController {
     public void sendInvitations(@RequestBody List<String> emails) {
         String code = emails.getLast();
         String text = "Join my splitty event, using code " + code + " in the app.";
-        for(String e : emails){
+        for(String e : emails) {
             // send text to email
         }
         return;

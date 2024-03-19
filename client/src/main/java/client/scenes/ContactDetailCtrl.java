@@ -65,10 +65,12 @@ public class ContactDetailCtrl {
         this.event = event;
         this.en = en;
         language(en);
-        this.nameField.setText(participant.getName());
-        this.emailField.setText(participant.getEmail());
-        this.ibanField.setText(participant.getIban());
-        this.bicField.setText(participant.getBic());
+        if(this.participant != null) {
+            this.nameField.setText(participant.getName());
+            this.emailField.setText(participant.getEmail());
+            this.ibanField.setText(participant.getIban());
+            this.bicField.setText(participant.getBic());
+        }
     }
 
     public void abort() {
