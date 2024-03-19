@@ -222,4 +222,10 @@ public class TestEventRepository implements EventRepository {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public void addExpenseToEvent(long eventId, long expenseId) {
+        // TODO Auto-generated method stub
+        return;
+    }
 }

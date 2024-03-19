@@ -46,8 +46,8 @@ public class EventOverviewCtrl implements Initializable {
     private Button backButton;
     @FXML
     private Button settleDebtsButton;
-
-
+    @FXML
+    private Button save;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -57,15 +57,20 @@ public class EventOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        participants.setCellFactory(q -> new SimpleStringProperty( q.getName()));
-//        eventPayers.setCellFactory(q -> new SimpleStringProperty( q.getValue().getName()));
-//
-//        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
-//        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-//        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
-        // participantsListView.setItems(ParticipantController.getParticipantsByEvent(event));
+        /*participants.setCellFactory(q -> new SimpleStringProperty( q.getName()));
+        eventPayers.setCellFactory(q -> new SimpleStringProperty( q.getValue().getName()));
+
+        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
+        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
+        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+         participantsListView.setItems(ParticipantController.getParticipantsByEvent(event));*/
     }
 
+    public void initializeEvent(Event event, boolean en){
+        this.event = server.getEvent(event.getId()); // updates the event every instance of the window
+        this.en = en;
+        eventTitleLabel.setText(event.getTitle());
+    }
     public void addParticipant() {
         mainCtrl.showContactDetailsAdd(event, en);
     }
@@ -82,7 +87,16 @@ public class EventOverviewCtrl implements Initializable {
         mainCtrl.showOpenDebts(event, en);
     }
 
+    public void sendInvites() {
+        mainCtrl.showInvitation(event, en);
+    }
+
     public void back() {
+        mainCtrl.showStarterPage();
+    }
+
+    public void ok(){
+        server.editEvent(event);
         mainCtrl.showStarterPage();
     }
 

@@ -32,6 +32,7 @@ public class ContactDetailCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
+    private boolean en;
 
     @FXML
     private TextField nameField;
@@ -62,16 +63,19 @@ public class ContactDetailCtrl {
 
     public void initialize(Event event, Boolean en){
         this.event = event;
+        this.en = en;
         language(en);
-        this.nameField.setText(participant.getName());
-        this.emailField.setText(participant.getEmail());
-        this.ibanField.setText(participant.getIban());
-        this.bicField.setText(participant.getBic());
+        if(this.participant != null) {
+            this.nameField.setText(participant.getName());
+            this.emailField.setText(participant.getEmail());
+            this.ibanField.setText(participant.getIban());
+            this.bicField.setText(participant.getBic());
+        }
     }
 
     public void abort() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
     //TODO Maybe we can create custom exceptions?
@@ -81,7 +85,7 @@ public class ContactDetailCtrl {
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
                 server.addParticipant(getParticipant(), event);
-            }else {
+            } else {
                 server.editParticipant(participant, getParticipant());
             }
         } catch (WebApplicationException e) {
@@ -96,7 +100,7 @@ public class ContactDetailCtrl {
     }
 
     private Participant getParticipant() {
-        return new Participant(mainCtrl.getEvent(),
+        return new Participant(this.event,
                 nameField.getText(),
                 emailField.getText(),
                 ibanField.getText(),
