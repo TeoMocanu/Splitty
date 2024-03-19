@@ -132,15 +132,23 @@ public class ContactDetailCtrl {
     }
 
     public boolean validateInput(){
-        if(!nameField.getText().matches("[A-Z][a-z]+"))
+//        return true;
+        if(!nameField.getText().matches("([A-Za-z])+"))
             return false;
-        if(!emailField.getText().matches("[A-Za-z.]+@[A-za-z.]+\\.[a-z]+"))
+        if(!emailField.getText().matches("([A-Za-z0-9])+"))
             return false;
-        // The format is NL01_BANK_2345_6789_10
-        if(!ibanField.getText().matches("[A-Z]{2}[0-9]{2} [A-Z]{4} ([0-9]{4} )* [0-9]{0,4}"))
+        if(!ibanField.getText().matches("([A-Za-z0-9])+"))
             return false;
-        if(!bicField.getText().equals(ibanField.getText().substring(5, 9)))
+        if(!bicField.getText().matches("([A-Za-z0-9])+"))
             return false;
+//        if(!emailField.getText().matches("[A-Za-z.]+@[A-za-z.]+\\.[a-z]+"))
+//            return false;
+//        // The format is NL01_BANK_2345_6789_10
+//        if(!ibanField.getText().matches("[A-Z]{2}[0-9]{2} [A-Z]{4} ([0-9]{4} )* [0-9]{0,4}"))
+//            return false;
+//        // The bic is substring of iban. For example, if the iban is NL01_BANK_2345_6789_10, the bic is BANK
+//        if(!bicField.getText().equals(ibanField.getText().substring(4, 9)))
+//            return false;
         return true;
     }
     public void language(boolean en){

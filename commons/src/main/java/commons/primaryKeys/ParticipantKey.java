@@ -1,7 +1,5 @@
 package commons.primaryKeys;
 
-import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
