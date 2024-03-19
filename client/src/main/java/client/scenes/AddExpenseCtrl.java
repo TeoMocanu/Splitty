@@ -36,6 +36,7 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
+    private boolean en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
@@ -105,35 +106,38 @@ public class AddExpenseCtrl {
         }
         menu.setItems(splitOptions);
         name.setItems(participants);
-        name.setValue(participants.get(0));
+        name.setValue(" ");
         everyone.setSelected(true);
 
+        this.en = en;
         language(en);
-        this.event = event;
+        this.event = server.getEvent(event.getId());
     }
 
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
     public void add() {
         try {
-            Expense expense = createExpense();
-            server.addExpense(expense, event);
+            //Expense expense = createExpense();
+            LocalDate date = LocalDate.of(2024, 12, 12);
+            Participant participant = new Participant("John", event);
+            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            event = server.addExpense(expense, event);
 
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
+            alert.setContentText(e.getMessage() + " server.addExpense didn't work out :/");
             alert.showAndWait();
             return;
         }
 
         clearFields();
-        mainCtrl.showStarterPage();
-        //mainCtrl.showEventOverview();
+        mainCtrl.showEventOverview(event, en);
     }
 
     private Expense createExpense() {
@@ -169,7 +173,7 @@ public class AddExpenseCtrl {
             return null;
         }
         //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
-        return new Expense(event, date, payer, debtors, content.getText(),amount);
+        return new Expense(event, date, payer, debtors, content.getText(), amount);
     }
 
     @FXML
@@ -186,7 +190,7 @@ public class AddExpenseCtrl {
     }
 
     private void clearFields() {
-        name.setValue(participants.get(0));
+        name.setValue(" ");
         content.clear();
         amount.clear();
         currency.setValue("EUR");

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Event;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -11,18 +12,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class InvitationCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private Event event;
+    private boolean en;
 
     @FXML
     private TextField emails;
     @FXML
-    private Label string1;
+    private Label title;
     @FXML
-    private Label string2;
+    private Label text1;
     @FXML
-    private Label string3;
+    private Label text2;
+    @FXML
+    private Label code;
     @FXML
     private Button sendInvites;
     @FXML
@@ -33,15 +41,23 @@ public class InvitationCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
+
+    public void initialize(Event event, boolean en) {
+        this.event = event;
+        this.en = en;
+        language(en);
+        code.setText(Long.toString(event.getId()));
+    }
+
     //nimic
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
-    public void ok() {
+    public void send() {
         try {
-            server.addInvitation(getInvitation());
+            server.sendInvitations(getEmails(), code.getText());
         } catch (WebApplicationException e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -52,26 +68,23 @@ public class InvitationCtrl {
         }
 
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
-    private String getInvitation() {
-        var p = emails.getText();
-        //var q = quote.getText();
-        return p;
+    private List<String> getEmails() {
+        String str = emails.getText();
+        List<String> emails = Arrays.asList(str.split("\n"));
+        return emails;
     }
 
     private void clearFields() {
-        //firstName.clear();
-        //lastName.clear();
-        //quote.clear();
         emails.clear();
     }
 
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
-                ok();
+                send();
                 break;
             case ESCAPE:
                 cancel();
@@ -85,16 +98,16 @@ public class InvitationCtrl {
         else nl();
     }
     public void en(){
-        string1.setText("New Year Party");
-        string2.setText("Give people the following invite code");
-        string3.setText("Invite the following people by email (one address per line)");
+        title.setText("New Year Party");
+        text1.setText("Give people the following invite code");
+        text2.setText("Invite the following people by email (one address per line)");
         sendInvites.setText("send invites");
         cancelButton.setText("cancel");
     }
     public void nl(){
-        string1.setText("nieuwjaarsfeest");
-        string2.setText("Geef mensen de volgende uitnodigingscode");
-        string3.setText("Nodig de volgende mensen uit per e-mail (één adres per regel)");
+        title.setText("nieuwjaarsfeest");
+        text1.setText("Geef mensen de volgende uitnodigingscode");
+        text2.setText("Nodig de volgende mensen uit per e-mail (één adres per regel)");
         sendInvites.setText("stuur uitnodigingen");
         cancelButton.setText("annuleren");
     }

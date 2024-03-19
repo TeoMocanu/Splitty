@@ -19,6 +19,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -74,24 +75,25 @@ public class ServerUtils {
                 .get(new GenericType<Event>(){});
     }
 
-    public void addEvent(Event event){
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event addEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addEvent") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void editEvent(Event event){
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event editEvent(Event event){
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void addExpense(Expense expense, Event event) { //
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Event addExpense(Expense expense, Event event) {
+        //event.addExpense(expense);
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addExpense/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -116,12 +118,12 @@ public class ServerUtils {
     }
 
     //TODO implement
-    public String addInvitation(String invitation) {
+    public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/invitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(invitation, APPLICATION_JSON), String.class);
+                .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
     public Map<String, Object> fetchServerInfo() {

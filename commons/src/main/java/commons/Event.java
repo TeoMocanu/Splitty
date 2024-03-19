@@ -3,13 +3,11 @@ package commons;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Event {
@@ -19,14 +17,18 @@ public class Event {
     public long id;
     private String title;
     @OneToMany(mappedBy = "event")
+    @Column(name = "PARTICIPANTS")
+    @ElementCollection(targetClass = List.class)
     private List<Participant> participants;
     @OneToMany(mappedBy = "event")
+    @Column(name = "EXPENSES")
+    @ElementCollection(targetClass = List.class)
     private List<Expense> expenses;
 
     public Event(String title){
         this.title = title;
-        this.participants = new ArrayList<>();
-        this.expenses = new ArrayList<>();
+        this.participants = new ArrayList<Participant>(0);
+        this.expenses = new ArrayList<Expense>(0);
     }
 
 //    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
@@ -89,6 +91,9 @@ public class Event {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        // uncomment later
+        //return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return this.title + " Ex: " + this.getExpenses().size() + " Pa: " + this.getParticipants().size();
     }
+
 }
