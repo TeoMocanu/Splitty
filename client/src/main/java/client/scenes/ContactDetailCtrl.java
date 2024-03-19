@@ -132,13 +132,14 @@ public class ContactDetailCtrl {
     }
 
     public boolean validateInput(){
-        if(!nameField.getText().matches("[A-Z][a-z]+"))
+//        return true;
+        if(!nameField.getText().matches("([A-Za-z])+"))
             return false;
-        if(!emailField.getText().matches("[A-Z][a-z][0-9]+"))
+        if(!emailField.getText().matches("([A-Za-z0-9])+"))
             return false;
-        if(!ibanField.getText().matches("[A-Z][a-z][0-9]+"))
+        if(!ibanField.getText().matches("([A-Za-z0-9])+"))
             return false;
-        if(!bicField.getText().matches("[A-Z][a-z][0-9]+"))
+        if(!bicField.getText().matches("([A-Za-z0-9])+"))
             return false;
 //        if(!emailField.getText().matches("[A-Za-z.]+@[A-za-z.]+\\.[a-z]+"))
 //            return false;
