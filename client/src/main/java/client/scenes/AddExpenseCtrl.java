@@ -227,7 +227,6 @@ public class AddExpenseCtrl {
         howSplit.setText("How to split?");
         everyone.setText("With Everyone");
         somePeople.setText("Only some people");
-
     }
     public void nl(){
         title.setText("Kosten Toevoegen");
