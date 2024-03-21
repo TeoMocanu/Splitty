@@ -86,7 +86,7 @@ public class ContactDetailCtrl {
             if(participant == null){
                 server.addParticipant(getParticipant(), event);
             } else {
-                server.editParticipant(participant, getParticipant());
+                server.editParticipant(getParticipant());
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);

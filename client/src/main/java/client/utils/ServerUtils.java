@@ -102,19 +102,19 @@ public class ServerUtils {
 
     public void addParticipant(Participant participant, Event event) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/addParticipant/" + event.getId()) //
+                .target(SERVER).path("api/participants/addParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(participant, APPLICATION_JSON), Event.class);
+                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
     //TODO check the path after api is implemented and redo the method
-    public void editParticipant(Participant oldParticipant, Participant newParticipant) {
+    public void editParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/editParticipant/" + oldParticipant.getName()) //
+                .target(SERVER).path("api/participants/editParticipant/" + participant.getEventId() + "/" + participant.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(newParticipant, APPLICATION_JSON), Event.class);
+                .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
     //TODO implement
