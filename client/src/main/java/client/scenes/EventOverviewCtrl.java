@@ -12,6 +12,8 @@ import commons.Event;
 
 import commons.Participant;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +30,8 @@ public class EventOverviewCtrl implements Initializable {
 
     private boolean en;
     private Event event;
+
+    private String eventName;
 
     @FXML
     private ListView participantsListView;
@@ -116,6 +120,16 @@ public class EventOverviewCtrl implements Initializable {
     }
     public void nl() {
         //TODO
+    }
+
+    public void setSettleDebtsButton()
+    {
+        eventName = settleDebtsButton.getText();
+        Event newEvent = new Event(eventName);
+
+
+        Event repEvent = server.addEvent(newEvent);
+        mainCtrl.showOpenDebts(repEvent, en);
     }
 
 }

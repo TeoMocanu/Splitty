@@ -126,6 +126,8 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
+
+
     public Map<String, Object> fetchServerInfo() {
         // Perform the GET request and expect a response of type Map<String, Object>
         return ClientBuilder.newClient(new ClientConfig()) // Create a new client with a configuration.
