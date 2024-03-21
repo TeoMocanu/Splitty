@@ -1,6 +1,8 @@
 package client.scenes;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
@@ -8,8 +10,11 @@ import com.google.inject.Inject;
 import client.utils.ServerUtils;
 import commons.Event;
 
+import commons.Expense;
 import commons.Participant;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,6 +28,8 @@ public class EventOverviewCtrl implements Initializable {
 
     private boolean en;
     private Event event;
+    private List<Participant> participants = new ArrayList<>();
+    private List<Expense> expenses = new ArrayList<>();
 
     @FXML
     private ListView participantsListView;
@@ -48,6 +55,8 @@ public class EventOverviewCtrl implements Initializable {
     private Button settleDebtsButton;
     @FXML
     private Button save;
+    @FXML
+    private ScrollPane expensesScrollPane;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -57,13 +66,17 @@ public class EventOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*participants.setCellFactory(q -> new SimpleStringProperty( q.getName()));
-        eventPayers.setCellFactory(q -> new SimpleStringProperty( q.getValue().getName()));
-
-        expense.setCellValueFactory(q -> new SimpleStringProperty( q.getValue().getPayer()));
-        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
-         participantsListView.setItems(ParticipantController.getParticipantsByEvent(event));*/
+        ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
+        if(this.event != null) {
+            expenses = event.getExpenses();
+            participants = event.getParticipants();
+        }
+        participantsListView.setItems(FXCollections.observableList(observableParticipantList));
+        participantsListView.refresh();
+        ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
+        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView<>(observableExpenseList));
+        //expensesScrollPane.setFitToHeight(true);
+        //expensesScrollPane.setFitToWidth(true);
     }
 
     public void initializeEvent(Event event, boolean en){
@@ -110,6 +123,14 @@ public class EventOverviewCtrl implements Initializable {
         }
     }
     public void nl() {
-        //TODO
+        participantsLabel.setText("Deelnemers");
+        participantAddButton.setText("Toevoegen");
+        participantEditButton.setText("Bewerken");
+        expensesLabel.setText("Uitgaven");
+        addExpenseButton.setText("Toevoegen");
+        settleDebtsButton.setText("Schulden vereffenen");
+        sendInvitesButton.setText("Uitnodigingen versturen");
+        backButton.setText("Terug");
+        save.setText("Opslaan");
     }
 }

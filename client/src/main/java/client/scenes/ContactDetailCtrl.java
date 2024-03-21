@@ -135,7 +135,7 @@ public class ContactDetailCtrl {
 //        return true;
         if(!nameField.getText().matches("([A-Za-z])+"))
             return false;
-        if(!emailField.getText().matches("([A-Za-z0-9])+"))
+        if(!emailField.getText().matches("([A-Za-z0-9@.])+"))
             return false;
         if(!ibanField.getText().matches("([A-Za-z0-9])+"))
             return false;
