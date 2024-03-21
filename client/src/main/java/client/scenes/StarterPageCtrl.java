@@ -154,6 +154,7 @@ public class StarterPageCtrl {
                 ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
                 listView.setItems(FXCollections.observableList(observableEventList));
                 listView.refresh();
+                mainCtrl.showEventOverview(event, en);
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
