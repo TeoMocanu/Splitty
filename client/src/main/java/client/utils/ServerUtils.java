@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 
 
 import commons.Event;
+import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -46,12 +47,12 @@ public class ServerUtils {
     private static String webSocketServer = "ws://localhost:8080/websocket";
     private StompSession session;
 
-    public String getServer(){
+    public String getServer() {
         return SERVER;
     }
 
     public void changeServer(String server) {
-        this.SERVER = "http://"+ server + "/";
+        this.SERVER = "http://" + server + "/";
         this.webSocketServer = "ws://" + server + "/websocket";
         this.session = connect(webSocketServer);
     }
@@ -67,15 +68,16 @@ public class ServerUtils {
         }
     }*/
 
-    public Event getEvent(Long id){
+    public Event getEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getById/"+id) //
+                .target(SERVER).path("api/getById/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<Event>(){});
+                .get(new GenericType<Event>() {
+                });
     }
 
-    public Event addEvent(Event event){
+    public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addEvent") //
                 .request(APPLICATION_JSON) //
@@ -83,7 +85,7 @@ public class ServerUtils {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public Event editEvent(Event event){
+    public Event editEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
@@ -126,38 +128,44 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
-    public Map<String, Object> fetchServerInfo() {
-        // Perform the GET request and expect a response of type Map<String, Object>
-        return ClientBuilder.newClient(new ClientConfig()) // Create a new client with a configuration.
-                .target(SERVER) // Target the server base URL defined by the SERVER constant.
-                .path("custom/info") // Specify the path to the server info endpoint.
-                .request(MediaType.APPLICATION_JSON) // Create a request indicating you're sending JSON.
-                .accept(MediaType.APPLICATION_JSON) // Specify that you expect to receive JSON in response.
-                .get(new GenericType<Map<String, Object>>(){}); // Perform the GET request expecting a Map in return.
+    public String fetchAllServerInfo() {
+        Client client = ClientBuilder.newClient(new ClientConfig());
+        String healthJSON = client
+                .target(SERVER)
+                .path("actuator/health")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(String.class);
+        String infoJson = client
+                .target(SERVER)
+                .path("actuator/info")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get(String.class);
+        return healthJSON + infoJson;
     }
 
-    /**
-     * Generates a secure random password.
-     * @param length The desired length of the generated password.
-     * @return A Base64 encoded secure random password.
-     */
     public String generateRandomPassword(int length) {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[length];
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER)
+                .path("api/admin/generate-password")
+                .queryParam("length", length)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(String.class);
     }
 
     private StompSession connect(String url) {
-        var client =  new StandardWebSocketClient();
+        var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
-        try{
-            return stomp.connect(url, new StompSessionHandlerAdapter(){}).get();
+        try {
+            return stomp.connect(url, new StompSessionHandlerAdapter() {
+            }).get();
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } catch (ExecutionException e){
+        } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
         throw new IllegalStateException();

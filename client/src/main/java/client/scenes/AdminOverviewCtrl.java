@@ -145,10 +145,10 @@ public class AdminOverviewCtrl {
 
     public void showServerInfo() {
         try {
-            Map<String, Object> serverInfo = server.fetchServerInfo();
-            System.out.println("Server Info: " + serverInfo);
+            String serverInfo = server.fetchAllServerInfo();
+            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
-            System.out.println("Failed to fetch server info: " + e.getMessage());
+            System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
         }
     }
