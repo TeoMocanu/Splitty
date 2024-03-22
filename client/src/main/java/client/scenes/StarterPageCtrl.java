@@ -107,6 +107,13 @@ public class StarterPageCtrl {
                 contextMenu.show(listView, event.getScreenX(), event.getScreenY());
             }
         }
+        if (event.getButton() == MouseButton.PRIMARY) { // Left-click
+            Event selectedEvent = listView.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                mainCtrl.showEventOverview(selectedEvent, en);
+                listView.getSelectionModel().clearSelection();
+            }
+        }
     }
 
     public String getEventName() {
@@ -144,12 +151,13 @@ public class StarterPageCtrl {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
 
-        eventList.add(newEvent);
+        Event repEvent = server.addEvent(newEvent);
+
+        eventList.add(repEvent);
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
 
-        Event repEvent = server.addEvent(newEvent);
         mainCtrl.showEventOverview(repEvent, en);
     }
 
@@ -159,6 +167,9 @@ public class StarterPageCtrl {
             Event event = server.getEvent(eventId);
 
             if (event != null) {
+                if(eventList.contains(event)) {
+                    eventList.remove(event);
+                }
                 eventList.add(event);
                 ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
                 listView.setItems(FXCollections.observableList(observableEventList));
