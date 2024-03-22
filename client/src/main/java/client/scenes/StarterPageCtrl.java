@@ -54,8 +54,11 @@ public class StarterPageCtrl {
     private Label serverLabel;
     @FXML
     private Button changeServerButton;
+    @FXML
+    private List<ContextMenu> contextMenuList;
     private String eventName;
     private List<Event> eventList;
+
     private boolean en;
     @Inject
     public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
@@ -63,6 +66,7 @@ public class StarterPageCtrl {
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
         this.listView= new ListView<>();
+        this.contextMenuList = new ArrayList<>();
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -74,9 +78,21 @@ public class StarterPageCtrl {
     public void initialize(boolean en) {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
-        this.en = en;
-        language();
+        listView.setOnKeyPressed(this::handleListViewButton);
+        en = true;
+        languageButtonStart.setText("NL");
+        en();
         this.serverLabel.setText(server.getServer());
+    }
+
+    private void handleListViewButton(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Event selectedEvent = listView.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                mainCtrl.showEventOverview(selectedEvent, en);
+                listView.getSelectionModel().clearSelection();
+            }
+        }
     }
 
 
@@ -85,6 +101,10 @@ public class StarterPageCtrl {
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
                 // Create ContextMenu
+                if(!contextMenuList.isEmpty()) {
+                    contextMenuList.get(0).hide();
+                    contextMenuList.remove(0);
+                }
                 ContextMenu contextMenu = new ContextMenu();
 
                 MenuItem deleteMenuItem = new MenuItem("Delete");
@@ -96,9 +116,17 @@ public class StarterPageCtrl {
                     listView.setItems(FXCollections.observableList(eventList));
                 });
                 contextMenu.getItems().add(deleteMenuItem);
+                contextMenuList.add(contextMenu);
 
                 // Display ContextMenu
                 contextMenu.show(listView, event.getScreenX(), event.getScreenY());
+            }
+        }
+        if (event.getButton() == MouseButton.PRIMARY) { // Left-click
+            Event selectedEvent = listView.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                mainCtrl.showEventOverview(selectedEvent, en);
+                listView.getSelectionModel().clearSelection();
             }
         }
     }
@@ -138,12 +166,13 @@ public class StarterPageCtrl {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
 
-        eventList.add(newEvent);
+        Event repEvent = server.addEvent(newEvent);
+
+        eventList.add(repEvent);
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
 
-        Event repEvent = server.addEvent(newEvent);
         mainCtrl.showEventOverview(repEvent, en);
     }
 
@@ -153,6 +182,9 @@ public class StarterPageCtrl {
             Event event = server.getEvent(eventId);
 
             if (event != null) {
+                if(eventList.contains(event)) {
+                    eventList.remove(event);
+                }
                 eventList.add(event);
                 ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
                 listView.setItems(FXCollections.observableList(observableEventList));
