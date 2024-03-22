@@ -100,7 +100,7 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
     }
 
-    public void addParticipant(Participant participant, Event event) {
+    public void addParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/addParticipant") //
                 .request(APPLICATION_JSON) //
@@ -115,6 +115,24 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+    }
+
+    public List<Participant> getAllParticipantsFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Participant>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
     }
 
     //TODO implement

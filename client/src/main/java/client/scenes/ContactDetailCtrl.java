@@ -84,7 +84,7 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
-                server.addParticipant(getParticipant(), event);
+                server.addParticipant(getParticipant());
             } else {
                 server.editParticipant(getParticipant());
             }
@@ -96,7 +96,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showEventOverview(event, en);
     }
 
     private Participant getParticipant() {

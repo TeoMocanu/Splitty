@@ -143,8 +143,13 @@ public class Expense {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
-    }
+//    @Override
+//    public String toString() {
+//        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+//    }
+
+        @Override
+        public String toString() {
+            return title;
+        }
 }

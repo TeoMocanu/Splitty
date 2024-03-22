@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Expense;
+import commons.primaryKeys.ExpenseKey;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +16,10 @@ import java.util.function.Function;
 
 public class TestExpenseRepository implements ExpenseRepository {
 
-    public final List<Expense> expenses = new ArrayList<>();
-    public final List<String> calledMethods = new ArrayList<>();
 
-    private void call(String name) {
-        calledMethods.add(name);
+    @Override
+    public List<Expense> findByEventId(Long eid) {
+        return null;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public void deleteAllByIdInBatch(Iterable<Long> longs) {
+    public void deleteAllByIdInBatch(Iterable<ExpenseKey> expenseKeys) {
 
     }
 
@@ -53,17 +53,17 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public Expense getOne(Long aLong) {
+    public Expense getOne(ExpenseKey expenseKey) {
         return null;
     }
 
     @Override
-    public Expense getById(Long aLong) {
+    public Expense getById(ExpenseKey expenseKey) {
         return null;
     }
 
     @Override
-    public Expense getReferenceById(Long aLong) {
+    public Expense getReferenceById(ExpenseKey expenseKey) {
         return null;
     }
 
@@ -113,12 +113,12 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public Optional<Expense> findById(Long aLong) {
+    public Optional<Expense> findById(ExpenseKey expenseKey) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(ExpenseKey expenseKey) {
         return false;
     }
 
@@ -128,7 +128,7 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> findAllById(Iterable<Long> longs) {
+    public List<Expense> findAllById(Iterable<ExpenseKey> expenseKeys) {
         return null;
     }
 
@@ -138,7 +138,7 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(ExpenseKey expenseKey) {
 
     }
 
@@ -148,7 +148,7 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
+    public void deleteAllById(Iterable<? extends ExpenseKey> expenseKeys) {
 
     }
 

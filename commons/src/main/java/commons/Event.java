@@ -16,9 +16,9 @@ public class Event {
     @GeneratedValue(strategy = SEQUENCE)
     public long id;
     private String title;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Participant> participants;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Expense> expenses;
 
     public Event(String title) {

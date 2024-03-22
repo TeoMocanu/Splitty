@@ -120,7 +120,7 @@ public class MainCtrl {
     public void showEventOverview(Event event, boolean en) {
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
-        eventOverviewCtrl.initializeEvent(event, en);
+        eventOverviewCtrl.initialize(event, en);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 

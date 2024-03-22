@@ -21,7 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 
-public class EventOverviewCtrl implements Initializable {
+public class EventOverviewCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -63,26 +63,23 @@ public class EventOverviewCtrl implements Initializable {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
+    public void initialize(Event event, boolean en) {
+        this.event = event;
+        this.en = en;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+        eventTitleLabel.setText(event.getTitle());
+
+        participants = server.getAllParticipantsFromEvent(event.getId());
+        System.out.println("Participants: " + participants);
         ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
-        if(this.event != null) {
-            expenses = event.getExpenses();
-            participants = event.getParticipants();
-        }
-        participantsListView.setItems(FXCollections.observableList(observableParticipantList));
+        participantsListView.setItems(observableParticipantList);
         participantsListView.refresh();
+
+        expenses = server.getAllExpensesFromEvent(event.getId());
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
-        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView<>(observableExpenseList));
+        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
         //expensesScrollPane.setFitToHeight(true);
         //expensesScrollPane.setFitToWidth(true);
-    }
-
-    public void initializeEvent(Event event, boolean en){
-        this.event = server.getEvent(event.getId()); // updates the event every instance of the window
-        this.en = en;
-        eventTitleLabel.setText(event.getTitle());
     }
     public void addParticipant() {
         mainCtrl.showContactDetailsAdd(event, en);
