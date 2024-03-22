@@ -95,6 +95,8 @@ public class MainCtrl {
     }
 
     public void showStarterPage() {
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Starter Page");
         primaryStage.setScene(starterPage);
     }
