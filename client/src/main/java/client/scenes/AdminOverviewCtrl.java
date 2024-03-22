@@ -15,7 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
 import java.util.List;
-import java.util.Map;
 
 public class AdminOverviewCtrl {
     private final ServerUtils server;
