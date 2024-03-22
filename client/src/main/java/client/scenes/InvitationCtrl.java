@@ -45,7 +45,7 @@ public class InvitationCtrl {
     public void initialize(Event event, boolean en) {
         this.event = event;
         this.en = en;
-        language(en);
+        language();
         code.setText(Long.toString(event.getId()));
     }
 
@@ -93,7 +93,7 @@ public class InvitationCtrl {
                 break;
         }
     }
-    public void language(boolean en){
+    public void language(){
         if(en) en();
         else nl();
     }
@@ -107,7 +107,7 @@ public class InvitationCtrl {
     public void nl(){
         title.setText("nieuwjaarsfeest");
         text1.setText("Geef mensen de volgende uitnodigingscode");
-        text2.setText("Nodig de volgende mensen uit per e-mail (één adres per regel)");
+        text2.setText("Nodig de volgende mensen uit per e-mail (\u00e9\u00e9n adres per regel)");
         sendInvites.setText("stuur uitnodigingen");
         cancelButton.setText("annuleren");
     }

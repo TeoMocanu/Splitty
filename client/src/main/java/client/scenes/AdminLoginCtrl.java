@@ -39,15 +39,24 @@ public class AdminLoginCtrl {
         this.server = server;
     }
     @FXML
-    private void initialize(){
-        currentLanguage = "EN";
-        languageButton.setText("EN");
+    public void initialize(boolean en){
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
         ServerUtils utils = new ServerUtils();
         String randomPassword = utils.generateRandomPassword(16); // Generates a 16-byte password, encoded in Base64
         this.adminPassword=randomPassword;
         System.out.println("Admin Password: " + randomPassword);
     }
+
     public void language(){
+        if(currentLanguage.equals("EN")){
+            en();
+        }
+        else{
+            nl();
+        }
+    }
+    public void languageSwitch(){
         if(currentLanguage.equals("EN")){
             currentLanguage = "NL";
             nl();
@@ -72,7 +81,7 @@ public class AdminLoginCtrl {
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
     public void checkPassword() {
         try {
@@ -83,12 +92,12 @@ public class AdminLoginCtrl {
             }
             if(passwordMatch) {
                 System.out.println("Welcome, admin");
-                mainCtrl.showAdminOverview();
+                mainCtrl.showAdminOverview(currentLanguage.equals("EN"));
 
             }
             else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
-                mainCtrl.showStarterPage();
+                mainCtrl.showStarterPage(currentLanguage.equals("EN"));
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -119,6 +128,6 @@ public class AdminLoginCtrl {
 
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 }
