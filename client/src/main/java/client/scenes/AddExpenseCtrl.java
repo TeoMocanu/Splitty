@@ -93,7 +93,7 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    void initialize(boolean en, Event event){
+    void initialize(Event event, boolean en){
         type.setValue("other");
         type.setItems(types);
         currency.setValue("EUR");
@@ -110,7 +110,7 @@ public class AddExpenseCtrl {
         everyone.setSelected(true);
 
         this.en = en;
-        language(en);
+        language();
         this.event = server.getEvent(event.getId());
     }
 
@@ -131,7 +131,10 @@ public class AddExpenseCtrl {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage() + " server.addExpense didn't work out :/");
+            if(en)
+                alert.setContentText(e.getMessage() + "- internal error in adding the expense");
+            else
+                alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
             alert.showAndWait();
             return;
         }
@@ -210,7 +213,7 @@ public class AddExpenseCtrl {
         }
     }
 
-    public void language(boolean en){
+    public void language(){
         if(en) en();
         else nl();
     }
@@ -227,7 +230,6 @@ public class AddExpenseCtrl {
         howSplit.setText("How to split?");
         everyone.setText("With Everyone");
         somePeople.setText("Only some people");
-
     }
     public void nl(){
         title.setText("Kosten Toevoegen");

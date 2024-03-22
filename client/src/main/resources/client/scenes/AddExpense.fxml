@@ -10,10 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="469.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
    <children>
-      <Button fx:id="addButton" layoutX="259.0" layoutY="433.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="63.0" text="Add" />
-      <Button fx:id="cancelButton" layoutX="126.0" layoutY="433.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+      <Button fx:id="addButton" layoutX="259.0" layoutY="433.0" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="78.0" text="Add" />
+      <Button fx:id="cancelButton" layoutX="126.0" layoutY="433.0" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="78.0" text="Cancel" />
       <TextField fx:id="amount" layoutX="116.0" layoutY="139.0" promptText="0.00" />
       <TextField fx:id="content" layoutX="116.0" layoutY="95.0" prefHeight="26.0" prefWidth="305.0" />
       <Label fx:id="howMany" layoutX="35.0" layoutY="143.0" text="How much?" />

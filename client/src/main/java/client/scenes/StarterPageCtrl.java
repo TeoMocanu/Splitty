@@ -75,7 +75,7 @@ public class StarterPageCtrl {
 //    }
 
     @FXML
-    public void initialize() {
+    public void initialize(boolean en) {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
@@ -106,7 +106,11 @@ public class StarterPageCtrl {
                     contextMenuList.remove(0);
                 }
                 ContextMenu contextMenu = new ContextMenu();
+
                 MenuItem deleteMenuItem = new MenuItem("Delete");
+                if(!en){
+                    deleteMenuItem.setText("Verwijderen");
+                }
                 deleteMenuItem.setOnAction(e -> {
                     eventList.remove(selectedEvent);
                     listView.setItems(FXCollections.observableList(eventList));
@@ -189,15 +193,15 @@ public class StarterPageCtrl {
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
             if(en)
-                ErrorMessage.showError("No event with this invitation code was found.");
+                ErrorMessage.showError("No event with this invitation code was found.", en);
             else
-                ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.");
+                ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.", en);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
             if(en)
-                ErrorMessage.showError("Invalid code.");
+                ErrorMessage.showError("Invalid code.", en);
             else
-                ErrorMessage.showError("Ongeldige code.");
+                ErrorMessage.showError("Ongeldige code.", en);
         }
     }
 
@@ -212,19 +216,22 @@ public class StarterPageCtrl {
         }
     }
 
+    public void languageSwitch(){
+        en = !en;
+        language();
+    }
+
     public void language(){
-        if(languageButtonStart.getText().equals("NL")){
-            en = false;
-            nl();
+        if(en){
+            en();
         }
         else{
-            en = true;
-            en();
+            nl();
         }
     }
 
     public void en(){
-        languageButtonStart.setText("NL");
+        languageButtonStart.setText("EN");
         createButton.setText("Create");
         joinButton.setText("Join");
         deleteHistoryButton.setText("Delete history");
@@ -234,8 +241,8 @@ public class StarterPageCtrl {
         changeServerButton.setText("Change Server");
     }
     public void nl(){
-        languageButtonStart.setText("EN");
-        createButton.setText("Creëren");
+        languageButtonStart.setText("NL");
+        createButton.setText("Cre\u00ebren");
         joinButton.setText("Meedoen");
         deleteHistoryButton.setText("Verwijder geschiedenis");
         createNewEventLabel.setText("Nieuw evenement maken");
@@ -262,7 +269,7 @@ public class StarterPageCtrl {
     }
 
     public void admin(){
-        mainCtrl.showAdminLogin();
+        mainCtrl.showAdminLogin(en);
     }
 
     public void changeServer(){ mainCtrl.showChangeServer(en); }
