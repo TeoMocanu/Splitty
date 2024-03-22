@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Event;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.List;
 import java.util.Map;
 
 public class AdminOverviewCtrl {
@@ -68,11 +70,11 @@ public class AdminOverviewCtrl {
         this.currentLanguage = "EN";
 
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
-
-        // TODO connect to the event database and set the rows based on that
-        data.add(new TableRowData("Row 1 Col 1", "Row 1 Col 2"));
-        data.add(new TableRowData("Row 2 Col 1", "Row 2 Col 2"));
-
+        List<Event> allEvents = server.getAllEvents();
+        System.out.println(allEvents);
+        for (Event event : allEvents) {
+            data.add(new TableRowData(event.getTitle(), event.getParticipants().toString()));
+        }
         tableView.setItems(data);
     }
 

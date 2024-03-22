@@ -80,7 +80,13 @@ public class ServerUtils {
                 .get(new GenericType<Event>() {
                 });
     }
-
+    public List<Event> getAllEvents() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/getAll") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get( new GenericType<List<Event>>() {});
+    }
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addEvent") //
