@@ -24,6 +24,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import commons.Event;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
@@ -128,21 +132,40 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
-    public String fetchAllServerInfo() {
+    public String fetchAllServerInfo() throws JsonProcessingException {
         Client client = ClientBuilder.newClient(new ClientConfig());
+        ObjectMapper mapper = new ObjectMapper();
         String healthJSON = client
                 .target(SERVER)
                 .path("actuator/health")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(String.class);
-        String infoJson = client
+        JsonNode healthNode = mapper.readTree(healthJSON);
+
+        String diskJson = client
                 .target(SERVER)
-                .path("actuator/info")
+                .path("actuator/metrics/disk.free")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(String.class);
-        return healthJSON + infoJson;
+
+        JsonNode diskNode = mapper.readTree(diskJson);
+
+        String cpuJson = client
+                .target(SERVER)
+                .path("actuator/metrics/system.cpu.usage")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get(String.class);
+         JsonNode cpuNode = mapper.readTree(cpuJson);
+
+
+        ObjectNode allNode = mapper.createObjectNode();
+        allNode.set("Server Health", healthNode);
+        allNode.set("Disk Usage", diskNode);
+        allNode.set("CPU Usage", cpuNode);
+        return mapper.writeValueAsString(allNode);
     }
 
     public String generateRandomPassword(int length) {
