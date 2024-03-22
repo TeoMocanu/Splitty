@@ -30,6 +30,8 @@ public class AdminEventCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
 
+    private boolean en;
+
     @FXML
     private TextField title;
 
@@ -54,7 +56,8 @@ public class AdminEventCtrl {
 
     public void initialize(Event event, Boolean en){
         this.event = event;
-        language(en);
+        this.en = en;
+        language();
     }
     public void add() {
         try {
@@ -90,7 +93,7 @@ public class AdminEventCtrl {
         }
     }
 
-    public void language(boolean en){
+    public void language(){
         if(en) en();
         else nl();
     }

@@ -92,12 +92,12 @@ public class EventOverviewCtrl implements Initializable {
     }
 
     public void back() {
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(en);
     }
 
     public void ok(){
         server.editEvent(event);
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(en);
     }
 
     public void keyPressed(KeyEvent e) {
