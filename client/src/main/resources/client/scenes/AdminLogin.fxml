@@ -13,7 +13,7 @@
       <TextField fx:id="password" layoutX="167.0" layoutY="117.0" prefHeight="25.0" prefWidth="266.0" />
       <Label layoutX="67.0" layoutY="117.0" prefHeight="25.0" prefWidth="58.0" text="Password" />
       <Button fx:id="enterButton" layoutX="220.0" layoutY="360.0" mnemonicParsing="false" onAction="#checkPassword" text="ENTER" />
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
       <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#backToStart" text="Back" />
       <Button fx:id="helpButton" layoutX="411.0" layoutY="360.0" mnemonicParsing="false" text="HELP" />
    </children>
