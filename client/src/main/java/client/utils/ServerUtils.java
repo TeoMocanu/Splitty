@@ -77,13 +77,16 @@ public class ServerUtils {
                 .get(new GenericType<Event>() {
                 });
     }
+
     public List<Event> getAllEvents() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/getAll") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get( new GenericType<List<Event>>() {});
+                .get(new GenericType<List<Event>>() {
+                });
     }
+
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/addEvent") //
@@ -161,7 +164,7 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(String.class);
-         JsonNode cpuNode = mapper.readTree(cpuJson);
+        JsonNode cpuNode = mapper.readTree(cpuJson);
 
 
         ObjectNode allNode = mapper.createObjectNode();

@@ -33,10 +33,7 @@ public class AdminOverviewCtrl {
 
     @FXML
     private Button backButton;
-    /**
-     * A class to hold the data for each row in the TableView
-     * This could be a separate class, but for simplicity, I've included it here.
-     */
+
     public class TableRowData {
         private final SimpleStringProperty column1;
         private final SimpleStringProperty column2;
@@ -64,7 +61,6 @@ public class AdminOverviewCtrl {
     }
 
 
-
     public void initialize() {
         this.currentLanguage = "EN";
 
@@ -78,25 +74,24 @@ public class AdminOverviewCtrl {
     }
 
 
-
-
-    public void language(){
-        if(currentLanguage.equals("EN")){
+    public void language() {
+        if (currentLanguage.equals("EN")) {
             currentLanguage = "NL";
             nl();
-        }
-        else{
+        } else {
             currentLanguage = "EN";
             en();
         }
     }
-    public void en(){
+
+    public void en() {
         languageButton.setText("EN");
         serverInfoButton.setText("Server Info");
         backButton.setText("EXIT");
 
     }
-    public void nl(){
+
+    public void nl() {
         languageButton.setText("NL");
         serverInfoButton.setText("Server Informatie");
         backButton.setText("AFSLUITEN");
@@ -108,10 +103,12 @@ public class AdminOverviewCtrl {
         this.server = server;
 
     }
+
     public void cancel() {
         clearFields();
         mainCtrl.showStarterPage();
     }
+
     public void ok() {
         try {
             // TODO: Add admin functionality, like seeing server instances
@@ -128,6 +125,7 @@ public class AdminOverviewCtrl {
         clearFields();
         mainCtrl.showStarterPage();
     }
+
     private void clearFields() {
     }
 
