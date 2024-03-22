@@ -54,8 +54,11 @@ public class StarterPageCtrl {
     private Label serverLabel;
     @FXML
     private Button changeServerButton;
+    @FXML
+    private List<ContextMenu> contextMenuList;
     private String eventName;
     private List<Event> eventList;
+
     private boolean en;
     @Inject
     public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
@@ -63,6 +66,7 @@ public class StarterPageCtrl {
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
         this.listView= new ListView<>();
+        this.contextMenuList = new ArrayList<>();
     }
 
 //    public StarterPageCtrl(ServerUtils server, List<Event> list) {
@@ -86,6 +90,10 @@ public class StarterPageCtrl {
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
                 // Create ContextMenu
+                if(!contextMenuList.isEmpty()) {
+                    contextMenuList.get(0).hide();
+                    contextMenuList.remove(0);
+                }
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem deleteMenuItem = new MenuItem("Delete");
                 deleteMenuItem.setOnAction(e -> {
@@ -93,6 +101,7 @@ public class StarterPageCtrl {
                     listView.setItems(FXCollections.observableList(eventList));
                 });
                 contextMenu.getItems().add(deleteMenuItem);
+                contextMenuList.add(contextMenu);
 
                 // Display ContextMenu
                 contextMenu.show(listView, event.getScreenX(), event.getScreenY());
