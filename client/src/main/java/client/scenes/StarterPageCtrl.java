@@ -78,10 +78,21 @@ public class StarterPageCtrl {
     public void initialize() {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
+        listView.setOnKeyPressed(this::handleListViewButton);
         en = true;
         languageButtonStart.setText("NL");
         en();
         this.serverLabel.setText(server.getServer());
+    }
+
+    private void handleListViewButton(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Event selectedEvent = listView.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                mainCtrl.showEventOverview(selectedEvent, en);
+                listView.getSelectionModel().clearSelection();
+            }
+        }
     }
 
 
