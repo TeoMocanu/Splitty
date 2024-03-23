@@ -111,7 +111,7 @@ public class ServerUtils {
     //TODO check the path after api is implemented and redo the method
     public void editParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/editParticipant/" + participant.getEventId() + "/" + participant.getId()) //
+                .target(SERVER).path("api/participants/editParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);

@@ -92,6 +92,7 @@ public class ContactDetailCtrl {
 
     public void abort() {
         clearFields();
+        participant = null;
         mainCtrl.showEventOverview(event, en);
     }
 
@@ -104,6 +105,7 @@ public class ContactDetailCtrl {
                 server.addParticipant(getParticipant());
             } else {
                 server.editParticipant(getParticipant());
+                participant = null;
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);

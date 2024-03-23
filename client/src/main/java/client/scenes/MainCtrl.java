@@ -144,8 +144,8 @@ public class MainCtrl {
     public void showContactDetailsEdit(Participant participant, boolean en) {
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(contactDetails);
-        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
 
     }

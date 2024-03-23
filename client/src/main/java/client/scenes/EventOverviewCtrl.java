@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 
 public class EventOverviewCtrl {
@@ -28,6 +30,7 @@ public class EventOverviewCtrl {
 
     private boolean en;
     private Event event;
+    private Participant selectedParticipant;
     private List<Participant> participants = new ArrayList<>();
     private List<Expense> expenses = new ArrayList<>();
 
@@ -69,6 +72,7 @@ public class EventOverviewCtrl {
         if(!en) nl();
 
         eventTitleLabel.setText(event.getTitle());
+        participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
 
         participants = server.getAllParticipantsFromEvent(event.getId());
         System.out.println("Participants: " + participants);
@@ -83,12 +87,21 @@ public class EventOverviewCtrl {
         //expensesScrollPane.setFitToHeight(true);
         //expensesScrollPane.setFitToWidth(true);
     }
+
+    private void handleParticipantsListViewClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) { // Left-click
+            selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
+        }
+    }
+
     public void addParticipant() {
         mainCtrl.showContactDetailsAdd(event, en);
     }
 
     public void editParticipant() {
-        mainCtrl.showContactDetailsEdit(new Participant(), en);
+        if(selectedParticipant != null) {
+            mainCtrl.showContactDetailsEdit(selectedParticipant, en);
+        }
     }
 
     public void addExpense() {
