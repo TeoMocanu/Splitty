@@ -95,6 +95,7 @@ public class MainCtrl {
     }
 
     public void showStarterPage(boolean en) {
+        primaryStage.setResizable(true);
         primaryStage.setMinWidth(380);
         primaryStage.setMinHeight(450);
         primaryStage.setTitle("Starter Page");
@@ -124,6 +125,9 @@ public class MainCtrl {
     }
 
     public void showEventOverview(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
         eventOverviewCtrl.initializeEvent(event, en);

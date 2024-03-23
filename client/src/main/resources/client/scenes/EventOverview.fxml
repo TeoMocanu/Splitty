@@ -1,71 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="379.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
-      <Label fx:id="eventTitleLabel" layoutX="39.0" layoutY="14.0" text="Event Title">
-         <font>
-            <Font name="System Bold" size="48.0" />
-         </font>
-      </Label>
-      <Button fx:id="sendInvitesButton" layoutX="432.0" layoutY="28.0" mnemonicParsing="false" onAction="#sendInvites" prefHeight="42.0" prefWidth="142.0" text="Send Invites">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <Label fx:id="participantsLabel" layoutX="39.0" layoutY="105.0" text="Participants">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <ListView fx:id="participantsListView" layoutX="39.0" layoutY="146.0" orientation="HORIZONTAL" prefHeight="70.0" prefWidth="535.0" />
-      <Button fx:id="participantEditButton" layoutX="187.0" layoutY="110.0" mnemonicParsing="false" onAction="#editParticipant" text="Edit">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="participantAddButton" layoutX="231.0" layoutY="110.0" mnemonicParsing="false" onAction="#addParticipant" text="Add">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <ComboBox fx:id="eventPayersComboBox" layoutX="39.0" layoutY="288.0" prefHeight="30.0" prefWidth="181.0" />
-      <Label fx:id="expensesLabel" layoutX="39.0" layoutY="242.0" prefHeight="46.0" prefWidth="225.0" text="Expenses">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Button fx:id="addExpenseButton" layoutX="489.0" layoutY="290.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="settleDebtsButton" layoutX="493.0" layoutY="666.0" mnemonicParsing="false" onAction="#settleDebts" text="Settle Debts">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <ScrollPane layoutX="34.0" layoutY="337.0" prefHeight="313.0" prefWidth="542.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="209.0" />
-        </content>
-      </ScrollPane>
-      <Button fx:id="save" layoutX="104.0" layoutY="666.0" mnemonicParsing="false" onAction="#ok" text="Save">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="backButton" layoutX="39.0" layoutY="666.0" mnemonicParsing="false" onAction="#back" text="Back">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Button>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="46.0" prefWidth="332.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="eventTitleLabel" text="Event Title">
+                           <font>
+                              <Font name="System Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="34.0" prefWidth="114.0" text="Send Invites">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </Separator>
+            <HBox prefHeight="54.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="participantsLabel" text="Participants">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER_RIGHT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="participantEditButton" mnemonicParsing="false" onAction="#editParticipant" text="Edit">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="participantAddButton" mnemonicParsing="false" onAction="#addParticipant" text="Add">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <ListView fx:id="participantsListView" minHeight="30.0" orientation="HORIZONTAL" prefHeight="100.0" prefWidth="342.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
+               </VBox.margin>
+            </ListView>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin>
+            </Separator>
+            <Label fx:id="expensesLabel" prefHeight="46.0" prefWidth="225.0" text="Expenses" VBox.vgrow="NEVER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="40.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ComboBox fx:id="eventPayersComboBox" prefHeight="30.0" prefWidth="181.0" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="Add Expense">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <ScrollPane prefHeight="200.0" prefWidth="350.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="15.0" right="15.0" top="10.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <HBox prefHeight="17.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="CENTER_LEFT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="save" mnemonicParsing="false" onAction="#ok" text="Save">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="Back">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleDebts" text="Settle Debts">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
