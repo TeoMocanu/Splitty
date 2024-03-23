@@ -41,9 +41,9 @@ public class AdminLoginCtrl {
     }
 
     @FXML
-    private void initialize() {
-        currentLanguage = "EN";
-        languageButton.setText("EN");
+    public void initialize(boolean en){
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
         ServerUtils utils = new ServerUtils();
         int passwordLength = 10;
         String randomPassword = utils.generateRandomPassword(passwordLength);
@@ -51,9 +51,16 @@ public class AdminLoginCtrl {
         System.out.println("Admin Password: " + randomPassword);
     }
 
-
-    public void language() {
-        if (currentLanguage.equals("EN")) {
+    public void language(){
+        if(currentLanguage.equals("EN")){
+            en();
+        }
+        else{
+            nl();
+        }
+    }
+    public void languageSwitch(){
+        if(currentLanguage.equals("EN")){
             currentLanguage = "NL";
             nl();
         } else {
@@ -79,7 +86,7 @@ public class AdminLoginCtrl {
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 
     public void checkPassword() {
@@ -95,10 +102,12 @@ public class AdminLoginCtrl {
 
             if (passwordMatch) {
                 System.out.println("Welcome, admin");
-                mainCtrl.showAdminOverview();
-            } else {
+                mainCtrl.showAdminOverview(currentLanguage.equals("EN"));
+
+            }
+            else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
-                mainCtrl.showStarterPage();
+                mainCtrl.showStarterPage(currentLanguage.equals("EN"));
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -130,6 +139,6 @@ public class AdminLoginCtrl {
 
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 }
