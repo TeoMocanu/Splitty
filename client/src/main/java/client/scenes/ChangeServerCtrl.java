@@ -32,6 +32,11 @@ public class ChangeServerCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    public void initialize(boolean en){
+        this.en = en;
+        language(en);
+    }
+
     public void save(){
         String savedServer = this.serverField.getText();
         String current = server.getServer();

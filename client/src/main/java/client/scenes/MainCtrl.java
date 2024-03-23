@@ -118,6 +118,7 @@ public class MainCtrl {
     }
 
     public void showAddExpense(Event event, boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
         addExpenseCtrl.initialize(event, en);
@@ -136,6 +137,9 @@ public class MainCtrl {
 
 
     public void showInvitation(Event event, boolean en){
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(200);
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
         invitationCtrl.initialize(event, en);
@@ -143,6 +147,7 @@ public class MainCtrl {
     }
 
     public void showContactDetailsAdd(Event event, boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(contactDetails);
         contactDetailCtrl.initialize(event, en);
@@ -150,6 +155,7 @@ public class MainCtrl {
     }
 
     public void showContactDetailsEdit(Participant participant, boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(contactDetails);
         contactDetailCtrl.initialize(participant.getEvent(), en);
@@ -163,10 +169,13 @@ public class MainCtrl {
     }
 
     public void showChangeServer(boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Server");
         primaryStage.setScene(changeServer);
-        changeServerCtrl.language(en);
+        changeServerCtrl.initialize(en);
     }
 
-    public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
+    public StarterPageCtrl getStarterPageCtrl() {
+        return starterPageCtrl;
+    }
 }
