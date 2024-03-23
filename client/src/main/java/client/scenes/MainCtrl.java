@@ -105,6 +105,7 @@ public class MainCtrl {
     }
 
     public void showAdminLogin(boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(adminLogin);
         adminLoginCtrl.initialize(en);
