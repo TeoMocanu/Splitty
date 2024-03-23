@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 
 import java.util.List;
@@ -112,10 +113,46 @@ public class AdminOverviewCtrl {
     }
 
     public void applySort() {
-        TableColumn<TableRowData, Number> idColumn = (TableColumn<TableRowData, Number>) tableView.getColumns().get(0); // Assuming the ID column is the first one
-        idColumn.setSortType(TableColumn.SortType.ASCENDING);
-        tableView.getSortOrder().add(idColumn);
+        if(sortChoiceBox.getValue().equals("ID")) {
+            sortById();
+        } else {
+            sortByTitle();
+        }
+    }
+
+    private void sortById() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(0));
         tableView.sort();
+    }
+    private void sortByTitle() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(1));
+        tableView.sort();
+    }
+    public void tableInitialize() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().add(deleteItem);
+
+        // Setting up the action for the 'Delete' menu item (placeholder for now)
+        deleteItem.setOnAction((event) -> {
+            System.out.println("Delete action goes here");
+            // You will implement the actual delete functionality here
+        });
+
+        // Attach the context menu to each row in the table
+        tableView.setRowFactory(tv -> {
+            TableRow<TableRowData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                } else {
+                    contextMenu.hide();
+                }
+            });
+            return row;
+        });
     }
     public void initialize(boolean en) {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
@@ -131,6 +168,7 @@ public class AdminOverviewCtrl {
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses()))));
         }
         tableView.setItems(data);
+        tableInitialize();
     }
 
     public void languageSwitch() {
