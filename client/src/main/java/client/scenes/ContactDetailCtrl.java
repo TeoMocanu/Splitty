@@ -104,7 +104,12 @@ public class ContactDetailCtrl {
             if(participant == null){
                 server.addParticipant(getParticipant());
             } else {
-                server.editParticipant(getParticipant());
+                Participant newParticipant = getParticipant();
+                participant.setBic(newParticipant.getBic());
+                participant.setEmail(newParticipant.getEmail());
+                participant.setIban(newParticipant.getIban());
+                participant.setName(newParticipant.getName());
+                server.editParticipant(participant);
                 participant = null;
             }
         } catch (WebApplicationException e) {
