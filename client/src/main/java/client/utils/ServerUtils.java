@@ -91,13 +91,13 @@ public class ServerUtils {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public Event addExpense(Expense expense, Event event) {
+    public void addExpense(Expense expense, Event event) {
         //event.addExpense(expense);
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/addExpense/" + event.getId()) //
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/addExpense") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(expense, APPLICATION_JSON), Event.class);
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
     public void addParticipant(Participant participant) {

@@ -26,10 +26,8 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
-
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
-
     private InvitationCtrl invitationCtrl;
     private Scene invitation;
     private AddExpenseCtrl addExpenseCtrl;
@@ -51,7 +49,7 @@ public class MainCtrl {
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        showStarterPage();
+        showStarterPage(true);
         primaryStage.show();
     }
 
@@ -94,26 +92,30 @@ public class MainCtrl {
         this.changeServer = new Scene(changeServer.getValue());
     }
 
-    public void showStarterPage() {
+    public void showStarterPage(boolean en) {
         primaryStage.setTitle("Starter Page");
         primaryStage.setScene(starterPage);
+        starterPageCtrl.initialize(en);
+        starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
     }
 
-    public void showAdminLogin() {
+    public void showAdminLogin(boolean en) {
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(adminLogin);
+        adminLoginCtrl.initialize(en);
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
-    public void showAdminOverview() {
+    public void showAdminOverview(boolean en) {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
+        adminOverviewCtrl.initialize(en);
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
     public void showAddExpense(Event event, boolean en) {
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.initialize(en, event);
+        addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 

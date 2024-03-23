@@ -18,7 +18,6 @@ import java.util.Map;
 public class AdminOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
     private String currentLanguage;
 
     @FXML
@@ -64,9 +63,9 @@ public class AdminOverviewCtrl {
 
 
 
-    public void initialize() {
-        this.currentLanguage = "EN";
-
+    public void initialize(boolean en) {
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
 
         // TODO connect to the event database and set the rows based on that
@@ -76,10 +75,7 @@ public class AdminOverviewCtrl {
         tableView.setItems(data);
     }
 
-
-
-
-    public void language(){
+    public void languageSwitch(){
         if(currentLanguage.equals("EN")){
             currentLanguage = "NL";
             nl();
@@ -87,6 +83,15 @@ public class AdminOverviewCtrl {
         else{
             currentLanguage = "EN";
             en();
+        }
+    }
+
+    public void language(){
+        if(currentLanguage.equals("EN")){
+            en();
+        }
+        else{
+            nl();
         }
     }
     public void en(){
@@ -109,7 +114,7 @@ public class AdminOverviewCtrl {
     }
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
     public void ok() {
         try {
@@ -125,7 +130,7 @@ public class AdminOverviewCtrl {
         }
 
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
     private void clearFields() {
     }
@@ -154,6 +159,6 @@ public class AdminOverviewCtrl {
     }
 
     public void exitAdminOverview() {
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 }
