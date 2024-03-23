@@ -66,6 +66,7 @@ public class EventOverviewCtrl {
     public void initialize(Event event, boolean en) {
         this.event = event;
         this.en = en;
+        if(!en) nl();
 
         eventTitleLabel.setText(event.getTitle());
 
@@ -76,6 +77,7 @@ public class EventOverviewCtrl {
         participantsListView.refresh();
 
         expenses = server.getAllExpensesFromEvent(event.getId());
+        System.out.println("Expenses: " + expenses);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
         if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
         //expensesScrollPane.setFitToHeight(true);

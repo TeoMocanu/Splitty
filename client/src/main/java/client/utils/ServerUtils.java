@@ -69,7 +69,7 @@ public class ServerUtils {
 
     public Event getEvent(Long id){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getById/"+id) //
+                .target(SERVER).path("api/events/getById/"+id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Event>(){});
@@ -77,7 +77,7 @@ public class ServerUtils {
 
     public Event addEvent(Event event){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/addEvent") //
+                .target(SERVER).path("api/events/addEvent") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -85,13 +85,13 @@ public class ServerUtils {
 
     public Event editEvent(Event event){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/editEvent/" + event.getId()) //
+                .target(SERVER).path("api/events/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void addExpense(Expense expense, Event event) {
+    public void addExpense(Expense expense) {
         //event.addExpense(expense);
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/addExpense") //
@@ -138,7 +138,7 @@ public class ServerUtils {
     //TODO implement
     public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/invitation") //
+                .target(SERVER).path("api/event/invitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);

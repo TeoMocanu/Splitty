@@ -79,8 +79,7 @@ public class StarterPageCtrl {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
-        en = true;
-        languageButtonStart.setText("NL");
+        this.en = en;
         en();
         this.serverLabel.setText(server.getServer());
     }

@@ -125,7 +125,7 @@ public class AddExpenseCtrl {
             LocalDate date = LocalDate.of(2024, 12, 12);
             Participant participant = new Participant("John", event);
             Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-            server.addExpense(expense, event);
+            server.addExpense(expense);
 
         } catch (Exception e) {
 
