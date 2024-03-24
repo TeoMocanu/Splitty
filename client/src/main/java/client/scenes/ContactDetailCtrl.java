@@ -94,6 +94,7 @@ public class ContactDetailCtrl {
 
     public void abort() {
         clearFields();
+        participant = null;
         mainCtrl.showEventOverview(event, en);
     }
 
@@ -104,11 +105,17 @@ public class ContactDetailCtrl {
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
                 Participant par = getParticipant();
-                server.addParticipant(getParticipant(), event);
+                server.addParticipant(getParticipant());
                 event.addParticipant(par);
                 this.event = server.updateEvent(event);
             } else {
-                server.editParticipant(getParticipant());
+                Participant newParticipant = getParticipant();
+                participant.setBic(newParticipant.getBic());
+                participant.setEmail(newParticipant.getEmail());
+                participant.setIban(newParticipant.getIban());
+                participant.setName(newParticipant.getName());
+                server.editParticipant(participant);
+                participant = null;
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -157,7 +164,7 @@ public class ContactDetailCtrl {
 //        return true;
         if(!nameField.getText().matches("([A-Za-z])+"))
             return false;
-        if(!emailField.getText().matches("([A-Za-z0-9])+"))
+        if(!emailField.getText().matches("([A-Za-z0-9@.])+"))
             return false;
         if(!ibanField.getText().matches("([A-Za-z0-9])+"))
             return false;

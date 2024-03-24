@@ -1,5 +1,7 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import commons.primaryKeys.DebtKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -24,18 +26,22 @@ public class Debt {
     @ManyToOne
     @MapsId("eventId")
     @JoinColumn(name = "event_id")
+    @JsonIgnoreProperties({"participants", "expenses"})
     private Event event;
 
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "debtor_event_id", referencedColumnName = "event_id"),
         @JoinColumn(name = "debtor_id", referencedColumnName = "participant_id")})
+    @JsonIgnoreProperties({"expensesPaidBy", "expensesToPay", "event_id", "event", "participantKey"})
     private Participant debtor;
 
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "creditor_event_id", referencedColumnName = "event_id"),
         @JoinColumn(name = "creditor_id", referencedColumnName = "participant_id")})
+    @JsonIgnoreProperties({"expensesPaidBy", "expensesToPay", "event_id", "event", "participantKey"})
+    //@JsonIgnore
     private Participant creditor;
 
     @Column(name = "amount")
@@ -54,6 +60,7 @@ public class Debt {
         this.amount = amount;
     }
 
+    @JsonIgnore
     public DebtKey getDebtKey() {
         return new DebtKey(eventId, id);
     }

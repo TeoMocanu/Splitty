@@ -36,6 +36,7 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
+    private Expense expense;
     private boolean en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
@@ -94,20 +95,25 @@ public class AddExpenseCtrl {
 
     @FXML
     void initialize(Event event, boolean en){
-        type.setValue("other");
-        type.setItems(types);
-        currency.setValue("EUR");
-        currency.setItems(currencies);
-        participants = FXCollections.observableArrayList();
-        splitOptions = FXCollections.observableArrayList();
-        for(Participant p : event.getParticipants()){
-            participants.add(p.getName());
-            splitOptions.add(new CheckBox(p.getName()));
+        if(expense == null){
+            type.setValue("other");
+            type.setItems(types);
+            currency.setValue("EUR");
+            currency.setItems(currencies);
+            participants = FXCollections.observableArrayList();
+            splitOptions = FXCollections.observableArrayList();
+            for(Participant p : event.getParticipants()){
+                participants.add(p.getName());
+                splitOptions.add(new CheckBox(p.getName()));
+            }
+            menu.setItems(splitOptions);
+            name.setItems(participants);
+            name.setValue(" ");
+            everyone.setSelected(true);
         }
-        menu.setItems(splitOptions);
-        name.setItems(participants);
-        name.setValue(" ");
-        everyone.setSelected(true);
+        else{
+            //TODO: set fields to expense values, make "add" button show "edit"
+        }
 
         this.en = en;
         language();
@@ -116,27 +122,58 @@ public class AddExpenseCtrl {
 
     public void cancel() {
         clearFields();
+        expense = null;
         mainCtrl.showEventOverview(event, en);
     }
+    /*
+    JSON FORMAT FOR EXPENSE
+    {
+        "event": {
+            "id": 1
+        },
+        "date": "2024-12-12",
+        "payer": {
+            "name": "John"
+        },
+        "debtors": [],
+        "title": "parking",
+        "amount": 12.5
+        }
+     */
 
     public void add() {
-        try {
-            //Expense expense = createExpense();
-            LocalDate date = LocalDate.of(2024, 12, 12);
-            Participant participant = new Participant("John", event);
-            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-            server.addExpense(expense, event);
+        if(expense == null){
+            try {
+                //Expense expense = createExpense();
+                LocalDate date = LocalDate.of(2024, 12, 12);
+                Participant participant = new Participant("John", event);
 
-        } catch (Exception e) {
+                Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            if(en)
-                alert.setContentText(e.getMessage() + "- internal error in adding the expense");
-            else
-                alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
-            alert.showAndWait();
-            return;
+                server.addExpense(expense);
+                //TODO: edit debts tied to expense
+
+            } catch (Exception e) {
+
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                if(en)
+                    alert.setContentText(e.getMessage() + "- internal error in adding the expense");
+                else
+                    alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
+                alert.showAndWait();
+                return;
+            }
+        }
+        else{
+            /*
+                TODO: edit expense
+                This is a VERY complex task. Beyond just editing the expense, to be
+                able to properly calculate debts, whenever they are implemented, we
+                need to edit all of the debts tied to this expense, substracting the
+                old payment values from the updated payment values for each debtor.
+             */
+            expense = null;
         }
 
         clearFields();
@@ -243,5 +280,9 @@ public class AddExpenseCtrl {
         howSplit.setText("Hoe splitsen?");
         everyone.setText("Met iedereen");
         somePeople.setText("Slechts enkele mensen");
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 }

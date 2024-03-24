@@ -16,6 +16,7 @@
 package client.scenes;
 
 
+import commons.Expense;
 import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
@@ -44,6 +45,9 @@ public class MainCtrl {
     private Scene changeServer;
     private EventOverviewCtrl eventOverviewCtrl;
     private Scene eventOverview;
+
+    private OpenDebtsNewCtrl openDebtsNewCtrl;
+    private Scene openDebts;
 
 
     public MainCtrl() {
@@ -104,6 +108,11 @@ public class MainCtrl {
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
     }
 
+    public void setOpenDebtsNewCtrl(Pair<OpenDebtsNewCtrl, Parent> openDebtsNewCtrl){
+        this.openDebtsNewCtrl = openDebtsNewCtrl.getKey();
+        this.openDebts = new Scene(openDebtsNewCtrl.getValue());
+    }
+
     public void showAdminLogin(boolean en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
@@ -126,10 +135,18 @@ public class MainCtrl {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setTitle("Add Expense");
         primaryStage.setScene(addExpense);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
+        addExpenseCtrl.initialize(event, en);
+        addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showEditExpense(Event event, Expense expense, boolean en) {
+        primaryStage.setTitle("Edit Expense");
+        primaryStage.setScene(addExpense);
+        addExpenseCtrl.setExpense(expense);
         addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
@@ -141,7 +158,7 @@ public class MainCtrl {
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
         primaryStage.sizeToScene();
-        eventOverviewCtrl.initializeEvent(event, en);
+        eventOverviewCtrl.initialize(event, en);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 
@@ -177,14 +194,17 @@ public class MainCtrl {
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
-
     }
 
     public void showOpenDebts(Event event, boolean en) {
-        //TODO when page exists :)
+        primaryStage.setTitle("Settle Debts");
+        primaryStage.setScene(openDebts);
+//        openDebtsNewCtrl.initialize(event, en);
+        //openDebtsNewCtrl.displayEvent();
+        openDebts.setOnKeyPressed(e ->openDebtsNewCtrl.keyPressed(e));
     }
 
     public void showChangeServer(boolean en) {
@@ -196,5 +216,9 @@ public class MainCtrl {
 
     public StarterPageCtrl getStarterPageCtrl() {
         return starterPageCtrl;
+    }
+
+    public void showEditEventTitle(Event event, boolean en) {
+        //TODO when page exists :)
     }
 }

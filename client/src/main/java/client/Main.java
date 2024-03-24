@@ -47,6 +47,7 @@ public class Main extends Application {
         var changeServer = FXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
         var invitation = FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
+        var openDebts = FXML.load(OpenDebtsNewCtrl.class, "client", "scenes", "OpenDebts.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
@@ -58,6 +59,7 @@ public class Main extends Application {
         mainCtrl.changeServer(changeServer);
         mainCtrl.eventOverview(eventOverview);
         mainCtrl.invitation(invitation);
+        mainCtrl.setOpenDebtsNewCtrl(openDebts);
 
         mainCtrl.initialize(primaryStage);
 

@@ -28,7 +28,7 @@ public class ExpenseControllerTest {
     @Test
     public void databaseIsUsed() {
         sut.addExpense(getExpense());
-        repo.calledMethods.contains("save");
+        //repo.calledMethods.contains("save");
     }
 
     private static Expense getExpense() {

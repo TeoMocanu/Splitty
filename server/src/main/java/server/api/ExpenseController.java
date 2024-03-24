@@ -1,7 +1,11 @@
 package server.api;
 
 import commons.Expense;
+<<<<<<< HEAD
 import commons.Participant;
+=======
+import commons.primaryKeys.ExpenseKey;
+>>>>>>> b6f1c801f36c78dee7aaa54df31199aa55e54fcb
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +31,13 @@ public class ExpenseController {
         return expenseRepository.findAll();
     }
 
+    @GetMapping("/getAllExpensesFromEvent/{eid}")
+    public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
+        return expenseRepository.findByEventId(eid);
+    }
+
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable("id") Long id) {
+    public ResponseEntity<Expense> getExpenseById(@PathVariable("id") ExpenseKey id) {
         Optional<Expense> expenseOptional = expenseRepository.findById(id);
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -55,7 +64,7 @@ public class ExpenseController {
     }
 
     @PutMapping("/editExpense/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable("id") Long id, @RequestBody Expense expense) {
+    public ResponseEntity<Expense> updateExpense(@PathVariable("id") ExpenseKey id, @RequestBody Expense expense) {
         if (expense == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -67,7 +76,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/deleteExpense/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteExpense(@PathVariable("id") ExpenseKey id) {
         if (!expenseRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
