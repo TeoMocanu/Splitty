@@ -16,6 +16,7 @@
 package client.scenes;
 
 
+import commons.Expense;
 import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
@@ -113,8 +114,16 @@ public class MainCtrl {
     }
 
     public void showAddExpense(Event event, boolean en) {
-        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setTitle("Add Expense");
         primaryStage.setScene(addExpense);
+        addExpenseCtrl.initialize(event, en);
+        addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showEditExpense(Event event, Expense expense, boolean en) {
+        primaryStage.setTitle("Edit Expense");
+        primaryStage.setScene(addExpense);
+        addExpenseCtrl.setExpense(expense);
         addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }

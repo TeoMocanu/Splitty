@@ -31,6 +31,7 @@ public class EventOverviewCtrl {
     private boolean en;
     private Event event;
     private Participant selectedParticipant;
+    private Expense selectedExpense;
     private List<Participant> participants = new ArrayList<>();
     private List<Expense> expenses = new ArrayList<>();
 
@@ -73,6 +74,7 @@ public class EventOverviewCtrl {
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
+        expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
 
         participants = server.getAllParticipantsFromEvent(event.getId());
         System.out.println("Participants: " + participants);
@@ -86,6 +88,12 @@ public class EventOverviewCtrl {
         if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
         //expensesScrollPane.setFitToHeight(true);
         //expensesScrollPane.setFitToWidth(true);
+    }
+
+    private void handleExpensesListViewClick(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
+            selectedExpense = (Expense) ((ListView) expensesScrollPane.getContent()).getSelectionModel().getSelectedItem();
+        }
     }
 
     private void handleParticipantsListViewClick(MouseEvent event) {
