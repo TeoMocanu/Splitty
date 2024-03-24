@@ -135,12 +135,12 @@ public class StarterPageCtrl {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
 
-        eventList.add(newEvent);
+        Event repEvent = server.addEvent(newEvent);
+        eventList.add(repEvent);
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
 
-        Event repEvent = server.addEvent(newEvent);
         mainCtrl.showEventOverview(repEvent, en);
     }
 

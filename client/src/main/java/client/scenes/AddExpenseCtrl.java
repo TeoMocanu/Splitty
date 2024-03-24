@@ -94,6 +94,7 @@ public class AddExpenseCtrl {
 
     @FXML
     void initialize(boolean en, Event event){
+        types = FXCollections.observableArrayList(event.getTypes());
         type.setValue("other");
         type.setItems(types);
         currency.setValue("EUR");
@@ -125,7 +126,7 @@ public class AddExpenseCtrl {
             LocalDate date = LocalDate.of(2024, 12, 12);
             Participant participant = new Participant("John", event);
             Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-            event = server.addExpense(expense, event);
+            server.addExpense(expense);
 
         } catch (Exception e) {
 

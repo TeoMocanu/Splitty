@@ -16,19 +16,18 @@ public class Event {
     @GeneratedValue(strategy = SEQUENCE)
     public long id;
     private String title;
+
+    private List<String> types;
     @OneToMany(mappedBy = "event")
-    @Column(name = "PARTICIPANTS")
-    @ElementCollection(targetClass = List.class)
     private List<Participant> participants;
     @OneToMany(mappedBy = "event")
-    @Column(name = "EXPENSES")
-    @ElementCollection(targetClass = List.class)
     private List<Expense> expenses;
 
     public Event(String title){
         this.title = title;
         this.participants = new ArrayList<Participant>(0);
         this.expenses = new ArrayList<Expense>(0);
+        this.types = new ArrayList<String>(0);
     }
 
 //    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
@@ -77,6 +76,18 @@ public class Event {
 
     public void addExpense(Expense expense) {
         this.expenses.add(expense);
+    }
+
+    public List<String> getTypes() {
+        return this.types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
+
+    public void addType(String s) {
+        this.types.add(s);
     }
 
     @Override
