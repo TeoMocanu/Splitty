@@ -5,13 +5,11 @@ import commons.primaryKeys.ExpenseKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 @IdClass(ExpenseKey.class)
@@ -148,8 +146,8 @@ public class Expense {
 //        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
 //    }
 
-        @Override
-        public String toString() {
-            return title;
-        }
+    @Override
+    public String toString() {
+        return title;
+    }
 }

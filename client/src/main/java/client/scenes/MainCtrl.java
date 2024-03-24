@@ -205,4 +205,8 @@ public class MainCtrl {
     public StarterPageCtrl getStarterPageCtrl() {
         return starterPageCtrl;
     }
+
+    public void showEditEventTitle(Event event, boolean en) {
+        //TODO when page exists :)
+    }
 }
