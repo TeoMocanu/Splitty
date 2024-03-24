@@ -25,7 +25,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import commons.Debt;
 import commons.Event;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
@@ -173,16 +172,6 @@ public class ServerUtils {
         allNode.set("Disk Usage", diskNode);
         allNode.set("CPU Usage", cpuNode);
         return mapper.writeValueAsString(allNode);
-
-
-    public Map<String, Object> fetchServerInfo() {
-        // Perform the GET request and expect a response of type Map<String, Object>
-        return ClientBuilder.newClient(new ClientConfig()) // Create a new client with a configuration.
-                .target(SERVER) // Target the server base URL defined by the SERVER constant.
-                .path("custom/info") // Specify the path to the server info endpoint.
-                .request(MediaType.APPLICATION_JSON) // Create a request indicating you're sending JSON.
-                .accept(MediaType.APPLICATION_JSON) // Specify that you expect to receive JSON in response.
-                .get(new GenericType<Map<String, Object>>(){}); // Perform the GET request expecting a Map in return.
     }
 
     public String generateRandomPassword(int length) {
@@ -209,13 +198,5 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
         throw new IllegalStateException();
-    }
-
-    public List<Debt> getDebts(long id){
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/event/"+id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Debt>>(){});
     }
 }
