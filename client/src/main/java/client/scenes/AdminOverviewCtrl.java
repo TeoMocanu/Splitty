@@ -3,15 +3,18 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 
 import java.util.List;
@@ -28,53 +31,148 @@ public class AdminOverviewCtrl {
     public Button serverInfoButton;
 
     @FXML
+    public ChoiceBox<String> sortChoiceBox;
+
+    ObservableList<String> sortChoiceBoxProperties
+            = FXCollections.observableArrayList("ID", "Title");
+
+    @FXML
     public Button languageButton;
+
+    @FXML
+    public Button sortButton;
 
     @FXML
     private Button backButton;
 
     public class TableRowData {
-        private final SimpleStringProperty column1;
-        private final SimpleStringProperty column2;
+        private final SimpleLongProperty id;
 
-        public TableRowData(String column1, String column2) {
-            this.column1 = new SimpleStringProperty(column1);
-            this.column2 = new SimpleStringProperty(column2);
+        private final SimpleStringProperty title;
+        private final SimpleListProperty<Participant> participants;
+        private final SimpleListProperty<Expense> expenses;
+
+
+        public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
+                            SimpleListProperty<Participant> participants,
+                            SimpleListProperty<Expense> expenses) {
+            this.id = id;
+            this.title = title;
+            this.participants = participants;
+            this.expenses = expenses;
         }
 
-        public String getColumn1() {
-            return column1.get();
+        public long getId() {
+            return id.get();
         }
 
-        public void setColumn1(String value) {
-            column1.set(value);
+        public SimpleLongProperty idProperty() {
+            return id;
         }
 
-        public String getColumn2() {
-            return column2.get();
+        public void setId(long id) {
+            this.id.set(id);
         }
 
-        public void setColumn2(String value) {
-            column2.set(value);
+        public String getTitle() {
+            return title.get();
+        }
+
+        public SimpleStringProperty titleProperty() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title.set(title);
+        }
+
+        public ObservableList<Participant> getParticipants() {
+            return participants.get();
+        }
+
+        public SimpleListProperty<Participant> participantsProperty() {
+            return participants;
+        }
+
+        public void setParticipants(ObservableList<Participant> participants) {
+            this.participants.set(participants);
+        }
+
+        public ObservableList<Expense> getExpenses() {
+            return expenses.get();
+        }
+
+        public SimpleListProperty<Expense> expensesProperty() {
+
+            return expenses;
+        }
+
+        public void setExpenses(ObservableList<Expense> expenses) {
+            this.expenses.set(expenses);
         }
     }
 
+    public void applySort() {
+        if(sortChoiceBox.getValue().equals("ID")) {
+            sortById();
+        } else {
+            sortByTitle();
+        }
+    }
 
+    private void sortById() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(0));
+        tableView.sort();
+    }
+    private void sortByTitle() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(1));
+        tableView.sort();
+    }
+    public void tableInitialize() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().add(deleteItem);
 
+        // Setting up the action for the 'Delete' menu item (placeholder for now)
+        deleteItem.setOnAction((event) -> {
+            System.out.println("Delete action goes here");
+            // You will implement the actual delete functionality here
+        });
+
+        // Attach the context menu to each row in the table
+        tableView.setRowFactory(tv -> {
+            TableRow<TableRowData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                } else {
+                    contextMenu.hide();
+                }
+            });
+            return row;
+        });
+    }
     public void initialize(boolean en) {
+        sortChoiceBox.setItems(sortChoiceBoxProperties);
         this.currentLanguage = en ? "EN" : "NL";
         language();
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
         System.out.println(allEvents);
         for (Event event : allEvents) {
-            data.add(new TableRowData(event.getTitle(), event.getParticipants().toString()));
+            data.add(new TableRowData(new SimpleLongProperty(event.getId()),
+                    new SimpleStringProperty(event.getTitle()),
+                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
+                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses()))));
         }
         tableView.setItems(data);
+        tableInitialize();
     }
 
-    public void languageSwitch(){
-        if(currentLanguage.equals("EN")){
+    public void languageSwitch() {
+        if (currentLanguage.equals("EN")) {
             currentLanguage = "NL";
             nl();
         } else {
@@ -83,15 +181,15 @@ public class AdminOverviewCtrl {
         }
     }
 
-    public void language(){
-        if(currentLanguage.equals("EN")){
+    public void language() {
+        if (currentLanguage.equals("EN")) {
             en();
-        }
-        else{
+        } else {
             nl();
         }
     }
-    public void en(){
+
+    public void en() {
         languageButton.setText("EN");
         serverInfoButton.setText("Server Info");
         backButton.setText("EXIT");
