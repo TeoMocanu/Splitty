@@ -199,6 +199,7 @@ public class StarterPageCtrl {
                 }
                 eventList.add(event);
                 updateHistory();
+                mainCtrl.showEventOverview(event, en);
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception

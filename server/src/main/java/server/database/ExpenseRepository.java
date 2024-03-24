@@ -16,6 +16,14 @@
 package server.database;
 
 import commons.Expense;
+import commons.primaryKeys.ExpenseKey;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface ExpenseRepository extends JpaRepository<Expense, Long> { }
+import java.util.List;
+
+public interface ExpenseRepository extends JpaRepository<Expense, ExpenseKey> {
+    @Query(value = "SELECT * FROM EXPENSE WHERE EVENT_ID = :eid", nativeQuery = true)
+    List<Expense> findByEventId(@Param("eid") Long eid);
+}

@@ -1,19 +1,15 @@
 package server.api;
 
 import commons.Event;
-import commons.Expense;
-import commons.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/events")
 public class EventController {
     @Autowired
     private final EventRepository eventRepository;
@@ -25,27 +21,27 @@ public class EventController {
         expenseController = null;
     }
 
-    @GetMapping("/hey")
-    @ResponseBody
-    public String index() {
-        return "now in event controller";
-    }
+//    @GetMapping("/hey")
+//    @ResponseBody
+//    public String index() {
+//        return "now in event controller";
+//    }
 
     @GetMapping("/getAll")
     public List<Event> getEventAll(){
         return eventRepository.findAll();
     }
 
-    @GetMapping("/getAllExpenses")
-    public List<Expense> getExpenseAll() {
-        List <Expense> out = new ArrayList<>();
-        List<Event> events = eventRepository.findAll();
-        for(Event event : events){
-            List<Expense> list = event.getExpenses();
-            out.addAll(list);
-        }
-        return out;
-    }
+//    @GetMapping("/getAllExpenses")
+//    public List<Expense> getExpenseAll() {
+//        List <Expense> out = new ArrayList<>();
+//        List<Event> events = eventRepository.findAll();
+//        for(Event event : events){
+//            List<Expense> list = event.getExpenses();
+//            out.addAll(list);
+//        }
+//        return out;
+//    }
 
     @GetMapping("/get?id={id}")
     public Event getById(@PathVariable("id") Long id){
@@ -89,60 +85,60 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-    @PostMapping("/addExpense/{event_id}")
-    public ResponseEntity<Event> addExpense(@PathVariable("event_id") long id, @RequestBody Expense expense) {
-        if(expense == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        if(!eventRepository.existsById(id)) {
-            return ResponseEntity.badRequest().build();
-        }
+//    @PostMapping("/addExpense/{event_id}")
+//    public ResponseEntity<Event> addExpense(@PathVariable("event_id") long id, @RequestBody Expense expense) {
+//        if(expense == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        if(!eventRepository.existsById(id)) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        //Check if the event exists
+//        Optional<Event> eventOptional = eventRepository.findById(id);
+//        if(eventOptional.isEmpty())
+//            return ResponseEntity.badRequest().build();
+//        Event event = eventOptional.get();
+//        // add the expense
+//        event.addExpense(expense);
+//        //eventRepository.addExpenseToEvent(id, expense.getId());
+//        Event added = eventRepository.save(event);
+//        return ResponseEntity.ok(added);
+//    }
 
-        //Check if the event exists
-        Optional<Event> eventOptional = eventRepository.findById(id);
-        if(eventOptional.isEmpty())
-            return ResponseEntity.badRequest().build();
-        Event event = eventOptional.get();
-        // add the expense
-        event.addExpense(expense);
-        //eventRepository.addExpenseToEvent(id, expense.getId());
-        Event added = eventRepository.save(event);
-        return ResponseEntity.ok(added);
-    }
+//    @PostMapping("/addParticipant/{event_id}")
+//    public ResponseEntity<Event> addParticipant(@PathVariable("event_id") long id, @RequestBody Participant participant) {
+//        if (participant == null || !eventRepository.existsById(id)) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        //Check if the event exists
+//        Optional<Event> eventOptional = eventRepository.findById(id);
+//        if (eventOptional.isEmpty())
+//            return ResponseEntity.badRequest().build();
+//        Event event = eventOptional.get();
+//        // add the participant
+//        event.addParticipant(participant);
+//        Event added = eventRepository.save(event);
+//        return ResponseEntity.ok(added);
+//    }
 
-    @PostMapping("/addParticipant/{event_id}")
-    public ResponseEntity<Event> addParticipant(@PathVariable("event_id") long id, @RequestBody Participant participant) {
-        if (participant == null || !eventRepository.existsById(id)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        //Check if the event exists
-        Optional<Event> eventOptional = eventRepository.findById(id);
-        if (eventOptional.isEmpty())
-            return ResponseEntity.badRequest().build();
-        Event event = eventOptional.get();
-        // add the participant
-        event.addParticipant(participant);
-        Event added = eventRepository.save(event);
-        return ResponseEntity.ok(added);
-    }
-
-    @PostMapping("/getExpenses/{event_id}")
-    public ResponseEntity<Expense> getExpensesById(@PathVariable("event_id") Long id) {
-        if(!eventRepository.existsById(id)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Optional<Event> eventOptional = eventRepository.findById(id);
-        if(eventOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Event event = eventOptional.get();
-        List<Expense> expenses = event.getExpenses();
-
-        return ResponseEntity.ok((Expense) expenses);
-    }
+//    @PostMapping("/getExpenses/{event_id}")
+//    public ResponseEntity<Expense> getExpensesById(@PathVariable("event_id") Long id) {
+//        if(!eventRepository.existsById(id)) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        Optional<Event> eventOptional = eventRepository.findById(id);
+//        if(eventOptional.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        Event event = eventOptional.get();
+//        List<Expense> expenses = event.getExpenses();
+//
+//        return ResponseEntity.ok((Expense) expenses);
+//    }
 
     // TODO send invitations to email list
     @PostMapping("/invitation")
@@ -155,8 +151,8 @@ public class EventController {
         return;
     }
 
-    @GetMapping("/deleteById/{event_id}")
-    public ResponseEntity deleteById(@PathVariable("event_id") Long id){
+    @GetMapping("/deleteEvent/{id}")
+    public ResponseEntity deleteEvent(@PathVariable("id") Long id){
         if(!eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }

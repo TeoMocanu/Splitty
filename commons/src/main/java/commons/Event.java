@@ -16,26 +16,16 @@ public class Event {
     @GeneratedValue(strategy = SEQUENCE)
     public long id;
     private String title;
-    @OneToMany(mappedBy = "event")
-    @Column(name = "PARTICIPANTS")
-    @ElementCollection(targetClass = List.class)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Participant> participants;
-    @OneToMany(mappedBy = "event")
-    @Column(name = "EXPENSES")
-    @ElementCollection(targetClass = List.class)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Expense> expenses;
 
-    public Event(String title){
+    public Event(String title) {
         this.title = title;
-        this.participants = new ArrayList<Participant>(0);
-        this.expenses = new ArrayList<Expense>(0);
+        this.participants = new ArrayList<>();
+        this.expenses = new ArrayList<>();
     }
-
-//    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
-//        this.title = title;
-//        this.participants = new ArrayList<>();
-//        this.expenses = new ArrayList<>();
-//    }
 
 
     @SuppressWarnings("unused")

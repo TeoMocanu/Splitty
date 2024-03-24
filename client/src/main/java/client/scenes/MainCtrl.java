@@ -16,6 +16,7 @@
 package client.scenes;
 
 
+import commons.Expense;
 import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
@@ -134,10 +135,18 @@ public class MainCtrl {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setTitle("Add Expense");
         primaryStage.setScene(addExpense);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
+        addExpenseCtrl.initialize(event, en);
+        addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
+    }
+
+    public void showEditExpense(Event event, Expense expense, boolean en) {
+        primaryStage.setTitle("Edit Expense");
+        primaryStage.setScene(addExpense);
+        addExpenseCtrl.setExpense(expense);
         addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
@@ -149,8 +158,7 @@ public class MainCtrl {
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
         primaryStage.sizeToScene();
-        eventOverviewCtrl.initializeEvent(event, en);
-        eventOverviewCtrl.test();
+        eventOverviewCtrl.initialize(event, en);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 
@@ -186,10 +194,9 @@ public class MainCtrl {
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
+        contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
-
     }
 
     public void showOpenDebts(Event event, boolean en) {
@@ -209,5 +216,9 @@ public class MainCtrl {
 
     public StarterPageCtrl getStarterPageCtrl() {
         return starterPageCtrl;
+    }
+
+    public void showEditEventTitle(Event event, boolean en) {
+        //TODO when page exists :)
     }
 }
