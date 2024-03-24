@@ -51,7 +51,7 @@ public class MainCtrl {
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        showStarterPage();
+        showStarterPage(true);
         primaryStage.show();
     }
 
@@ -94,54 +94,89 @@ public class MainCtrl {
         this.changeServer = new Scene(changeServer.getValue());
     }
 
-    public void showStarterPage() {
+    public void showStarterPage(boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Starter Page");
         primaryStage.setScene(starterPage);
+        starterPageCtrl.initialize(en);
+        starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
     }
 
-    public void showAdminLogin() {
+    public void showAdminLogin(boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(adminLogin);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
+        adminLoginCtrl.initialize(en);
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
-    public void showAdminOverview() {
+    public void showAdminOverview(boolean en) {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
+        adminOverviewCtrl.initialize(en);
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
     public void showAddExpense(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.initialize(en, event);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
+        addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
     public void showEventOverview(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
+        primaryStage.sizeToScene();
         eventOverviewCtrl.initializeEvent(event, en);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 
 
     public void showInvitation(Event event, boolean en){
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(220);
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
+        primaryStage.sizeToScene();
         invitationCtrl.initialize(event, en);
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
     public void showContactDetailsAdd(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(contactDetails);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         contactDetailCtrl.initialize(event, en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
     public void showContactDetailsEdit(Participant participant, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(contactDetails);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
@@ -153,10 +188,13 @@ public class MainCtrl {
     }
 
     public void showChangeServer(boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Server");
         primaryStage.setScene(changeServer);
-        changeServerCtrl.language(en);
+        changeServerCtrl.initialize(en);
     }
 
-    public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
+    public StarterPageCtrl getStarterPageCtrl() {
+        return starterPageCtrl;
+    }
 }

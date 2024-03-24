@@ -23,6 +23,8 @@ import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -46,6 +48,21 @@ public class ContactDetailCtrl {
     @FXML
     private TextField bicField;
 
+    @FXML
+    private Button okButton;
+    @FXML
+    private Button abortButton;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label emailLabel;
+    @FXML
+    private Label ibanLabel;
+    @FXML
+    private Label bicLabel;
+    @FXML
+    private Label title;
+
     private Participant participant;
 
     @Inject
@@ -64,7 +81,7 @@ public class ContactDetailCtrl {
     public void initialize(Event event, Boolean en){
         this.event = event;
         this.en = en;
-        language(en);
+        language();
         if(this.participant != null) {
             this.nameField.setText(participant.getName());
             this.emailField.setText(participant.getEmail());
@@ -96,7 +113,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(en);
     }
 
     private Participant getParticipant() {
@@ -151,10 +168,27 @@ public class ContactDetailCtrl {
 //            return false;
         return true;
     }
-    public void language(boolean en){
+    public void language(){
         if(en) en();
         else nl();
     }
-    public void en(){}
-    public void nl(){}
+    public void en(){
+        nameLabel.setText("Name");
+        emailLabel.setText("Email");
+        ibanLabel.setText("IBAN");
+        bicLabel.setText("BIC");
+        okButton.setText("Ok");
+        abortButton.setText("Abort");
+        title.setText("Participant Details");
+    }
+    public void nl(){
+        nameLabel.setText("Naam");
+        emailLabel.setText("Email");
+        ibanLabel.setText("IBAN");
+        bicLabel.setText("BIC");
+        okButton.setText("Ok");
+        abortButton.setText("Afbreken");
+        title.setText("Deelnemer Details");
+
+    }
 }

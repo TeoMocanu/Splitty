@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="483.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginCtrl">
+<AnchorPane prefHeight="168.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginCtrl">
    <children>
-      <Label layoutX="124.0" layoutY="14.0" prefHeight="39.0" prefWidth="236.0" text="Administrator Login">
+      <Label layoutX="96.0" layoutY="4.0" prefHeight="39.0" prefWidth="235.0" text="Administrator Login">
          <font>
             <Font size="26.0" />
          </font></Label>
-      <TextField fx:id="password" layoutX="167.0" layoutY="117.0" prefHeight="25.0" prefWidth="266.0" />
-      <Label layoutX="67.0" layoutY="117.0" prefHeight="25.0" prefWidth="58.0" text="Password" />
-      <Button fx:id="enterButton" layoutX="220.0" layoutY="360.0" mnemonicParsing="false" onAction="#checkPassword" text="ENTER" />
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
-      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#backToStart" text="Back" />
-      <Button fx:id="helpButton" layoutX="411.0" layoutY="360.0" mnemonicParsing="false" text="HELP" />
+      <TextField fx:id="password" layoutX="92.0" layoutY="71.0" prefHeight="26.0" prefWidth="268.0" />
+      <Label layoutX="23.0" layoutY="71.0" prefHeight="25.0" prefWidth="58.0" text="Password:" />
+      <Button fx:id="enterButton" layoutX="163.0" layoutY="128.0" mnemonicParsing="false" onAction="#checkPassword" text="ENTER" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="128.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
+      <Button fx:id="backButton" layoutX="23.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToStart" text="Back" />
+      <Button fx:id="helpButton" layoutX="316.0" layoutY="128.0" mnemonicParsing="false" text="HELP" />
+      <Separator layoutX="4.8" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="4.8" AnchorPane.rightAnchor="4.800000000000011" />
    </children>
 </AnchorPane>
