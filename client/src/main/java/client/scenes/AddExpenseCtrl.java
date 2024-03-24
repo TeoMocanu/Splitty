@@ -125,55 +125,28 @@ public class AddExpenseCtrl {
         expense = null;
         mainCtrl.showEventOverview(event, en);
     }
-    /*
-    JSON FORMAT FOR EXPENSE
-    {
-        "event": {
-            "id": 1
-        },
-        "date": "2024-12-12",
-        "payer": {
-            "name": "John"
-        },
-        "debtors": [],
-        "title": "parking",
-        "amount": 12.5
-        }
-     */
 
     public void add() {
-        if(expense == null){
-            try {
-                //Expense expense = createExpense();
-                LocalDate date = LocalDate.of(2024, 12, 12);
-                Participant participant = new Participant("John", event);
+        try {
+            //Expense expense = createExpense();
+            LocalDate date = LocalDate.of(2024, 12, 12);
+            Participant participant = new Participant("John", event);
+            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
-                Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            if(expense != null) server.editExpense(expense);
+            else server.addExpense(expense);
+            //TODO: edit debts tied to expense
 
-                server.addExpense(expense);
-                //TODO: edit debts tied to expense
+        } catch (Exception e) {
 
-            } catch (Exception e) {
-
-                var alert = new Alert(Alert.AlertType.ERROR);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                if(en)
-                    alert.setContentText(e.getMessage() + "- internal error in adding the expense");
-                else
-                    alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
-                alert.showAndWait();
-                return;
-            }
-        }
-        else{
-            /*
-                TODO: edit expense
-                This is a VERY complex task. Beyond just editing the expense, to be
-                able to properly calculate debts, whenever they are implemented, we
-                need to edit all of the debts tied to this expense, substracting the
-                old payment values from the updated payment values for each debtor.
-             */
-            expense = null;
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            if(en)
+                alert.setContentText(e.getMessage() + "- internal error in adding the expense");
+            else
+                alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
+            alert.showAndWait();
+            return;
         }
 
         clearFields();

@@ -1,11 +1,7 @@
 package server.api;
 
 import commons.Expense;
-<<<<<<< HEAD
-import commons.Participant;
-=======
 import commons.primaryKeys.ExpenseKey;
->>>>>>> b6f1c801f36c78dee7aaa54df31199aa55e54fcb
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,17 +38,16 @@ public class ExpenseController {
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/getAllExpensesFromEvent/{eid}")
+    /*@GetMapping("/getAllExpensesFromEvent/{eid}")
     public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
-        List<Expense> all = expenseRepository.findAll();
         List<Expense> ret = new ArrayList<>();
-        for(Expense e : all){
+        for(Expense e : expenseRepository.findAll()){
             if(e.getEvent().getId() == eid){
                 ret.add(e);
             }
         }
         return ret;
-    }
+    }*/
 
     @PostMapping("/addExpense")
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {

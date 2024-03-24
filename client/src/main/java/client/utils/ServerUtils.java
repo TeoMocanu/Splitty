@@ -131,6 +131,14 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
+    public void editExpense(Expense expense) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
     public List<Participant> getAllParticipantsFromEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/getAllFromEvent/" + event.getId()) //
