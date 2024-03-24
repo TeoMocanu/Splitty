@@ -91,7 +91,7 @@ public class ServerUtils {
 
     public Event updateEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/updateEvent/" + event.getId()) //
+                .target(SERVER).path("api/events/updateEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -100,6 +100,14 @@ public class ServerUtils {
     public Event editEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/events/editEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public Event deleteEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/events/deleteEventById/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -139,13 +147,37 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
+    public Expense getExpenseById(Long id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getById" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(Expense.class);
+    }
+
+    public void deleteExpense(Expense expense) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/deleteExpense" + expense.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
     public List<Participant> getAllParticipantsFromEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/getAllFromEvent/" + event.getId()) //
+                .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Participant>>() {
                 });
+    }
+
+    public Participant getParticipantById(Event event, Long id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getParticipantById/" + event.getId() + "/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(Participant.class);
     }
 
 
@@ -164,6 +196,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+    }
+
+    public void deleteParticipant(Participant participant) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/deleteParticipant" + participant.getEvent().getId() + "/" + participant.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
     public List<Participant> getAllParticipantsFromEvent(Long id){
@@ -268,7 +308,7 @@ public class ServerUtils {
         EXEC.submit(() -> {
             while(!Thread.interrupted()){
                 var res = ClientBuilder.newClient(new ClientConfig()) //
-                        .target(SERVER).path("api/updates") //
+                        .target(SERVER).path("api/events/update") //
                         .request(APPLICATION_JSON) //
                         .accept(APPLICATION_JSON) //
                         .get(Response.class);
