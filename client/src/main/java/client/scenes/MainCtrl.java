@@ -26,8 +26,10 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
+
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
+
     private InvitationCtrl invitationCtrl;
     private Scene invitation;
     private AddExpenseCtrl addExpenseCtrl;
@@ -93,6 +95,9 @@ public class MainCtrl {
     }
 
     public void showStarterPage(boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Starter Page");
         primaryStage.setScene(starterPage);
         starterPageCtrl.initialize(en);
@@ -100,8 +105,13 @@ public class MainCtrl {
     }
 
     public void showAdminLogin(boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(adminLogin);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         adminLoginCtrl.initialize(en);
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
@@ -113,37 +123,60 @@ public class MainCtrl {
     }
 
     public void showAddExpense(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addExpense);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         addExpenseCtrl.initialize(event, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
     public void showEventOverview(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(380);
+        primaryStage.setMinHeight(450);
         primaryStage.setTitle("Create/Edit Event");
         primaryStage.setScene(eventOverview);
+        primaryStage.sizeToScene();
         eventOverviewCtrl.initializeEvent(event, en);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 
 
     public void showInvitation(Event event, boolean en){
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(220);
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
+        primaryStage.sizeToScene();
         invitationCtrl.initialize(event, en);
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
     public void showContactDetailsAdd(Event event, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(contactDetails);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         contactDetailCtrl.initialize(event, en);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
     public void showContactDetailsEdit(Participant participant, boolean en) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(contactDetails);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         contactDetailCtrl.initialize(participant.getEvent(), en);
         contactDetailCtrl.setParticipant(participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
@@ -155,10 +188,13 @@ public class MainCtrl {
     }
 
     public void showChangeServer(boolean en) {
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Server");
         primaryStage.setScene(changeServer);
-        changeServerCtrl.language(en);
+        changeServerCtrl.initialize(en);
     }
 
-    public StarterPageCtrl getStarterPageCtrl() { return starterPageCtrl; }
+    public StarterPageCtrl getStarterPageCtrl() {
+        return starterPageCtrl;
+    }
 }
