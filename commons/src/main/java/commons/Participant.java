@@ -1,12 +1,11 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import commons.primaryKeys.ParticipantKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
@@ -24,15 +23,21 @@ public class Participant {
     @Column(name = "event_id")
     private long eventId;
 
+    @Transient
+    private ParticipantKey participantKey;
+
     @ManyToOne
     @MapsId("eventId")
     @JoinColumn(name = "event_id")
+    @JsonIgnoreProperties({"participants", "expenses"})
     private Event event;
 
     @OneToMany(mappedBy = "payer")
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     private List<Expense> expensesPaidBy;
 
     @ManyToMany(mappedBy = "splitters")
+    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
     private List<Expense> expensesToPay;
 
     private String name;
@@ -45,24 +50,22 @@ public class Participant {
     public Participant(Event event, String name, String email, String iban, String bic){
         this.event = event;
         this.eventId = event.getId();
-        this.expensesPaidBy = new ArrayList<>();
-        this.expensesToPay = new ArrayList<>();
         this.name = name;
         this.email = email;
         this.iban = iban;
         this.bic = bic;
+        this.participantKey = new ParticipantKey(event.getId(), id);
     }
 
     public Participant(String name, Event event){
-        this.expensesPaidBy = new ArrayList<>();
-        this.expensesToPay = new ArrayList<>();
         this.event = event;
         this.eventId = event.getId();
         this.name = name;
+        this.participantKey = new ParticipantKey(event.getId(), id);
     }
 
     public ParticipantKey getParticipantKey() {
-        return new ParticipantKey(eventId, id);
+        return participantKey;
     }
 
     public void setEvent(Event event) {

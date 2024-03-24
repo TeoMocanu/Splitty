@@ -33,62 +33,81 @@ public class AdminLoginCtrl {
 
     @FXML
     private TextField password;
+
     @Inject
     public AdminLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
+
     @FXML
-    private void initialize(){
-        currentLanguage = "EN";
-        languageButton.setText("EN");
+    public void initialize(boolean en){
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
         ServerUtils utils = new ServerUtils();
-        String randomPassword = utils.generateRandomPassword(16); // Generates a 16-byte password, encoded in Base64
-        this.adminPassword=randomPassword;
+        int passwordLength = 10;
+        String randomPassword = utils.generateRandomPassword(passwordLength);
+        this.adminPassword = randomPassword;
         System.out.println("Admin Password: " + randomPassword);
     }
+
     public void language(){
+        if(currentLanguage.equals("EN")){
+            en();
+        }
+        else{
+            nl();
+        }
+    }
+    public void languageSwitch(){
         if(currentLanguage.equals("EN")){
             currentLanguage = "NL";
             nl();
-        }
-        else{
+        } else {
             currentLanguage = "EN";
             en();
         }
     }
-    public void en(){
+
+    public void en() {
         languageButton.setText("EN");
         enterButton.setText("ENTER");
         backButton.setText("BACK");
         helpButton.setText("HELP");
     }
-    public void nl(){
+
+    public void nl() {
         languageButton.setText("NL");
         enterButton.setText("INVOEREN");
         backButton.setText("TERUG");
         helpButton.setText("HELP");
     }
+
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
+
     public void checkPassword() {
         try {
+            boolean bypassCredentials = true; // Change this to bypass credentials
+
             String inputPassword = password.getText();
-            boolean passwordMatch = false;
-            if(inputPassword.equals(this.adminPassword)) {
-                passwordMatch=true;
+            boolean passwordMatch = true;
+
+            if (!bypassCredentials) {
+                passwordMatch = inputPassword.equals(this.adminPassword);
             }
-            if(passwordMatch) {
+
+            if (passwordMatch) {
                 System.out.println("Welcome, admin");
-                mainCtrl.showAdminOverview();
+                mainCtrl.showAdminOverview(currentLanguage.equals("EN"));
 
             }
             else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
-                mainCtrl.showStarterPage();
+                mainCtrl.showStarterPage(currentLanguage.equals("EN"));
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -100,6 +119,7 @@ public class AdminLoginCtrl {
 
         clearFields();
     }
+
     private void clearFields() {
         password.clear();
     }
@@ -119,6 +139,6 @@ public class AdminLoginCtrl {
 
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 }

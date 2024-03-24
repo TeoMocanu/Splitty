@@ -15,6 +15,8 @@ public class ChangeServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private boolean en;
+
     @FXML
     private TextField serverField;
     @FXML
@@ -28,6 +30,11 @@ public class ChangeServerCtrl {
     public ChangeServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    public void initialize(boolean en){
+        this.en = en;
+        language(en);
     }
 
     public void save(){
@@ -46,11 +53,11 @@ public class ChangeServerCtrl {
         }
         mainCtrl.getStarterPageCtrl().getServerLabel().setText(server.getServer());
         this.serverField.setText("");
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(en);
     }
     public void cancel(){
         this.serverField.setText("");
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(en);
     }
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {

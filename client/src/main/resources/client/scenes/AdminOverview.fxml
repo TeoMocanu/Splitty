@@ -6,23 +6,35 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
    <children>
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#language" text="EN" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
       <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="EXIT" />
 
       <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" prefWidth="151.0" text="Show server information" />
-      <TableView fx:id="tableView" layoutX="148.0" layoutY="21.0" prefHeight="245.0" prefWidth="248.0">
+      <TableView fx:id="tableView" layoutX="148.0" layoutY="21.0" prefHeight="245.0" prefWidth="339.0">
          <columns>
-            <TableColumn fx:id="column1" text="Column 1">
+            <TableColumn fx:id="id" text="Event ID">
                <cellValueFactory>
-                  <PropertyValueFactory property="column1" />
+                  <PropertyValueFactory property="id" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="column2" text="Column 2">
+            <TableColumn fx:id="title" text="Title">
                <cellValueFactory>
-                  <PropertyValueFactory property="column2" />
+                  <PropertyValueFactory property="title" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="participants" text="Participants">
+               <cellValueFactory>
+                  <PropertyValueFactory property="participants" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="expenses" text="Expenses">
+               <cellValueFactory>
+                  <PropertyValueFactory property="expenses" />
                </cellValueFactory>
             </TableColumn>
          </columns>
       </TableView>
+      <ChoiceBox fx:id="sortChoiceBox" layoutX="148.0" layoutY="280.0" prefWidth="150.0" />
+      <Button fx:id="sortButton" layoutX="318.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="Apply Sort" />
    </children>
 </AnchorPane>

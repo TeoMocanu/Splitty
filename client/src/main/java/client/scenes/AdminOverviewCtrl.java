@@ -2,23 +2,26 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Event;
+import commons.Expense;
+import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 
-import java.util.Map;
+import java.util.List;
 
 public class AdminOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
     private String currentLanguage;
 
     @FXML
@@ -28,74 +31,172 @@ public class AdminOverviewCtrl {
     public Button serverInfoButton;
 
     @FXML
+    public ChoiceBox<String> sortChoiceBox;
+
+    ObservableList<String> sortChoiceBoxProperties
+            = FXCollections.observableArrayList("ID", "Title");
+
+    @FXML
     public Button languageButton;
 
     @FXML
+    public Button sortButton;
+
+    @FXML
     private Button backButton;
-    /**
-     * A class to hold the data for each row in the TableView
-     * This could be a separate class, but for simplicity, I've included it here.
-     */
+
     public class TableRowData {
-        private final SimpleStringProperty column1;
-        private final SimpleStringProperty column2;
+        private final SimpleLongProperty id;
 
-        public TableRowData(String column1, String column2) {
-            this.column1 = new SimpleStringProperty(column1);
-            this.column2 = new SimpleStringProperty(column2);
+        private final SimpleStringProperty title;
+        private final SimpleListProperty<Participant> participants;
+        private final SimpleListProperty<Expense> expenses;
+
+
+        public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
+                            SimpleListProperty<Participant> participants,
+                            SimpleListProperty<Expense> expenses) {
+            this.id = id;
+            this.title = title;
+            this.participants = participants;
+            this.expenses = expenses;
         }
 
-        public String getColumn1() {
-            return column1.get();
+        public long getId() {
+            return id.get();
         }
 
-        public void setColumn1(String value) {
-            column1.set(value);
+        public SimpleLongProperty idProperty() {
+            return id;
         }
 
-        public String getColumn2() {
-            return column2.get();
+        public void setId(long id) {
+            this.id.set(id);
         }
 
-        public void setColumn2(String value) {
-            column2.set(value);
+        public String getTitle() {
+            return title.get();
+        }
+
+        public SimpleStringProperty titleProperty() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title.set(title);
+        }
+
+        public ObservableList<Participant> getParticipants() {
+            return participants.get();
+        }
+
+        public SimpleListProperty<Participant> participantsProperty() {
+            return participants;
+        }
+
+        public void setParticipants(ObservableList<Participant> participants) {
+            this.participants.set(participants);
+        }
+
+        public ObservableList<Expense> getExpenses() {
+            return expenses.get();
+        }
+
+        public SimpleListProperty<Expense> expensesProperty() {
+
+            return expenses;
+        }
+
+        public void setExpenses(ObservableList<Expense> expenses) {
+            this.expenses.set(expenses);
         }
     }
 
+    public void applySort() {
+        if(sortChoiceBox.getValue().equals("ID")) {
+            sortById();
+        } else {
+            sortByTitle();
+        }
+    }
 
+    private void sortById() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(0));
+        tableView.sort();
+    }
+    private void sortByTitle() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(1));
+        tableView.sort();
+    }
+    public void tableInitialize() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
+        contextMenu.getItems().add(deleteItem);
 
-    public void initialize() {
-        this.currentLanguage = "EN";
+        // Setting up the action for the 'Delete' menu item (placeholder for now)
+        deleteItem.setOnAction((event) -> {
+            System.out.println("Delete action goes here");
+            // You will implement the actual delete functionality here
+        });
 
+        // Attach the context menu to each row in the table
+        tableView.setRowFactory(tv -> {
+            TableRow<TableRowData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
+                    contextMenu.show(row, event.getScreenX(), event.getScreenY());
+                } else {
+                    contextMenu.hide();
+                }
+            });
+            return row;
+        });
+    }
+    public void initialize(boolean en) {
+        sortChoiceBox.setItems(sortChoiceBoxProperties);
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
-
-        // TODO connect to the event database and set the rows based on that
-        data.add(new TableRowData("Row 1 Col 1", "Row 1 Col 2"));
-        data.add(new TableRowData("Row 2 Col 1", "Row 2 Col 2"));
-
+        List<Event> allEvents = server.getAllEvents();
+        System.out.println(allEvents);
+        for (Event event : allEvents) {
+            data.add(new TableRowData(new SimpleLongProperty(event.getId()),
+                    new SimpleStringProperty(event.getTitle()),
+                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
+                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses()))));
+        }
         tableView.setItems(data);
+        tableInitialize();
     }
 
-
-
-
-    public void language(){
-        if(currentLanguage.equals("EN")){
+    public void languageSwitch() {
+        if (currentLanguage.equals("EN")) {
             currentLanguage = "NL";
             nl();
-        }
-        else{
+        } else {
             currentLanguage = "EN";
             en();
         }
     }
-    public void en(){
+
+    public void language() {
+        if (currentLanguage.equals("EN")) {
+            en();
+        } else {
+            nl();
+        }
+    }
+
+    public void en() {
         languageButton.setText("EN");
         serverInfoButton.setText("Server Info");
         backButton.setText("EXIT");
 
     }
-    public void nl(){
+
+    public void nl() {
         languageButton.setText("NL");
         serverInfoButton.setText("Server Informatie");
         backButton.setText("AFSLUITEN");
@@ -107,10 +208,12 @@ public class AdminOverviewCtrl {
         this.server = server;
 
     }
+
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
+
     public void ok() {
         try {
             // TODO: Add admin functionality, like seeing server instances
@@ -125,8 +228,9 @@ public class AdminOverviewCtrl {
         }
 
         clearFields();
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
+
     private void clearFields() {
     }
 
@@ -145,15 +249,15 @@ public class AdminOverviewCtrl {
 
     public void showServerInfo() {
         try {
-            Map<String, Object> serverInfo = server.fetchServerInfo();
-            System.out.println("Server Info: " + serverInfo);
+            String serverInfo = server.fetchAllServerInfo();
+            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
-            System.out.println("Failed to fetch server info: " + e.getMessage());
+            System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public void exitAdminOverview() {
-        mainCtrl.showStarterPage();
+        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
 }
