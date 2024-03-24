@@ -112,7 +112,7 @@ public class StarterPageCtrl {
                 }
                 deleteMenuItem.setOnAction(e -> {
                     eventList.remove(selectedEvent);
-                    listView.setItems(FXCollections.observableList(eventList));
+                    updateHistory();
                 });
                 contextMenu.getItems().add(deleteMenuItem);
                 contextMenuList.add(contextMenu);
@@ -161,6 +161,21 @@ public class StarterPageCtrl {
         return eventList.contains(name);
     }
 
+    public ObservableList<Event> reverseObservableList(ObservableList<Event> originalList) {
+        ObservableList<Event> reversedList = FXCollections.observableArrayList();
+        for (int i = originalList.size() - 1; i >= 0; i--) {
+            reversedList.add(originalList.get(i));
+        }
+        return reversedList;
+    }
+
+    public void updateHistory() {
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
+        ObservableList<Event> reversedList = reverseObservableList(observableEventList);
+        listView.setItems(FXCollections.observableList(reversedList));
+        listView.refresh();
+    }
+
     public void createNewEvent() {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
@@ -168,9 +183,7 @@ public class StarterPageCtrl {
         Event repEvent = server.addEvent(newEvent);
 
         eventList.add(repEvent);
-        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
-        listView.setItems(FXCollections.observableList(observableEventList));
-        listView.refresh();
+        updateHistory();
 
         mainCtrl.showEventOverview(repEvent, en);
     }
@@ -185,9 +198,7 @@ public class StarterPageCtrl {
                     eventList.remove(event);
                 }
                 eventList.add(event);
-                ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
-                listView.setItems(FXCollections.observableList(observableEventList));
-                listView.refresh();
+                updateHistory();
                 mainCtrl.showEventOverview(event, en);
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
