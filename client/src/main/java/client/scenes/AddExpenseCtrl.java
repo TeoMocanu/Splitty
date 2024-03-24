@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
+import org.apache.tomcat.util.json.JSONParser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -118,13 +119,31 @@ public class AddExpenseCtrl {
         clearFields();
         mainCtrl.showEventOverview(event, en);
     }
+    /*
+    JSON FORMAT FOR EXPENSE
+    {
+        "event": {
+            "id": 1
+        },
+        "date": "2024-12-12",
+        "payer": {
+            "name": "John"
+        },
+        "debtors": [],
+        "title": "parking",
+        "amount": 12.5
+        }
+     */
 
     public void add() {
         try {
             //Expense expense = createExpense();
             LocalDate date = LocalDate.of(2024, 12, 12);
             Participant participant = new Participant("John", event);
+            server.addParticipant(participant);
+
             Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+
             server.addExpense(expense);
 
         } catch (Exception e) {

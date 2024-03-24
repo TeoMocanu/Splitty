@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Event;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,7 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-import java.util.Map;
+import java.util.List;
 
 public class AdminOverviewCtrl {
     private final ServerUtils server;
@@ -31,10 +32,7 @@ public class AdminOverviewCtrl {
 
     @FXML
     private Button backButton;
-    /**
-     * A class to hold the data for each row in the TableView
-     * This could be a separate class, but for simplicity, I've included it here.
-     */
+
     public class TableRowData {
         private final SimpleStringProperty column1;
         private final SimpleStringProperty column2;
@@ -67,11 +65,11 @@ public class AdminOverviewCtrl {
         this.currentLanguage = en ? "EN" : "NL";
         language();
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
-
-        // TODO connect to the event database and set the rows based on that
-        data.add(new TableRowData("Row 1 Col 1", "Row 1 Col 2"));
-        data.add(new TableRowData("Row 2 Col 1", "Row 2 Col 2"));
-
+        List<Event> allEvents = server.getAllEvents();
+        System.out.println(allEvents);
+        for (Event event : allEvents) {
+            data.add(new TableRowData(event.getTitle(), event.getParticipants().toString()));
+        }
         tableView.setItems(data);
     }
 
@@ -79,8 +77,7 @@ public class AdminOverviewCtrl {
         if(currentLanguage.equals("EN")){
             currentLanguage = "NL";
             nl();
-        }
-        else{
+        } else {
             currentLanguage = "EN";
             en();
         }
@@ -100,7 +97,8 @@ public class AdminOverviewCtrl {
         backButton.setText("EXIT");
 
     }
-    public void nl(){
+
+    public void nl() {
         languageButton.setText("NL");
         serverInfoButton.setText("Server Informatie");
         backButton.setText("AFSLUITEN");
@@ -112,10 +110,12 @@ public class AdminOverviewCtrl {
         this.server = server;
 
     }
+
     public void cancel() {
         clearFields();
         mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
+
     public void ok() {
         try {
             // TODO: Add admin functionality, like seeing server instances
@@ -132,6 +132,7 @@ public class AdminOverviewCtrl {
         clearFields();
         mainCtrl.showStarterPage(currentLanguage.equals("EN"));
     }
+
     private void clearFields() {
     }
 
@@ -150,10 +151,10 @@ public class AdminOverviewCtrl {
 
     public void showServerInfo() {
         try {
-            Map<String, Object> serverInfo = server.fetchServerInfo();
-            System.out.println("Server Info: " + serverInfo);
+            String serverInfo = server.fetchAllServerInfo();
+            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
-            System.out.println("Failed to fetch server info: " + e.getMessage());
+            System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
         }
     }
