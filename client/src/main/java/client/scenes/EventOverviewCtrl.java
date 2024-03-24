@@ -1,24 +1,19 @@
 package client.scenes;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 
 import commons.Participant;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
@@ -122,6 +117,10 @@ public class EventOverviewCtrl implements Initializable {
         //TODO
     }
 
+    public void test() {
+        List<Debt> debt = server.getDebts(1);
+        System.out.println(debt.get(0));
+    }
     public void setSettleDebtsButton()
     {
         eventName = settleDebtsButton.getText();

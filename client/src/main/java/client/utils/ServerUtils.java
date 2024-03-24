@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
+import commons.Debt;
 import commons.Event;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
@@ -163,5 +164,13 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
         throw new IllegalStateException();
+    }
+
+    public List<Debt> getDebts(long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debt/event/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Debt>>(){});
     }
 }

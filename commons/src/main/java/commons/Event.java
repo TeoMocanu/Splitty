@@ -88,6 +88,7 @@ public class Event {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+    //@JsonIgnore
 
     @Override
     public String toString() {

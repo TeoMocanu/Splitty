@@ -1,26 +1,20 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import commons.Event;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import com.google.inject.Inject;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
-public class OpenDebtsNewCtrl {
+public class OpenDebtsNewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -64,7 +58,7 @@ public class OpenDebtsNewCtrl {
     private Label iban;
 
     @FXML
-    private Label BIC;
+    private Label bic;
 
     @FXML
     private Label emailConfig;
@@ -108,7 +102,10 @@ public class OpenDebtsNewCtrl {
 
     }
 
-    public void initialize(Event event, boolean en) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
+
+
 }
