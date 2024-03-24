@@ -1,14 +1,15 @@
 package client.scenes;
 
 
+import java.util.List;
 import java.util.ArrayList;
 
-import java.util.List;
 
 
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 
 import commons.Expense;
@@ -37,6 +38,8 @@ public class EventOverviewCtrl {
     private List<Participant> participants = new ArrayList<>();
     private List<Expense> expenses = new ArrayList<>();
     private List<String> payers = new ArrayList<>();
+
+    private String eventName;
 
     @FXML
     private ListView participantsListView;
@@ -202,4 +205,19 @@ public class EventOverviewCtrl {
         editExpenseButton.setText("Bewerk Geselecteerde");
         editTitleButton.setText("Titel Bewerken");
     }
+
+    public void test() {
+        List<Debt> debt = server.getDebts(1);
+        System.out.println(debt.get(0));
+    }
+    public void setSettleDebtsButton()
+    {
+        eventName = settleDebtsButton.getText();
+        Event newEvent = new Event(eventName);
+
+
+        Event repEvent = server.addEvent(newEvent);
+        mainCtrl.showOpenDebts(repEvent, en);
+    }
+
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox fx:id="debtsContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Open Debts" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="31.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Label>
+      <HBox prefHeight="50.0" prefWidth="100.0">
+         <VBox.margin>
+            <Insets top="250.0" />
+         </VBox.margin>
+         <children>
+            <Label text="John gives 123$ to David" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </Label>
+            <CheckBox mnemonicParsing="false">
+               <HBox.margin>
+                  <Insets left="30.0" top="5.0" />
+               </HBox.margin>
+            </CheckBox>
+            <CheckBox mnemonicParsing="false" translateX="-30.0">
+               <HBox.margin>
+                  <Insets left="100.0" top="5.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Label text="Email" translateX="-110.0">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" text="Mark Received" translateX="-60.0" translateY="-5.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <TitledPane prefHeight="150.0" prefWidth="200.0" text="Bank Information" translateY="-15.0">
+         <content>
+            <VBox prefHeight="110.0" prefWidth="798.0">
+               <children>
+                  <Label text="Bank information available, transfer the money to:">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="Account Holder: John Foo">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="IBAN: NL12 3456 7890 1234 56">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="BIC: ABCDEFGH">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label />
+                  <Label text="Email Configured: ">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" text="send reminder" translateX="120.0" translateY="-20.0">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+         <VBox.margin>
+            <Insets left="30.0" right="400.0" />
+         </VBox.margin>
+      </TitledPane>
+   </children>
+</VBox>

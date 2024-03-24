@@ -46,6 +46,9 @@ public class MainCtrl {
     private EventOverviewCtrl eventOverviewCtrl;
     private Scene eventOverview;
 
+    private OpenDebtsNewCtrl openDebtsNewCtrl;
+    private Scene openDebts;
+
 
     public MainCtrl() {
     }
@@ -103,6 +106,11 @@ public class MainCtrl {
         primaryStage.setScene(starterPage);
         starterPageCtrl.initialize(en);
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
+    }
+
+    public void setOpenDebtsNewCtrl(Pair<OpenDebtsNewCtrl, Parent> openDebtsNewCtrl){
+        this.openDebtsNewCtrl = openDebtsNewCtrl.getKey();
+        this.openDebts = new Scene(openDebtsNewCtrl.getValue());
     }
 
     public void showAdminLogin(boolean en) {
@@ -192,7 +200,11 @@ public class MainCtrl {
     }
 
     public void showOpenDebts(Event event, boolean en) {
-        //TODO when page exists :)
+        primaryStage.setTitle("Settle Debts");
+        primaryStage.setScene(openDebts);
+//        openDebtsNewCtrl.initialize(event, en);
+        //openDebtsNewCtrl.displayEvent();
+        openDebts.setOnKeyPressed(e ->openDebtsNewCtrl.keyPressed(e));
     }
 
     public void showChangeServer(boolean en) {
