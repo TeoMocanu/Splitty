@@ -61,7 +61,7 @@ public class StarterPageCtrl {
 
     private boolean en;
     @Inject
-    public StarterPageCtrl(ServerUtils server,  MainCtrl mainCtrl) {
+    public StarterPageCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
@@ -80,7 +80,7 @@ public class StarterPageCtrl {
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
         this.en = en;
-        en();
+        language();
         this.serverLabel.setText(server.getServer());
     }
 
