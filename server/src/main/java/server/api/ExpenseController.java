@@ -14,9 +14,9 @@ import java.util.Optional;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
+    @Autowired
     private final ExpenseRepository expenseRepository;
 
-    @Autowired
     public ExpenseController(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
     }

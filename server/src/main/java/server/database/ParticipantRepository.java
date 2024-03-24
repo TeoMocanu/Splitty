@@ -20,9 +20,11 @@ import commons.primaryKeys.ParticipantKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ParticipantRepository extends JpaRepository<Participant, ParticipantKey> {
     @Query(value = "SELECT * FROM PARTICIPANT WHERE EVENT_ID = :eid", nativeQuery = true)
     List<Participant> findByEventId(@Param("eid") Long eid);

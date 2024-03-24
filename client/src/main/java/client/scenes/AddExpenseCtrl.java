@@ -95,24 +95,31 @@ public class AddExpenseCtrl {
 
     @FXML
     void initialize(Event event, boolean en){
+        if(event.getTypes() != null && event.getTypes().size() > 0)
+            types = FXCollections.observableArrayList(event.getTypes());
+        type.setValue("other");
+        type.setItems(types);
+        currency.setValue("EUR");
+        currency.setItems(currencies);
+        participants = FXCollections.observableArrayList();
+        splitOptions = FXCollections.observableArrayList();
+        for(Participant p : event.getParticipants()){
+            participants.add(p.getName());
+            splitOptions.add(new CheckBox(p.getName()));
+        }
+        menu.setItems(splitOptions);
+        name.setItems(participants);
+        everyone.setSelected(true);
         if(expense == null){
-            type.setValue("other");
-            type.setItems(types);
-            currency.setValue("EUR");
-            currency.setItems(currencies);
-            participants = FXCollections.observableArrayList();
-            splitOptions = FXCollections.observableArrayList();
-            for(Participant p : event.getParticipants()){
-                participants.add(p.getName());
-                splitOptions.add(new CheckBox(p.getName()));
-            }
-            menu.setItems(splitOptions);
-            name.setItems(participants);
             name.setValue(" ");
-            everyone.setSelected(true);
         }
         else{
-            //TODO: set fields to expense values, make "add" button show "edit"
+            content.setText(expense.getTitle());
+            amount.setText(Float.toString(expense.getAmount()));
+            name.setValue(expense.getPayer().getName());
+            addButton.setText("Edit");
+            if(!en) addButton.setText("Bewerk");
+            //TODO: load the list of Splitters for the visual
         }
 
         this.en = en;
@@ -135,8 +142,8 @@ public class AddExpenseCtrl {
 
             if(expense != null) server.editExpense(expense);
             else server.addExpense(expense);
-            //TODO: edit debts tied to expense
 
+            //TODO: edit debts tied to expense
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -186,6 +193,10 @@ public class AddExpenseCtrl {
             return null;
         }
         //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
+        if(expense != null){
+            if(expense.getLocalDate() != null) date = expense.getLocalDate();
+            if(expense.getSplitters() != null) debtors = expense.getSplitters();
+        }
         return new Expense(event, date, payer, debtors, content.getText(), amount);
     }
 

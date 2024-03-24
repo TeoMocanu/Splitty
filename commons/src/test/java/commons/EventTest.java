@@ -49,6 +49,10 @@ public class EventTest {
         e.addExpense(e1);
         e.addExpense(e2);
         e.addExpense(e3);
+        e.addType("food");
+        e.addType("drinks");
+        e.addType("venue");
+        e.addType("transport");
     }
     @Test
     public void checkConstructor() {
@@ -112,6 +116,36 @@ public class EventTest {
         assertEquals(5, e.getParticipants().size());
         assertEquals(p3, e.getParticipants().get(3));
         assertEquals(p, e.getParticipants().get(4));
+    }
+
+    @Test
+    public void getTypesTest() {
+        assertEquals(4, e.getTypes().size());
+        assertEquals("food", e.getTypes().get(0));
+        assertEquals("drinks", e.getTypes().get(1));
+        assertEquals("venue", e.getTypes().get(2));
+        assertEquals("transport", e.getTypes().get(3));
+    }
+
+    @Test
+    public void setTypesTest() {
+        List<String> types = List.of("elem1", "elem2", "elem3");
+        e.setTypes(types);
+        assertEquals(3, e.getTypes().size());
+        assertEquals("elem1", e.getTypes().get(0));
+        assertEquals("elem2", e.getTypes().get(1));
+        assertEquals("elem3", e.getTypes().get(2));
+    }
+
+    @Test
+    public void addTypesTest() {
+        assertEquals(4, e.getTypes().size());
+        e.addType("type5");
+        assertEquals(5, e.getTypes().size());
+        assertEquals("food", e.getTypes().get(0));
+        assertEquals("drinks", e.getTypes().get(1));
+        assertEquals("transport", e.getTypes().get(3));
+        assertEquals("type5", e.getTypes().get(4));
     }
 
     @Test

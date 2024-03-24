@@ -19,11 +19,9 @@ public class EventController {
     @Autowired
     private final EventRepository eventRepository;
 
-    private final ExpenseController expenseController;
 
     public EventController(EventRepository e){
         this.eventRepository = e;
-        expenseController = null;
     }
 
     @GetMapping("/getAll")

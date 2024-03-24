@@ -201,7 +201,9 @@ public class StarterPageCtrl {
         Event newEvent = new Event(eventName);
 
         Event repEvent = server.addEvent(newEvent);
-
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
+        listView.setItems(FXCollections.observableList(observableEventList));
+        listView.refresh();
         eventList.add(repEvent);
         createNewEvent.clear();
         updateHistory();
