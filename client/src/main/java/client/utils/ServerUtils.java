@@ -71,7 +71,7 @@ public class ServerUtils {
 
     public Event getEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getById/" + id) //
+                .target(SERVER).path("api/events/getById/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Event>() {
@@ -80,7 +80,7 @@ public class ServerUtils {
 
     public List<Event> getAllEvents() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getAll") //
+                .target(SERVER).path("api/events/getAll") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Event>>() {
@@ -89,7 +89,7 @@ public class ServerUtils {
 
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/addEvent") //
+                .target(SERVER).path("api/events/addEvent") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -97,13 +97,13 @@ public class ServerUtils {
 
     public Event editEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/editEvent/" + event.getId()) //
+                .target(SERVER).path("api/events/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public void addExpense(Expense expense, Event event) {
+    public void addExpense(Expense expense) {
         //event.addExpense(expense);
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/addExpense") //
@@ -112,7 +112,7 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
-    public void addParticipant(Participant participant, Event event) {
+    public void addParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/addParticipant") //
                 .request(APPLICATION_JSON) //
@@ -123,16 +123,34 @@ public class ServerUtils {
     //TODO check the path after api is implemented and redo the method
     public void editParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/editParticipant/" + participant.getEventId() + "/" + participant.getId()) //
+                .target(SERVER).path("api/participants/editParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
+    public List<Participant> getAllParticipantsFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Participant>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
     //TODO implement
     public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/invitation") //
+                .target(SERVER).path("api/event/invitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);

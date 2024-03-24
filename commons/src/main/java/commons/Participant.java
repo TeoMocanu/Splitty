@@ -5,11 +5,9 @@ import commons.primaryKeys.ParticipantKey;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 @IdClass(ParticipantKey.class)
@@ -142,9 +140,14 @@ public class Participant {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+//    @Override
+//    public String toString() {
+//        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+//    }
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return name;
     }
 
 }
