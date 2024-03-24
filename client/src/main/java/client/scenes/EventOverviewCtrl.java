@@ -71,10 +71,11 @@ public class EventOverviewCtrl {
         this.event = event;
         this.en = en;
         if(!en) nl();
+        else en();
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
-        expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
+        //expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
 
         participants = server.getAllParticipantsFromEvent(event.getId());
         System.out.println("Participants: " + participants);
@@ -86,6 +87,7 @@ public class EventOverviewCtrl {
         System.out.println("Expenses: " + expenses);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
         if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
+        if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
         //expensesScrollPane.setFitToHeight(true);
         //expensesScrollPane.setFitToWidth(true);
     }
@@ -141,6 +143,18 @@ public class EventOverviewCtrl {
             default:
                 break;
         }
+    }
+
+    public void en() {
+        participantsLabel.setText("Participants");
+        participantAddButton.setText("Add");
+        participantEditButton.setText("Edit");
+        expensesLabel.setText("Expenses");
+        addExpenseButton.setText("Add");
+        settleDebtsButton.setText("Settle debts");
+        sendInvitesButton.setText("Send invites");
+        backButton.setText("Back");
+        save.setText("Save");
     }
     public void nl() {
         participantsLabel.setText("Deelnemers");
