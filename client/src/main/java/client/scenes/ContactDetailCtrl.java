@@ -29,6 +29,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import javax.servlet.http.Part;
+
 public class ContactDetailCtrl {
 
     private final ServerUtils server;
@@ -101,7 +103,10 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
+                Participant par = getParticipant();
                 server.addParticipant(getParticipant(), event);
+                event.addParticipant(par);
+                this.event = server.updateEvent(event);
             } else {
                 server.editParticipant(getParticipant());
             }
@@ -113,7 +118,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showStarterPage(en);
+        mainCtrl.showEventOverview(event, en);
     }
 
     private Participant getParticipant() {

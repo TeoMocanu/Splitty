@@ -19,15 +19,20 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sun.tools.jconsole.JConsoleContext;
 import commons.Event;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Participant;
@@ -58,17 +63,6 @@ public class ServerUtils {
         this.session = connect(webSocketServer);
     }
 
-    /*
-    public void getQuotesTheHardWay() throws IOException, URISyntaxException {
-        var url = new URI("http://localhost:8080/api/quotes").toURL();
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-    }*/
-
     public Event getEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/getById/" + id) //
@@ -95,6 +89,14 @@ public class ServerUtils {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
+    public Event updateEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/updateEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
     public Event editEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/editEvent/" + event.getId()) //
@@ -103,13 +105,39 @@ public class ServerUtils {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
+    public List<Expense> getAllExpenses() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAll") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllFromEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
     public void addExpense(Expense expense, Event event) {
-        //event.addExpense(expense);
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/addExpense") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
+    public List<Participant> getAllParticipantsFromEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getAllFromEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Participant>>() {
+                });
     }
 
     public void addParticipant(Participant participant, Event event) {
@@ -198,5 +226,30 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
         throw new IllegalStateException();
+    }
+
+    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    public void registerForUpdates(Consumer<Event> consumer) {
+        EXEC.submit(() -> {
+            while(!Thread.interrupted()){
+                var res = ClientBuilder.newClient(new ClientConfig()) //
+                        .target(SERVER).path("api/updates") //
+                        .request(APPLICATION_JSON) //
+                        .accept(APPLICATION_JSON) //
+                        .get(Response.class);
+                if(res.getStatus() == 204){
+                    continue;
+                }
+                if(res.getStatus() == 404){
+                    consumer.accept(new Event(""));
+                    continue;
+                }
+                var e  = res.readEntity(Event.class);
+                consumer.accept(e);
+            }
+        });
+    }
+    public void stop() {
+        EXEC.shutdownNow();
     }
 }

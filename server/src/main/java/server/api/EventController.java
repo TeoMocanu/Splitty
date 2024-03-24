@@ -4,13 +4,14 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.EventRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api")
@@ -62,9 +63,9 @@ public class EventController {
 
     @GetMapping("/getIdById/{id}")
     public ResponseEntity<Long> getEventIdById(@PathVariable("id") Long id){
-        if(id <= 0 || !eventRepository.existsById(id)) //check if id given exists or not. If not give back a bad request response.
+        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
             return ResponseEntity.badRequest().build();
-
+        }
         return ResponseEntity.ok(eventRepository.findById(id).get().getId());
     }
 
@@ -85,8 +86,18 @@ public class EventController {
         if(id <= 0 || !eventRepository.existsById(id)){
             return ResponseEntity.badRequest().build();
         }
+        listeners.forEach((k, l) -> l.accept(event));
         Event added = eventRepository.save(event);
         return ResponseEntity.ok(added);
+    }
+
+    @PostMapping("/updateEvent/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable("id") Long id, @RequestBody Event event) {
+        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
+            return ResponseEntity.badRequest().build();
+        }
+        listeners.forEach((k, l) -> l.accept(event));
+        return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
     @PostMapping("/addExpense/{event_id}")
@@ -155,7 +166,7 @@ public class EventController {
         return;
     }
 
-    @GetMapping("/deleteById/{event_id}")
+    @GetMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
         if(!eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
@@ -166,5 +177,16 @@ public class EventController {
             return ResponseEntity.badRequest().build();
         eventRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private Map<Object, Consumer<Event>> listeners = new HashMap<>();
+    @GetMapping("/update")
+    public DeferredResult<ResponseEntity<Event>> getUpdates() {
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
+        var key = new Object();
+        listeners.put(key, q -> { res.setResult(ResponseEntity.ok(q)); });
+        res.onCompletion(() -> { listeners.remove(key); });
+        return res;
     }
 }

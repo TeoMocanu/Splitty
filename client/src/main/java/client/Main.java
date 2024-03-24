@@ -41,7 +41,6 @@ public class Main extends Application {
 
         var addExpense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
         var starterPage = FXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
-        var contactDetail = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
         var adminOverview = FXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
         var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var contactDetails = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
@@ -61,5 +60,9 @@ public class Main extends Application {
         mainCtrl.invitation(invitation);
 
         mainCtrl.initialize(primaryStage);
+
+        primaryStage.setOnCloseRequest(e -> {
+            starterPage.getKey().stop();
+        });
     }
 }

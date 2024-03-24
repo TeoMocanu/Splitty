@@ -1,11 +1,13 @@
 package server.api;
 
 import commons.Expense;
+import commons.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.ExpenseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,18 @@ public class ExpenseController {
     public ResponseEntity<Expense> getExpenseById(@PathVariable("id") Long id) {
         Optional<Expense> expenseOptional = expenseRepository.findById(id);
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getAllExpensesFromEvent/{eid}")
+    public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
+        List<Expense> all = expenseRepository.findAll();
+        List<Expense> ret = new ArrayList<>();
+        for(Expense e : all){
+            if(e.getEvent().getId() == eid){
+                ret.add(e);
+            }
+        }
+        return ret;
     }
 
     @PostMapping("/addExpense")
