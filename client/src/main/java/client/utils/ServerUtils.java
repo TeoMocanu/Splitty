@@ -327,4 +327,19 @@ public class ServerUtils {
     public void stop() {
         EXEC.shutdownNow();
     }
+
+    public void sendMail(String unformattedEmail, boolean en){
+        try {
+            List<String> emails = MailerUtils.getMails(unformattedEmail, en);
+            for (String email : emails) {
+                ClientBuilder.newClient(new ClientConfig()) //
+                        .target(SERVER).path("api/mail/sendMail") //
+                        .request(APPLICATION_JSON) //
+                        .accept(APPLICATION_JSON) //
+                        .put(Entity.entity(email, APPLICATION_JSON), String.class);
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 }

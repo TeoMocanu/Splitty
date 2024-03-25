@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,25 +57,43 @@ public class InvitationCtrl {
     }
 
     public void send() {
-        try {
-            server.sendInvitations(getEmails(), code.getText());
-        } catch (WebApplicationException e) {
 
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+        try {
+            String[] emails = getEmails().toArray(new String[0]);
+        } catch (RuntimeException e) {
+            ErrorMessage.showError(e.getMessage(), true);
             return;
         }
-
+        for(String email: getEmails()) {
+            new Thread(() -> {
+                try {
+                    server.sendMail(email, en);
+                } catch (WebApplicationException e) {
+                    ErrorMessage.showError(e.getMessage(), true);
+                }
+            }).start();
+        }
         clearFields();
         mainCtrl.showEventOverview(event, en);
     }
 
-    private List<String> getEmails() {
-        String str = emails.getText();
-        List<String> emails = Arrays.asList(str.split("\n"));
-        return emails;
+    public List<String> getEmails() throws IllegalArgumentException{
+        String unformattedMails = emails.getText();
+        String[] lines = unformattedMails.split("\n|\r\n");
+        List<String> mails = new ArrayList<>();
+        String errors = "";
+        for (String line : lines) {
+            if (line.matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9]{2,}")) {
+                mails.add(line);
+            } else {
+
+                errors += en ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
+            }
+        }
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException(errors);
+        }
+        return mails;
     }
 
     private void clearFields() {
