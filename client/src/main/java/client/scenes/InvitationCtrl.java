@@ -3,17 +3,13 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Invitation;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InvitationCtrl {
@@ -23,7 +19,7 @@ public class InvitationCtrl {
     private boolean en;
 
     @FXML
-    private TextField emails;
+    private TextArea emails;
     @FXML
     private Label title;
     @FXML
@@ -57,27 +53,25 @@ public class InvitationCtrl {
     }
 
     public void send() {
-
+        List<String> emails;
         try {
-            String[] emails = getEmails().toArray(new String[0]);
-        } catch (RuntimeException e) {
+            emails = getEmails();
+        } catch (IllegalArgumentException e) {
             ErrorMessage.showError(e.getMessage(), true);
             return;
         }
-        for(String email: getEmails()) {
-            new Thread(() -> {
-                try {
-                    server.sendMail(email, en);
-                } catch (WebApplicationException e) {
-                    ErrorMessage.showError(e.getMessage(), true);
-                }
-            }).start();
+        for (String email : emails) {
+            try {
+                server.sendMail(new Invitation(email, event.getId()));
+            } catch (WebApplicationException e) {
+                ErrorMessage.showError(e.getMessage(), true);
+            }
         }
         clearFields();
         mainCtrl.showEventOverview(event, en);
     }
 
-    public List<String> getEmails() throws IllegalArgumentException{
+    public List<String> getEmails() throws IllegalArgumentException {
         String unformattedMails = emails.getText();
         String[] lines = unformattedMails.split("\n|\r\n");
         List<String> mails = new ArrayList<>();
@@ -112,18 +106,21 @@ public class InvitationCtrl {
                 break;
         }
     }
-    public void language(){
-        if(en) en();
+
+    public void language() {
+        if (en) en();
         else nl();
     }
-    public void en(){
+
+    public void en() {
         title.setText("New Year Party");
         text1.setText("Give people the following invite code");
         text2.setText("Invite the following people by email (one address per line)");
         sendInvites.setText("send invites");
         cancelButton.setText("cancel");
     }
-    public void nl(){
+
+    public void nl() {
         title.setText("nieuwjaarsfeest");
         text1.setText("Geef mensen de volgende uitnodigingscode");
         text2.setText("Nodig de volgende mensen uit per e-mail (\u00e9\u00e9n adres per regel)");

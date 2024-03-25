@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailerService {
     @Autowired
-    public JavaMailSender emailSender;
+    public JavaMailSender javaMailSender;
 
-    public void sendTestMail(String to, String subject, String text) {
+    public void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("group4.oopp@gmail.com");
+        message.setCc("group4.oopp@gmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
 
         System.out.println("Sending mail to: " + to);
-        emailSender.send(message);
+        javaMailSender.send(message);
         System.out.println("Mail sent to: " + to);
     }
-
 }

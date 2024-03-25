@@ -28,15 +28,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import commons.Debt;
-import commons.Event;
+import commons.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.Participant;
-import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -206,7 +203,7 @@ public class ServerUtils {
                 .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
-    public List<Participant> getAllParticipantsFromEvent(Long id){
+    public List<Participant> getAllParticipantsFromEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + id) //
                 .request(APPLICATION_JSON) //
@@ -215,7 +212,7 @@ public class ServerUtils {
                 });
     }
 
-    public List<Expense> getAllExpensesFromEvent(Long id){
+    public List<Expense> getAllExpensesFromEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + id) //
                 .request(APPLICATION_JSON) //
@@ -224,12 +221,13 @@ public class ServerUtils {
                 });
     }
 
-    public List<Debt> getDebts(long id){
+    public List<Debt> getDebts(long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/event/"+id) //
+                .target(SERVER).path("api/debt/event/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Debt>>(){});
+                .get(new GenericType<List<Debt>>() {
+                });
     }
 
     //TODO implement
@@ -304,42 +302,37 @@ public class ServerUtils {
     }
 
     private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+
     public void registerForUpdates(Consumer<Event> consumer) {
         EXEC.submit(() -> {
-            while(!Thread.interrupted()){
+            while (!Thread.interrupted()) {
                 var res = ClientBuilder.newClient(new ClientConfig()) //
                         .target(SERVER).path("api/events/update") //
                         .request(APPLICATION_JSON) //
                         .accept(APPLICATION_JSON) //
                         .get(Response.class);
-                if(res.getStatus() == 204){
+                if (res.getStatus() == 204) {
                     continue;
                 }
-                if(res.getStatus() == 404){
+                if (res.getStatus() == 404) {
                     consumer.accept(new Event(""));
                     continue;
                 }
-                var e  = res.readEntity(Event.class);
+                var e = res.readEntity(Event.class);
                 consumer.accept(e);
             }
         });
     }
+
     public void stop() {
         EXEC.shutdownNow();
     }
 
-    public void sendMail(String unformattedEmail, boolean en){
-        try {
-            List<String> emails = MailerUtils.getMails(unformattedEmail, en);
-            for (String email : emails) {
-                ClientBuilder.newClient(new ClientConfig()) //
-                        .target(SERVER).path("api/mail/sendMail") //
-                        .request(APPLICATION_JSON) //
-                        .accept(APPLICATION_JSON) //
-                        .put(Entity.entity(email, APPLICATION_JSON), String.class);
-            }
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+    public void sendMail(Invitation invitation) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/mail/sendMail") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(invitation, APPLICATION_JSON), Invitation.class);
     }
 }
