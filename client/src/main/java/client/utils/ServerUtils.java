@@ -102,7 +102,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/events/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     public Event deleteEvent(Event event) {

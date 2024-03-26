@@ -45,7 +45,8 @@ public class MainCtrl {
     private Scene changeServer;
     private EventOverviewCtrl eventOverviewCtrl;
     private Scene eventOverview;
-
+    private EditTitleCtrl editTitleCtrl;
+    private Scene editTitle;
     private OpenDebtsNewCtrl openDebtsNewCtrl;
     private Scene openDebts;
 
@@ -96,6 +97,11 @@ public class MainCtrl {
     public void changeServer(Pair<ChangeServerCtrl, Parent> changeServer){
         this.changeServerCtrl = changeServer.getKey();
         this.changeServer = new Scene(changeServer.getValue());
+    }
+
+    public void editTitle(Pair<EditTitleCtrl, Parent> editTitle){
+        this.editTitleCtrl = editTitle.getKey();
+        this.editTitle = new Scene(editTitle.getValue());
     }
 
     public void showStarterPage(boolean en) {
@@ -202,23 +208,27 @@ public class MainCtrl {
     public void showOpenDebts(Event event, boolean en) {
         primaryStage.setTitle("Settle Debts");
         primaryStage.setScene(openDebts);
-//        openDebtsNewCtrl.initialize(event, en);
+        openDebtsNewCtrl.initialize(event, en);
         //openDebtsNewCtrl.displayEvent();
         openDebts.setOnKeyPressed(e ->openDebtsNewCtrl.keyPressed(e));
     }
 
     public void showChangeServer(boolean en) {
         primaryStage.setResizable(false);
-        primaryStage.setTitle("Server");
+        primaryStage.setTitle("Change Server");
         primaryStage.setScene(changeServer);
         changeServerCtrl.initialize(en);
     }
 
-    public StarterPageCtrl getStarterPageCtrl() {
-        return starterPageCtrl;
+    public void showEditTitle(Event event, boolean en) {
+        //primaryStage.setResizable(false);
+        primaryStage.setTitle("Edit Title");
+        primaryStage.setScene(editTitle);
+        editTitleCtrl.initialize(event, en);
+        editTitle.setOnKeyPressed(e ->editTitleCtrl.keyPressed(e));
     }
 
-    public void showEditEventTitle(Event event, boolean en) {
-        //TODO when page exists :)
+    public StarterPageCtrl getStarterPageCtrl() {
+        return starterPageCtrl;
     }
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,7 +21,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="eventTitleLabel" text="Event Title">
+                        <Label fx:id="eventTitleLabel" onMouseClicked="#editTitle" text="Event Title">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
@@ -30,7 +30,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="editTitleButton" mnemonicParsing="false" text="Edit Title" />
+                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" prefHeight="25.0" prefWidth="73.0" text="Edit Title" />
                         <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="25.0" prefWidth="84.0" text="Send Invites">
                            <FlowPane.margin>
                               <Insets left="10.0" />
@@ -102,7 +102,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="editExpenseButton" mnemonicParsing="false" text="Edit Selected" />
+                        <Button fx:id="editExpenseButton" mnemonicParsing="false" onAction="#editExpense" text="Edit Selected" />
                         <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="Add">
                            <FlowPane.margin>
                               <Insets left="10.0" />

@@ -81,18 +81,6 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
-    // TODO send invitations to email list
-    @PostMapping("/invitation")
-    public void sendInvitations(@RequestBody List<String> emails) {
-        String code = emails.getLast();
-        String text = "Join my splitty event, using code " + code + " in the app.";
-        for(String e : emails) {
-            // send text to email
-        }
-        return;
-    }
-
-
     @GetMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
         if(!eventRepository.existsById(id)) {
