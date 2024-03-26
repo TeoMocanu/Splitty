@@ -19,15 +19,20 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import commons.Debt;
 import commons.Event;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Participant;
@@ -58,20 +63,9 @@ public class ServerUtils {
         this.session = connect(webSocketServer);
     }
 
-    /*
-    public void getQuotesTheHardWay() throws IOException, URISyntaxException {
-        var url = new URI("http://localhost:8080/api/quotes").toURL();
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-    }*/
-
     public Event getEvent(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getById/" + id) //
+                .target(SERVER).path("api/events/getById/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Event>() {
@@ -80,7 +74,7 @@ public class ServerUtils {
 
     public List<Event> getAllEvents() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/getAll") //
+                .target(SERVER).path("api/events/getAll") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Event>>() {
@@ -89,7 +83,15 @@ public class ServerUtils {
 
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/addEvent") //
+                .target(SERVER).path("api/events/addEvent") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public Event updateEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/events/updateEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -97,10 +99,36 @@ public class ServerUtils {
 
     public Event editEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/editEvent/" + event.getId()) //
+                .target(SERVER).path("api/events/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public Event deleteEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/events/deleteEventById/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public List<Expense> getAllExpenses() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAll") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllFromEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
     }
 
     public void addExpense(Expense expense) {
@@ -111,7 +139,49 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
-    public void addParticipant(Participant participant, Event event) {
+    public void editExpense(Expense expense) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
+    public Expense getExpenseById(Long id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getById" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(Expense.class);
+    }
+
+    public void deleteExpense(Expense expense) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/deleteExpense" + expense.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
+    public List<Participant> getAllParticipantsFromEvent(Event event) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + event.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Participant>>() {
+                });
+    }
+
+    public Participant getParticipantById(Event event, Long id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getParticipantById/" + event.getId() + "/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(Participant.class);
+    }
+
+
+    public void addParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/addParticipant") //
                 .request(APPLICATION_JSON) //
@@ -122,16 +192,50 @@ public class ServerUtils {
     //TODO check the path after api is implemented and redo the method
     public void editParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/editParticipant/" + participant.getEventId() + "/" + participant.getId()) //
+                .target(SERVER).path("api/participants/editParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
+    public void deleteParticipant(Participant participant) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/deleteParticipant" + participant.getEvent().getId() + "/" + participant.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+    }
+
+    public List<Participant> getAllParticipantsFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Participant>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEvent(Long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
+    public List<Debt> getDebts(long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debt/event/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Debt>>(){});
+    }
+
     //TODO implement
     public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/invitation") //
+                .target(SERVER).path("api/event/invitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
@@ -197,5 +301,30 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
         throw new IllegalStateException();
+    }
+
+    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    public void registerForUpdates(Consumer<Event> consumer) {
+        EXEC.submit(() -> {
+            while(!Thread.interrupted()){
+                var res = ClientBuilder.newClient(new ClientConfig()) //
+                        .target(SERVER).path("api/events/update") //
+                        .request(APPLICATION_JSON) //
+                        .accept(APPLICATION_JSON) //
+                        .get(Response.class);
+                if(res.getStatus() == 204){
+                    continue;
+                }
+                if(res.getStatus() == 404){
+                    consumer.accept(new Event(""));
+                    continue;
+                }
+                var e  = res.readEntity(Event.class);
+                consumer.accept(e);
+            }
+        });
+    }
+    public void stop() {
+        EXEC.shutdownNow();
     }
 }

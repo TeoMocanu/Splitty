@@ -82,6 +82,13 @@ public class StarterPageCtrl {
         this.en = en;
         language();
         this.serverLabel.setText(server.getServer());
+        server.registerForUpdates(e -> {
+            updateEvents(e);
+        });
+    }
+
+    public void stop() {
+        server.stop();
     }
 
     private void handleListViewButton(KeyEvent event) {
@@ -176,6 +183,19 @@ public class StarterPageCtrl {
         listView.refresh();
     }
 
+    public void updateEvents(Event event) {
+        // updating all the events and their expenses and participants
+        List<Event> updatedList = new ArrayList<Event>(eventList.size());
+        for(int i=0; i<eventList.size(); i++) {
+            Event e = server.getEvent(eventList.get(i).getId());
+            //e.setExpenses(server.getAllExpensesFromEvent(e));
+            //e.setParticipants(server.getAllParticipantsFromEvent(e));
+            updatedList.add(e);
+        }
+        this.eventList = updatedList;
+        updateHistory();
+    }
+
     public void createNewEvent() {
         eventName = createNewEvent.getText();
         Event newEvent = new Event(eventName);
@@ -185,6 +205,7 @@ public class StarterPageCtrl {
         listView.setItems(FXCollections.observableList(observableEventList));
         listView.refresh();
         eventList.add(repEvent);
+        createNewEvent.clear();
         updateHistory();
 
         mainCtrl.showEventOverview(repEvent, en);
@@ -196,11 +217,15 @@ public class StarterPageCtrl {
             Event event = server.getEvent(eventId);
 
             if (event != null) {
-                if(eventList.contains(event)) {
-                    eventList.remove(event);
+                for(Event e : eventList){
+                    if(e.getId() == event.getId()){
+                        eventList.remove(e);
+                    }
                 }
                 eventList.add(event);
+                joinEvent.clear();
                 updateHistory();
+                mainCtrl.showEventOverview(event, en);
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception

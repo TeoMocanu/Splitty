@@ -44,6 +44,7 @@ public class EditTitleCtrl {
     public void save(){
         String newTitle = this.titleField.getText();
         event.setTitle(newTitle);
+        server.editEvent(event);
         mainCtrl.showEventOverview(event, en);
     }
 

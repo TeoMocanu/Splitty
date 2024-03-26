@@ -36,6 +36,7 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
+    private Expense expense;
     private boolean en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
@@ -93,8 +94,9 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    void initialize(Event event, boolean en) {
-        types = FXCollections.observableArrayList(event.getTypes());
+    void initialize(Event event, boolean en){
+        if(event.getTypes() != null && event.getTypes().size() > 0)
+            types = FXCollections.observableArrayList(event.getTypes());
         type.setValue("other");
         type.setItems(types);
         currency.setValue("EUR");
@@ -107,8 +109,18 @@ public class AddExpenseCtrl {
         }
         menu.setItems(splitOptions);
         name.setItems(participants);
-        name.setValue(" ");
         everyone.setSelected(true);
+        if(expense == null){
+            name.setValue(" ");
+        }
+        else{
+            content.setText(expense.getTitle());
+            amount.setText(Float.toString(expense.getAmount()));
+            name.setValue(expense.getPayer().getName());
+            addButton.setText("Edit");
+            if(!en) addButton.setText("Bewerk");
+            //TODO: load the list of Splitters for the visual
+        }
 
         this.en = en;
         language();
@@ -117,6 +129,7 @@ public class AddExpenseCtrl {
 
     public void cancel() {
         clearFields();
+        expense = null;
         mainCtrl.showEventOverview(event, en);
     }
 
@@ -127,7 +140,10 @@ public class AddExpenseCtrl {
             Participant participant = new Participant("John", event);
             Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
-            server.addExpense(expense);
+            if(expense != null) server.editExpense(expense);
+            else server.addExpense(expense);
+
+            //TODO: edit debts tied to expense
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -177,6 +193,10 @@ public class AddExpenseCtrl {
             return null;
         }
         //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
+        if(expense != null){
+            if(expense.getLocalDate() != null) date = expense.getLocalDate();
+            if(expense.getSplitters() != null) debtors = expense.getSplitters();
+        }
         return new Expense(event, date, payer, debtors, content.getText(), amount);
     }
 
@@ -244,5 +264,9 @@ public class AddExpenseCtrl {
         howSplit.setText("Hoe splitsen?");
         everyone.setText("Met iedereen");
         somePeople.setText("Slechts enkele mensen");
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 }

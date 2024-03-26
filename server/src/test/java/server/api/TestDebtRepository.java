@@ -9,11 +9,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import server.database.DebtRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class TestDebtRepository implements DebtRepository {
+
+    public final List<Debt> debts = new ArrayList<>();
+    public final List<String> calledMethods = new ArrayList<>();
+
+    private void call(String name) {
+        calledMethods.add(name);
+    }
 
     @Override
     public void flush() {

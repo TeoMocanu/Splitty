@@ -16,25 +16,19 @@ public class Event {
     @GeneratedValue(strategy = SEQUENCE)
     public long id;
     private String title;
-
     private List<String> types;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Participant> participants;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     private List<Expense> expenses;
 
-    public Event(String title){
+    public Event(String title) {
         this.title = title;
         this.participants = new ArrayList<Participant>(0);
         this.expenses = new ArrayList<Expense>(0);
         this.types = new ArrayList<String>(0);
     }
-
-//    public Event(long id, String title, List<Long> participants, List<Long> expenses) {
-//        this.title = title;
-//        this.participants = new ArrayList<>();
-//        this.expenses = new ArrayList<>();
-//    }
 
 
     @SuppressWarnings("unused")
@@ -99,6 +93,7 @@ public class Event {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+    //@JsonIgnore
 
     @Override
     public String toString() {
