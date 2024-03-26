@@ -48,9 +48,9 @@ public class EventOverviewCtrl {
     @FXML
     private Label eventTitleLabel;
     @FXML
-    private Button editTitleButton;
-    @FXML
     private Button sendInvitesButton;
+    @FXML
+    private Button editTitleButton;
     @FXML
     private Label participantsLabel;
     @FXML
@@ -153,22 +153,18 @@ public class EventOverviewCtrl {
     }
 
     public void back() {
+        server.editEvent(event);
         mainCtrl.showStarterPage(en);
     }
 
     public void editTitle() {
-        mainCtrl.showEditEventTitle(event, en);
+        mainCtrl.showEditTitle(event, en);
     }
 
     public void editExpense() {
         if(selectedExpense != null) {
             mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense, en);
         }
-    }
-
-    public void ok(){
-        server.editEvent(event);
-        mainCtrl.showStarterPage(en);
     }
 
     public void keyPressed(KeyEvent e) {

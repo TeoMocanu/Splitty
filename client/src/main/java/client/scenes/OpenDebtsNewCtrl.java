@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +18,8 @@ import java.util.ResourceBundle;
 public class OpenDebtsNewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private Event event;
+    private boolean en;
 
     @FXML
     private VBox vBox;
@@ -66,12 +69,16 @@ public class OpenDebtsNewCtrl implements Initializable {
     @FXML
     private Button sendReminder;
 
-    private boolean en;
 
     @Inject
     public OpenDebtsNewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    public void initialize(Event event, boolean en){
+        this.event = event;
+        this.en = en;
     }
 
     public void keyPressed(KeyEvent e) {
