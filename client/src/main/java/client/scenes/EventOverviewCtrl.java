@@ -50,6 +50,8 @@ public class EventOverviewCtrl {
     @FXML
     private Button sendInvitesButton;
     @FXML
+    private Button editTitleButton;
+    @FXML
     private Label participantsLabel;
     @FXML
     private Button participantAddButton;
@@ -185,7 +187,7 @@ public class EventOverviewCtrl {
         sendInvitesButton.setText("Send Invites");
         backButton.setText("Back");
         editExpenseButton.setText("Edit Selected");
-        //editTitleButton.setText("Edit Title");
+        editTitleButton.setText("Edit Title");
     }
     public void nl() {
         participantsLabel.setText("Deelnemers");
@@ -197,7 +199,7 @@ public class EventOverviewCtrl {
         sendInvitesButton.setText("Uitnodigingen Versturen");
         backButton.setText("Terug");
         editExpenseButton.setText("Bewerk Geselecteerde");
-        //editTitleButton.setText("Titel Bewerken");
+        editTitleButton.setText("Titel Bewerken");
     }
 
     public void test() {

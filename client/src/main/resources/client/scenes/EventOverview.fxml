@@ -30,6 +30,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" prefHeight="25.0" prefWidth="73.0" text="Edit Title" />
                         <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="25.0" prefWidth="84.0" text="Send Invites">
                            <FlowPane.margin>
                               <Insets left="10.0" />
