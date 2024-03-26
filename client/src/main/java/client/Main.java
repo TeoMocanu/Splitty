@@ -41,13 +41,13 @@ public class Main extends Application {
 
         var addExpense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
         var starterPage = FXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
-        var contactDetail = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
         var adminOverview = FXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
         var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var contactDetails = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
         var changeServer = FXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
         var invitation = FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
+        var editTitle = FXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
@@ -59,6 +59,7 @@ public class Main extends Application {
         mainCtrl.changeServer(changeServer);
         mainCtrl.eventOverview(eventOverview);
         mainCtrl.invitation(invitation);
+        mainCtrl.editTitle(editTitle);
 
         mainCtrl.initialize(primaryStage);
     }
