@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+
 public class ContactDetailCtrl {
 
     private final ServerUtils server;
@@ -102,7 +103,10 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
+                Participant par = getParticipant();
                 server.addParticipant(getParticipant());
+                event.addParticipant(par);
+                this.event = server.updateEvent(event);
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());

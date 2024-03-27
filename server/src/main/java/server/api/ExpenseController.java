@@ -14,9 +14,9 @@ import java.util.Optional;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
+    @Autowired
     private final ExpenseRepository expenseRepository;
 
-    @Autowired
     public ExpenseController(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
     }
@@ -36,6 +36,17 @@ public class ExpenseController {
         Optional<Expense> expenseOptional = expenseRepository.findById(id);
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    /*@GetMapping("/getAllExpensesFromEvent/{eid}")
+    public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
+        List<Expense> ret = new ArrayList<>();
+        for(Expense e : expenseRepository.findAll()){
+            if(e.getEvent().getId() == eid){
+                ret.add(e);
+            }
+        }
+        return ret;
+    }*/
 
     @PostMapping("/addExpense")
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
