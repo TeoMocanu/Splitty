@@ -27,5 +27,5 @@ import java.util.List;
 @Repository
 public interface DebtRepository extends JpaRepository<Debt, DebtKey> {
     @Query(value = "SELECT * FROM DEBT WHERE EVENT_ID = :eid", nativeQuery = true)
-    List<Debt> findByEventId(@Param("eid") Long eid);
+    List<Debt> findAllByEventId(@Param("eid") Long eid);
 }

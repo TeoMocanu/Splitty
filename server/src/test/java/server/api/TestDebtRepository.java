@@ -195,7 +195,7 @@ public class TestDebtRepository implements DebtRepository {
     }
 
     @Override
-    public List<Debt> findByEventId(Long eid) {
+    public List<Debt> findAllByEventId(Long eid) {
         call("findByEventId");
         List<Debt> result = new ArrayList<>();
         for(Debt debt: debts){

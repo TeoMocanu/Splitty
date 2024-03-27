@@ -20,10 +20,14 @@ public class DebtController {
     }
 
     @GetMapping("/getByEventId/{id}")
-    public ResponseEntity<List<Debt>> getAll(@PathVariable("id") long idEvent){
+    public ResponseEntity<List<Debt>> getAllFromEvent(@PathVariable("id") long idEvent){
         if(idEvent <= 0 || eventController.getEventById(idEvent) == null)
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(repo.findAll());
+        List<Debt> debts = repo.findAllByEventId(idEvent);
+        if (debts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(debts);
     }
 
     @PostMapping("/add")
@@ -36,10 +40,10 @@ public class DebtController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Debt>> getAllDebts() {
+    public ResponseEntity<List<Debt>> getAll() {
         List<Debt> debts = repo.findAll();
         if (debts.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(debts);
     }
@@ -63,9 +67,10 @@ public class DebtController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/update/{eid}/{id}")
-    public ResponseEntity<Debt> updateDebt(@PathVariable("eid") long eid, @PathVariable("id") long id, @RequestBody Debt debt) {
-        DebtKey key = new DebtKey(eid, id);
+    @PutMapping("/edit")
+    public ResponseEntity<Debt> editDebt(@RequestBody Debt debt) {
+        DebtKey key = debt.getDebtKey();
+        Debt debttt = repo.findById(key).orElse(null);
         if (repo.findById(key).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
