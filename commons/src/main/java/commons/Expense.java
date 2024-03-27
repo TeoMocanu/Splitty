@@ -23,6 +23,9 @@ public class Expense {
     @Column(name = "event_id")
     private long eventId;
 
+    @Transient
+    private ExpenseKey expenseKey;
+
     @ManyToOne
     @MapsId("eventId")
     @JoinColumn(name = "event_id")
@@ -73,6 +76,7 @@ public class Expense {
         this.splitters = owings;
         this.title = title;
         this.amount = amount;
+        this.
     }
 
     public ExpenseKey getExpenseKey() {
