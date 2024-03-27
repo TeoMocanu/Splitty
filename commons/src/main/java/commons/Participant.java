@@ -151,4 +151,7 @@ public class Participant {
         return name;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 }

@@ -29,9 +29,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import server.database.EventRepository;
 
-
 public class TestEventRepository implements EventRepository {
-
+    private long nextLong = 0;
     public final List<Event> events = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
 
@@ -98,7 +97,7 @@ public class TestEventRepository implements EventRepository {
     @Override
     public Event getById(Long id) {
         call("getById");
-        return find(id).get();
+        return findById(id).orElse(null);
     }
 
     @Override
@@ -108,6 +107,7 @@ public class TestEventRepository implements EventRepository {
     }
 
     private Optional<Event> find(Long id) {
+        call("find");
         return events.stream().filter(q -> q.getId() == id).findFirst();
     }
 
@@ -129,14 +129,21 @@ public class TestEventRepository implements EventRepository {
     @Override
     public <S extends Event> S save(S entity) {
         call("save");
-        entity.id = (long) events.size();
+        if(entity.getId() == 0)
+            entity.setId(++nextLong);
+        for(Event e: events)
+            if(e.getId() == entity.getId()){
+                events.remove(e);
+                break;
+            }
         events.add(entity);
         return entity;
     }
 
     @Override
     public Optional<Event> findById(Long id) {
-        throw new NotImplementedException();
+        call("findById");
+        return events.stream().filter(e -> e.getId() == id).findFirst();
     }
 
     @Override
@@ -152,7 +159,11 @@ public class TestEventRepository implements EventRepository {
 
     @Override
     public void deleteById(Long id) {
-        throw new NotImplementedException();
+        call("deleteById");
+        for(Event event: events){
+            if(event.getId() == id)
+                events.remove(event);
+        }
     }
 
     @Override
@@ -200,8 +211,9 @@ public class TestEventRepository implements EventRepository {
         throw new NotImplementedException();
     }
 
-    @Override
-    public void addExpenseToEvent(long eventId, long expenseId) {
-        throw new NotImplementedException();
-    }
+//    @Override
+//    @Deprecated
+//    public void addExpenseToEvent(long eventId, long expenseId) {
+//        throw new NotImplementedException();
+//    }
 }

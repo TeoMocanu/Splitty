@@ -120,7 +120,7 @@ public class Debt {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
-    public void setId(int i) {
-        this.id = i;
+    public void setId(long id) {
+        this.id = id;
     }
 }

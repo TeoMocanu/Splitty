@@ -29,10 +29,10 @@ public class EventController {
         return eventRepository.findAll();
     }
 
-    @GetMapping("/get?id={id}")
-    public Event getById(@PathVariable("id") Long id){
-        return eventRepository.getReferenceById(id);
-    }
+//    @GetMapping("/get?id={id}")
+//    public Event getById(@PathVariable("id") Long id){
+//        return eventRepository.getReferenceById(id);
+//    }
 
     @GetMapping("/getById/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable("id") Long id){
@@ -42,13 +42,13 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
-    @GetMapping("/getIdById/{id}")
-    public ResponseEntity<Long> getEventIdById(@PathVariable("id") Long id){
-        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(eventRepository.findById(id).get().getId());
-    }
+//    @GetMapping("/getIdById/{id}")
+//    public ResponseEntity<Long> getEventIdById(@PathVariable("id") Long id){
+//        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
+//            return ResponseEntity.badRequest().build();
+//        }
+//        return ResponseEntity.ok(eventRepository.findById(id).get().getId());
+//    }
 
     @PostMapping("/addEvent")
     public ResponseEntity<Event> addEvent(@RequestBody Event event) {

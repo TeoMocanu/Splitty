@@ -21,7 +21,7 @@ public class DebtController {
 
     @GetMapping("/getByEventId/{id}")
     public ResponseEntity<List<Debt>> getAll(@PathVariable("id") long idEvent){
-        if(idEvent <= 0 || eventController.getEventIdById(idEvent) == null)
+        if(idEvent <= 0 || eventController.getEventById(idEvent) == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(repo.findAll());
     }
@@ -29,7 +29,7 @@ public class DebtController {
     @PostMapping("/add")
     public ResponseEntity<Debt> addDebt(@RequestBody Debt debt){
         long idEvent = debt.getEventId();
-        if(idEvent <= 0 || eventController.getEventIdById(idEvent) == null)
+        if(idEvent <= 0 || eventController.getEventById(idEvent) == null)
             return ResponseEntity.badRequest().build();
         Debt saved = repo.save(debt);
         return ResponseEntity.ok(saved);

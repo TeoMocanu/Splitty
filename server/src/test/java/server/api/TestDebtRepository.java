@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Debt;
-import commons.Expense;
 import commons.primaryKeys.DebtKey;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Example;
@@ -17,7 +16,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class TestDebtRepository implements DebtRepository {
-
+    private long nextLong = 0;
     public final List<Debt> debts = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
 
@@ -62,13 +61,7 @@ public class TestDebtRepository implements DebtRepository {
 
     @Override
     public Debt getById(DebtKey debtKey) {
-        call("getById");
-        for (Debt debt : debts) {
-            if (debt.getDebtKey().equals(debtKey)) {
-                return debt;
-            }
-        }
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -115,7 +108,7 @@ public class TestDebtRepository implements DebtRepository {
     public <S extends Debt> S save(S entity) {
         call("save");
         if (entity.getId() == 0) {
-            entity.setId(debts.size() + 1);
+            entity.setId(++nextLong);
         }
         //keeping the debts unique
         for (Debt debt : debts) {
@@ -136,12 +129,7 @@ public class TestDebtRepository implements DebtRepository {
     @Override
     public Optional<Debt> findById(DebtKey debtKey) {
         call("findById");
-        for (Debt debt : debts) {
-            if (debt.getDebtKey().equals(debtKey)) {
-                return Optional.of(debt);
-            }
-        }
-        return Optional.empty();
+        return debts.stream().filter(d -> d.getDebtKey().equals(debtKey)).findFirst();
     }
 
     @Override
