@@ -272,7 +272,18 @@ public class ServerUtils {
         allNode.set("Server Health", healthNode);
         allNode.set("Disk Usage", diskNode);
         allNode.set("CPU Usage", cpuNode);
-        return mapper.writeValueAsString(allNode);
+
+        String serverUP = "Server Status: " + allNode.path("Server Health").path("status").asText();
+        String diskFree = "Disk Free: " + allNode.path("Disk Usage").
+                path("measurements").get(0).path("value").asText();
+        String databaseUP = "Database Status: " + allNode.path("Server Health")
+                .path("components").path("db").path("status").asText();
+        String databaseDetails = "Database Details: " + allNode.path("Server Health")
+                .path("components").path("db").path("details")
+                .path("database").asText();
+        // print each node on a new line
+        System.out.println(serverUP + "\n" + diskFree + "\n" + databaseUP + "\n" + databaseDetails);
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(allNode);
     }
 
     public String generateRandomPassword(int length) {

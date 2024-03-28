@@ -262,7 +262,7 @@ public class AdminOverviewCtrl {
     public void showServerInfo() {
         try {
             String serverInfo = server.fetchAllServerInfo();
-            System.out.println("Server Health: " + serverInfo);
+//            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
             System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
