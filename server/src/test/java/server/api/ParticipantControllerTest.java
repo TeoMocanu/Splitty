@@ -80,4 +80,37 @@ public class ParticipantControllerTest {
         verify(participantRepository).findById(key);
     }
 
+    @Test
+    void addParticipantTest() {
+        when(participantRepository.save(participant1)).thenReturn(participant1);
+        ResponseEntity<Participant> response = participantController.addParticipant(participant1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(participant1, response.getBody());
+        verify(participantRepository).save(participant1);
+    }
+
+    @Test
+    void addParticipant_WithNull_ShouldReturnBadRequest() {
+        ResponseEntity<Participant> response = participantController.addParticipant(null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(participantRepository, never()).save(any(Participant.class));
+    }
+
+    @Test
+    void updateParticipantTest() {
+        ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
+        when(participantRepository.existsById(key)).thenReturn(true);
+        when(participantRepository.save(participant1)).thenReturn(participant1);
+        ResponseEntity<Participant> response = participantController.updateParticipant(participant1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(participant1, response.getBody());
+        verify(participantRepository).save(participant1);
+    }
+
 }
