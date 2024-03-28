@@ -110,7 +110,7 @@ public class EventOverviewCtrl {
     }
 
     private void initParticipantsListView(Event event) {
-        participants = event.getParticipants(); //server.getAllParticipantsFromEvent(event.getId());
+        participants = server.getAllParticipantsFromEvent(event.getId());
         System.out.println("Participants: " + participants);
         ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
         participantsListView.setItems(observableParticipantList);

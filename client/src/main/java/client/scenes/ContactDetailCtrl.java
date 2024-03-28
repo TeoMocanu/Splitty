@@ -114,6 +114,7 @@ public class ContactDetailCtrl {
                 server.addParticipant(getParticipant());
                 event.addParticipant(par);
 
+
                 // creating new debts for new Participant
                 //TODO: get debt endpoints working
                 if(false) for(Participant friend : event.getParticipants()){
@@ -131,9 +132,6 @@ public class ContactDetailCtrl {
                 server.editParticipant(participant);
                 participant = null;
             }
-            this.event = server.updateEvent(event);
-
-
 
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
