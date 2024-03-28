@@ -46,6 +46,8 @@ public class Debt {
 
     @Column(name = "amount")
     private double amount;
+    @Transient
+    private DebtKey debtKey;
 
     @SuppressWarnings("unused")
     protected Debt() {
@@ -58,6 +60,7 @@ public class Debt {
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
+        this.debtKey = new DebtKey(event.getId(), id);
     }
 
     @JsonIgnore

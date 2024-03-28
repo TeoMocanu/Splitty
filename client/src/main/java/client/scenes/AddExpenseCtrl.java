@@ -111,13 +111,16 @@ public class AddExpenseCtrl {
         menu.setItems(splitOptions);
         name.setItems(participants);
         everyone.setSelected(true);
-        if(expense == null){
-            name.setValue(" ");
-        }
-        else { // initializing the data from an existing expense into the window
+        somePeople.setSelected(false);
+        name.setValue(" ");
+        date.setValue(null);
+        if(expense != null) { // initializing the data from an existing expense into the window
             content.setText(expense.getTitle());
             amount.setText(Float.toString(expense.getAmount()));
             name.setValue(expense.getPayer().getName());
+            date.setValue(expense.getLocalDate());
+            type.setValue(expense.getType());
+
             addButton.setText("Edit");
             if(en.equals("nl")) addButton.setText("Bewerk");
 
@@ -160,15 +163,16 @@ public class AddExpenseCtrl {
             }
             this.event = server.updateEvent(event);
 
-            for(Participant p : newExpense.getSplitters()){
-                List<Debt> debts = server.getAllDebtsFromEvent(event);
-                for(Debt debt : debts) {
-                    if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
-                        debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
-                        server.editDebt(debt);
+            //TODO: get debt endpoints working
+            if(false) for(Participant p : newExpense.getSplitters()){
+                    List<Debt> debts = server.getAllDebtsFromEvent(event);
+                    for(Debt debt : debts) {
+                        if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
+                            debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                            server.editDebt(debt);
+                        }
                     }
                 }
-            }
             // Possibly just replace the whole loop with a new endpoint
             // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
 
@@ -193,9 +197,12 @@ public class AddExpenseCtrl {
         LocalDate date;
         List<Participant> debtors = new ArrayList<>();
         Participant payer = null;
+        String typeSelected;
         try{
             amount = Float.parseFloat(this.amount.getText());
+            if(currency.getValue().equals("USD")) amount *= 0.93;
             date = this.date.getValue();
+            typeSelected = type.getValue();
 
             for(Participant p : event.getParticipants()){
                 if(p.getName().equals(name.getValue())) payer = p;
@@ -225,7 +232,7 @@ public class AddExpenseCtrl {
             if(expense.getLocalDate() != null) date = expense.getLocalDate();
             if(expense.getSplitters() != null) debtors = expense.getSplitters();
         }
-        return new Expense(event, date, payer, debtors, content.getText(), amount);
+        return new Expense(event, date, payer, debtors, content.getText(), amount, typeSelected);
     }
 
     @FXML

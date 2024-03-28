@@ -45,7 +45,7 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-    @PutMapping("/editEvent/{id}")
+    @PostMapping("/editEvent/{id}")
     public ResponseEntity<Event> editEvent(@PathVariable("id") Long id, @RequestBody Event event) {
         if(event == null) {
             return ResponseEntity.badRequest().build();
@@ -58,7 +58,7 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-    @PutMapping("/updateEvent/{id}")
+    @PostMapping("/updateEvent/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable("id") Long id, @RequestBody Event event) {
         if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
             return ResponseEntity.badRequest().build();
@@ -81,7 +81,7 @@ public class EventController {
     }
 
     private Map<Object, Consumer<Event>> listeners = new HashMap<>();
-    @PutMapping("/update")
+    @GetMapping("/update")
     public DeferredResult<ResponseEntity<Event>> getUpdates() {
         var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);

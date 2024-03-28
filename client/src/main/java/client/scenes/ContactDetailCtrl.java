@@ -84,12 +84,18 @@ public class ContactDetailCtrl {
         this.event = event;
         this.en = en;
         language();
-        if(this.participant != null) {
-            this.nameField.setText(participant.getName());
-            this.emailField.setText(participant.getEmail());
-            this.ibanField.setText(participant.getIban());
-            this.bicField.setText(participant.getBic());
-        }
+    }
+
+    public void initialize(Event event, String en, Participant participant) {
+        this.event = event;
+        this.en = en;
+        language();
+        this.participant = participant;
+
+        this.nameField.setText(participant.getName());
+        this.emailField.setText(participant.getEmail());
+        this.ibanField.setText(participant.getIban());
+        this.bicField.setText(participant.getBic());
     }
 
     public void abort() {
@@ -109,12 +115,13 @@ public class ContactDetailCtrl {
                 event.addParticipant(par);
 
                 // creating new debts for new Participant
-                for(Participant friend : event.getParticipants()){
-                    Debt debt1 = new Debt(event, friend, par, 0.00f);
-                    Debt debt2 = new Debt(event, par, friend, 0.00f);
-                    server.addDebt(debt1);
-                    server.addDebt(debt2);
-                }
+                //TODO: get debt endpoints working
+                if(false) for(Participant friend : event.getParticipants()){
+                        Debt debt1 = new Debt(event, friend, par, 0);
+                        Debt debt2 = new Debt(event, par, friend, 0);
+                        server.addDebt(debt1);
+                        server.addDebt(debt2);
+                    }
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
@@ -147,9 +154,6 @@ public class ContactDetailCtrl {
                 bicField.getText());
     }
 
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
 
     private void clearFields() {
         nameField.clear();

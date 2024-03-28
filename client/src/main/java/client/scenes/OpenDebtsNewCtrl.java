@@ -3,16 +3,12 @@ package client.scenes;
 import client.utils.ServerUtils;
 import commons.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 import com.google.inject.Inject;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class OpenDebtsNewCtrl {

@@ -57,7 +57,7 @@ public class ExpenseController {
         return ResponseEntity.ok(added);
     }
 
-    @PutMapping("/editExpense/{id}")
+    @PostMapping("/editExpense/{id}")
     public ResponseEntity<Expense> updateExpense(@PathVariable("id") ExpenseKey id, @RequestBody Expense expense) {
         if (expense == null) {
             return ResponseEntity.badRequest().build();

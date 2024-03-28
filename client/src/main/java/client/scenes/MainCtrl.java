@@ -200,8 +200,7 @@ public class MainCtrl {
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.setParticipant(participant);
-        contactDetailCtrl.initialize(participant.getEvent(), en);
+        contactDetailCtrl.initialize(participant.getEvent(), en, participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 

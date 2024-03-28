@@ -99,6 +99,7 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensePayersComboBox() {
+        payers.clear();
         payers.add("All");
         for(Participant p : participants) {
             payers.add(p.getName());
@@ -109,7 +110,7 @@ public class EventOverviewCtrl {
     }
 
     private void initParticipantsListView(Event event) {
-        participants = server.getAllParticipantsFromEvent(event.getId());
+        participants = event.getParticipants(); //server.getAllParticipantsFromEvent(event.getId());
         System.out.println("Participants: " + participants);
         ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
         participantsListView.setItems(observableParticipantList);

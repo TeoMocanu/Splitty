@@ -90,7 +90,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/events/updateEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     public Event editEvent(Event event) {
@@ -98,7 +98,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/events/editEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     public void deleteEvent(Event event) {
@@ -138,7 +138,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
     public Expense getExpenseById(Long id) {
@@ -236,7 +236,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/debts/edit") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(debt, APPLICATION_JSON), Debt.class);
+                .post(Entity.entity(debt, APPLICATION_JSON), Debt.class);
     }
 
     public void deleteDebt(Debt debt) {
