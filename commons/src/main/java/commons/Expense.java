@@ -150,4 +150,8 @@ public class Expense {
     public String toString() {
         return title;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

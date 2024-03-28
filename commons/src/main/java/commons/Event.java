@@ -102,4 +102,7 @@ public class Event {
         return this.title + " Ex: " + this.getExpenses().size() + " Pa: " + this.getParticipants().size();
     }
 
+    public void setId(long id) {
+        this.id=id;
+    }
 }
