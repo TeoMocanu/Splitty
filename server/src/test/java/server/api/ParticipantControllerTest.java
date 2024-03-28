@@ -56,5 +56,28 @@ public class ParticipantControllerTest {
         verify(participantRepository).findAll();
     }
 
+    @Test
+    void getAllParticipantsFromEventTest() {
+        Long eventId = 1L;
+        when(participantRepository.findByEventId(eventId)).thenReturn(participantList);
+        List<Participant> results = participantController.getAllParticipantsFromEvent(eventId);
+
+        assertNotNull(results);
+        assertEquals(2, results.size());
+        assertEquals(participantList, results);
+        verify(participantRepository).findByEventId(eventId);
+    }
+
+    @Test
+    void getParticipantByIdTest() {
+        ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
+        when(participantRepository.findById(key)).thenReturn(Optional.of(participant1));
+        ResponseEntity<Participant> response = participantController.getParticipantById(participant1.getEventId(), participant1.getId());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(participant1, response.getBody());
+        verify(participantRepository).findById(key);
+    }
 
 }
