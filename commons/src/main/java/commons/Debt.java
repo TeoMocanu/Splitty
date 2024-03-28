@@ -105,6 +105,8 @@ public class Debt {
         this.amount = amount;
     }
 
+    public void addAmount(double amount) { this.amount += amount; }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);

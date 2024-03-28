@@ -232,6 +232,14 @@ public class ServerUtils {
                 .get(new GenericType<List<Debt>>(){});
     }
 
+    public Debt editDebt(Debt debt) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debt/editDebt") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(debt, APPLICATION_JSON), Debt.class);
+    }
+
     //TODO implement
     public String sendInvitations(List<String> emails, String code) {
         return ClientBuilder.newClient(new ClientConfig()) //

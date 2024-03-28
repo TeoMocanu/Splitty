@@ -17,6 +17,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Debt;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
@@ -113,13 +114,22 @@ public class AddExpenseCtrl {
         if(expense == null){
             name.setValue(" ");
         }
-        else{
+        else { // initializing the data from an existing expense into the window
             content.setText(expense.getTitle());
             amount.setText(Float.toString(expense.getAmount()));
             name.setValue(expense.getPayer().getName());
             addButton.setText("Edit");
             if(!en) addButton.setText("Bewerk");
-            //TODO: load the list of Splitters for the visual
+
+            if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
+            else {
+                somePeople.setSelected(true);
+                for(CheckBox c : splitOptions) {
+                    for(Participant p : expense.getSplitters()) {
+                        if(p.getName().equals(c.getText())) c.setSelected(true);
+                    }
+                }
+            }
         }
 
         this.en = en;
@@ -135,15 +145,32 @@ public class AddExpenseCtrl {
 
     public void add() {
         try {
-            //Expense expense = createExpense();
-            LocalDate date = LocalDate.of(2024, 12, 12);
-            Participant participant = new Participant("John", event);
-            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            Expense newExpense = createExpense();
+            //LocalDate date = LocalDate.of(2024, 12, 12);
+            //Participant participant = new Participant("John", event);
+            //Expense newExpense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
-            if(expense != null) server.editExpense(expense);
-            else server.addExpense(expense);
+            double amountChange = newExpense.getAmount();
+            if(expense != null) {
+                server.editExpense(newExpense);
+                amountChange = newExpense.getAmount() - expense.getAmount();
+            }
+            else {
+                server.addExpense(newExpense);
+            }
 
-            //TODO: edit debts tied to expense
+            for(Participant p : newExpense.getSplitters()){
+                List<Debt> debts = server.getDebts(event.getId());
+                for(Debt debt : debts) {
+                    if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
+                        debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                        server.editDebt(debt);
+                    }
+                }
+            }
+            // Possibly just replace the whole loop with a new endpoint
+            // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
+
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);

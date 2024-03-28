@@ -59,6 +59,8 @@ public class Expense {
     @Column(name = "amount")
     private float amount;
 
+    private ExpenseKey expenseKey;
+
     @SuppressWarnings("unused")
     public Expense() {
         // for object mappers

@@ -47,6 +47,7 @@ public class InvitationCtrl {
         this.en = en;
         language();
         code.setText(Long.toString(event.getId()));
+        title.setText(event.getTitle());
     }
 
     //nimic
@@ -98,15 +99,13 @@ public class InvitationCtrl {
         else nl();
     }
     public void en(){
-        title.setText("New Year Party");
-        text1.setText("Give people the following invite code");
+        text1.setText("Give people the following invite code: ");
         text2.setText("Invite the following people by email (one address per line)");
         sendInvites.setText("send invites");
         cancelButton.setText("cancel");
     }
     public void nl(){
-        title.setText("nieuwjaarsfeest");
-        text1.setText("Geef mensen de volgende uitnodigingscode");
+        text1.setText("Geef mensen de volgende uitnodigingscode: ");
         text2.setText("Nodig de volgende mensen uit per e-mail (\u00e9\u00e9n adres per regel)");
         sendInvites.setText("stuur uitnodigingen");
         cancelButton.setText("annuleren");
