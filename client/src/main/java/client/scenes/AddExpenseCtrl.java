@@ -38,7 +38,7 @@ public class AddExpenseCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private Expense expense;
-    private boolean en;
+    private String en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
@@ -95,7 +95,7 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    void initialize(Event event, boolean en){
+    void initialize(Event event, String en){
         if(event.getTypes() != null && event.getTypes().size() > 0)
             types = FXCollections.observableArrayList(event.getTypes());
         type.setValue("other");
@@ -119,7 +119,7 @@ public class AddExpenseCtrl {
             amount.setText(Float.toString(expense.getAmount()));
             name.setValue(expense.getPayer().getName());
             addButton.setText("Edit");
-            if(!en) addButton.setText("Bewerk");
+            if(en.equals("nl")) addButton.setText("Bewerk");
 
             if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
             else {
@@ -176,9 +176,9 @@ public class AddExpenseCtrl {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
-            if(en)
+            if(en.equals("en"))
                 alert.setContentText(e.getMessage() + "- internal error in adding the expense");
-            else
+            else if(en.equals("nl"))
                 alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
             alert.showAndWait();
             return;
@@ -220,7 +220,7 @@ public class AddExpenseCtrl {
             alert.showAndWait();
             return null;
         }
-        
+
         if(expense != null){
             if(expense.getLocalDate() != null) date = expense.getLocalDate();
             if(expense.getSplitters() != null) debtors = expense.getSplitters();
@@ -263,7 +263,7 @@ public class AddExpenseCtrl {
     }
 
     public void language(){
-        if(en) en();
+        if(en.equals("en")) en();
         else nl();
     }
 

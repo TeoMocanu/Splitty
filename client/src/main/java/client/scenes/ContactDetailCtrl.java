@@ -36,7 +36,7 @@ public class ContactDetailCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private boolean en;
+    private String en;
 
     @FXML
     private TextField nameField;
@@ -80,7 +80,7 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event, Boolean en){
+    public void initialize(Event event, String en){
         this.event = event;
         this.en = en;
         language();
@@ -192,8 +192,8 @@ public class ContactDetailCtrl {
         return true;
     }
     public void language(){
-        if(en) en();
-        else nl();
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
     public void en(){
         nameLabel.setText("Name");

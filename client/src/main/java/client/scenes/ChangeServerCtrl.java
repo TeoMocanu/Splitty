@@ -15,7 +15,7 @@ public class ChangeServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private boolean en;
+    private String en;
 
     @FXML
     private TextField serverField;
@@ -32,7 +32,7 @@ public class ChangeServerCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(boolean en){
+    public void initialize(String en){
         this.en = en;
         language(en);
     }
@@ -71,9 +71,9 @@ public class ChangeServerCtrl {
                 break;
         }
     }
-    public void language(boolean en){
-        if(en) en();
-        else nl();
+    public void language(String en){
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
     public void en(){
         saveButton.setText("Save");

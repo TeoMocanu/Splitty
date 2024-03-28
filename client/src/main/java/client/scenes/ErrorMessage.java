@@ -4,11 +4,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class ErrorMessage {
-    public static void showError(String message, boolean en) {
+    public static void showError(String message, String en) {
         Alert alert = new Alert(AlertType.ERROR);
-        if(en){
+        if(en.equals("en")){
             alert.setTitle("Error");
-        } else{
+        } else if(en.equals("nl")) {
             alert.setTitle("Fout");
         }
         alert.setHeaderText(null);

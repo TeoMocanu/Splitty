@@ -9,7 +9,7 @@ import server.database.DebtRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/debt")
+@RequestMapping("/api/debts")
 public class DebtController {
     private final DebtRepository repo;
     private final EventController eventController;

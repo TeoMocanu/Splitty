@@ -154,9 +154,9 @@ public class AdminOverviewCtrl {
             return row;
         });
     }
-    public void initialize(boolean en) {
+    public void initialize(String en) {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
-        this.currentLanguage = en ? "EN" : "NL";
+        this.currentLanguage = en;
         language();
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
@@ -172,21 +172,17 @@ public class AdminOverviewCtrl {
     }
 
     public void languageSwitch() {
-        if (currentLanguage.equals("EN")) {
-            currentLanguage = "NL";
-            nl();
+        if (currentLanguage.equals("en")) {
+            currentLanguage = "nl";
         } else {
-            currentLanguage = "EN";
-            en();
+            currentLanguage = "en";
         }
+        language();
     }
 
     public void language() {
-        if (currentLanguage.equals("EN")) {
-            en();
-        } else {
-            nl();
-        }
+        if (currentLanguage.equals("en")) en();
+        else if(currentLanguage.equals("nl")) nl();
     }
 
     public void en() {
@@ -211,7 +207,7 @@ public class AdminOverviewCtrl {
 
     public void cancel() {
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+        mainCtrl.showStarterPage(currentLanguage);
     }
 
     public void ok() {
@@ -228,7 +224,7 @@ public class AdminOverviewCtrl {
         }
 
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+        mainCtrl.showStarterPage(currentLanguage);
     }
 
     private void clearFields() {
@@ -258,6 +254,6 @@ public class AdminOverviewCtrl {
     }
 
     public void exitAdminOverview() {
-        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+        mainCtrl.showStarterPage(currentLanguage);
     }
 }

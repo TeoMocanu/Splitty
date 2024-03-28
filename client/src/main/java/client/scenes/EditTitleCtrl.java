@@ -15,7 +15,7 @@ public class EditTitleCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
 
-    private boolean en;
+    private String en;
 
     @FXML
     private TextField titleField;
@@ -32,11 +32,11 @@ public class EditTitleCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(Event event, boolean en){
+    public void initialize(Event event, String en){
         this.en = en;
         this.event = event;
         titleField.setText(event.getTitle());
-        language(en);
+        language();
     }
 
     public void save(){
@@ -63,9 +63,9 @@ public class EditTitleCtrl {
                 break;
         }
     }
-    public void language(boolean en){
-        if(en) en();
-        else nl();
+    public void language(){
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
     public void en(){
         saveButton.setText("Save");

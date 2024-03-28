@@ -101,8 +101,8 @@ public class ServerUtils {
                 .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public Event deleteEvent(Event event) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void deleteEvent(Event event) {
+        ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/events/deleteEventById/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -133,8 +133,8 @@ public class ServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
-    public void editExpense(Expense expense) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Expense editExpense(Expense expense) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -183,9 +183,8 @@ public class ServerUtils {
                 .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
-    //TODO check the path after api is implemented and redo the method
-    public void editParticipant(Participant participant) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Participant editParticipant(Participant participant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/editParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -226,7 +225,7 @@ public class ServerUtils {
 
     public List<Debt> getDebt(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/event/" + id) //
+                .target(SERVER).path("api/debts/event/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Debt>>(){ });
@@ -234,15 +233,15 @@ public class ServerUtils {
 
     public Debt editDebt(Debt debt) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/edit") //
+                .target(SERVER).path("api/debts/edit") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(debt, APPLICATION_JSON), Debt.class);
     }
 
-    public Debt deleteDebt(Debt debt) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/delete/" + debt.getEvent().getId() + "/" + debt.getId()) //
+    public void deleteDebt(Debt debt) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debts/delete/" + debt.getEvent().getId() + "/" + debt.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(new GenericType<Debt>(){ });

@@ -15,11 +15,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class OpenDebtsNewCtrl implements Initializable {
+public class OpenDebtsNewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private boolean en;
+    private String en;
 
     @FXML
     private VBox vBox;
@@ -76,7 +76,7 @@ public class OpenDebtsNewCtrl implements Initializable {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(Event event, boolean en){
+    public void initialize(Event event, String en){
         this.event = event;
         this.en = en;
     }
@@ -96,9 +96,9 @@ public class OpenDebtsNewCtrl implements Initializable {
         */
     }
 
-    public void language(boolean en){
-        if(en) en();
-        else nl();
+    public void language(){
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
 
     public void en() {
@@ -108,11 +108,4 @@ public class OpenDebtsNewCtrl implements Initializable {
     public void nl() {
 
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-
 }

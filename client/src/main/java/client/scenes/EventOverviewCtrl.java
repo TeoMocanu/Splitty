@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
-import commons.Debt;
 import commons.Event;
 
 import commons.Expense;
@@ -30,7 +29,7 @@ public class EventOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private boolean en;
+    private String en;
     private Event event;
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
@@ -75,11 +74,10 @@ public class EventOverviewCtrl {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
-    public void initialize(Event event, boolean en) {
+    public void initialize(Event event, String en) {
         this.event = event;
         this.en = en;
-        if(!en) nl();
-        else en();
+        language();
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
@@ -175,6 +173,11 @@ public class EventOverviewCtrl {
             default:
                 break;
         }
+    }
+
+    public void language() {
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
 
     public void en() {

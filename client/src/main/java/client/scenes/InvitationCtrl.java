@@ -16,7 +16,7 @@ public class InvitationCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private boolean en;
+    private String en;
 
     @FXML
     private TextArea emails;
@@ -39,7 +39,7 @@ public class InvitationCtrl {
         this.server = server;
     }
 
-    public void initialize(Event event, boolean en) {
+    public void initialize(Event event, String en) {
         this.event = event;
         this.en = en;
         language();
@@ -57,14 +57,14 @@ public class InvitationCtrl {
         try {
             emails = getEmails();
         } catch (IllegalArgumentException e) {
-            ErrorMessage.showError(e.getMessage(), true);
+            ErrorMessage.showError(e.getMessage(), en);
             return;
         }
         for (String email : emails) {
             try {
                 server.sendMail(new Invitation(email, event.getId()));
             } catch (WebApplicationException e) {
-                ErrorMessage.showError(e.getMessage(), true);
+                ErrorMessage.showError(e.getMessage(), en);
             }
         }
         clearFields();
@@ -81,7 +81,7 @@ public class InvitationCtrl {
                 mails.add(line);
             } else {
 
-                errors += en ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
+                errors += en.equals("en") ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
             }
         }
         if (!errors.isEmpty()) {
@@ -108,8 +108,8 @@ public class InvitationCtrl {
     }
 
     public void language() {
-        if (en) en();
-        else nl();
+        if (en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
 
     public void en() {
