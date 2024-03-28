@@ -91,7 +91,7 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensesScrollPane(Event event) {
-        expenses = server.getAllExpensesFromEvent(event.getId());
+        expenses = server.getAllExpensesFromEvent(event);
         System.out.println("Expenses: " + expenses);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
         if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
@@ -201,19 +201,4 @@ public class EventOverviewCtrl {
         editExpenseButton.setText("Bewerk Geselecteerde");
         editTitleButton.setText("Titel Bewerken");
     }
-
-    public void test() {
-        List<Debt> debt = server.getDebts(1);
-        System.out.println(debt.get(0));
-    }
-    public void setSettleDebtsButton()
-    {
-        eventName = settleDebtsButton.getText();
-        Event newEvent = new Event(eventName);
-
-
-        Event repEvent = server.addEvent(newEvent);
-        mainCtrl.showOpenDebts(repEvent, en);
-    }
-
 }

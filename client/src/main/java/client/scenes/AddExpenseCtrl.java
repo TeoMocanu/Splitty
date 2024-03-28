@@ -158,9 +158,10 @@ public class AddExpenseCtrl {
             else {
                 server.addExpense(newExpense);
             }
+            this.event = server.updateEvent(event);
 
             for(Participant p : newExpense.getSplitters()){
-                List<Debt> debts = server.getDebts(event.getId());
+                List<Debt> debts = server.getAllDebtsFromEvent(event);
                 for(Debt debt : debts) {
                     if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
                         debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
@@ -219,7 +220,7 @@ public class AddExpenseCtrl {
             alert.showAndWait();
             return null;
         }
-        //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
+        
         if(expense != null){
             if(expense.getLocalDate() != null) date = expense.getLocalDate();
             if(expense.getSplitters() != null) debtors = expense.getSplitters();

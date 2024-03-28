@@ -17,4 +17,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'com.h2database:h2'
 	implementation project(":commons")
+
+	// Add the mail dependency
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }

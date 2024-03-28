@@ -59,7 +59,7 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-    @PostMapping("/editEvent/{id}")
+    @PutMapping("/editEvent/{id}")
     public ResponseEntity<Event> editEvent(@PathVariable("id") Long id, @RequestBody Event event) {
         if(event == null) {
             return ResponseEntity.badRequest().build();
@@ -81,7 +81,7 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
-    @GetMapping("/deleteEventById/{event_id}")
+    @DeleteMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
         if(!eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
@@ -95,7 +95,7 @@ public class EventController {
     }
 
     private Map<Object, Consumer<Event>> listeners = new HashMap<>();
-    @GetMapping("/update")
+    @PutMapping("/update")
     public DeferredResult<ResponseEntity<Event>> getUpdates() {
         var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);

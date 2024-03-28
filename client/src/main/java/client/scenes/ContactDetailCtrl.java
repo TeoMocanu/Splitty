@@ -18,6 +18,7 @@ package client.scenes;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
@@ -106,7 +107,14 @@ public class ContactDetailCtrl {
                 Participant par = getParticipant();
                 server.addParticipant(getParticipant());
                 event.addParticipant(par);
-                this.event = server.updateEvent(event);
+
+                // creating new debts for new Participant
+                for(Participant friend : event.getParticipants()){
+                    Debt debt1 = new Debt(event, friend, par, 0.00f);
+                    Debt debt2 = new Debt(event, par, friend, 0.00f);
+                    server.addDebt(debt1);
+                    server.addDebt(debt2);
+                }
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
@@ -116,6 +124,10 @@ public class ContactDetailCtrl {
                 server.editParticipant(participant);
                 participant = null;
             }
+            this.event = server.updateEvent(event);
+
+
+
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
