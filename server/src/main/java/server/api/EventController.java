@@ -81,7 +81,7 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
-    @GetMapping("/deleteEventById/{event_id}")
+    @PutMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
         if(!eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();

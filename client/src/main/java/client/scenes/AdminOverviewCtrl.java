@@ -37,6 +37,11 @@ public class AdminOverviewCtrl {
             = FXCollections.observableArrayList("ID", "Title");
 
     @FXML
+    public Button importButton;
+
+    @FXML
+    public Button downloadButton;
+    @FXML
     public Button languageButton;
 
     @FXML
@@ -137,8 +142,13 @@ public class AdminOverviewCtrl {
 
         // Setting up the action for the 'Delete' menu item (placeholder for now)
         deleteItem.setOnAction((event) -> {
-            System.out.println("Delete action goes here");
-            // You will implement the actual delete functionality here
+            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
+            long id = clickedRow.getId();
+            System.out.println(id);
+            Event eventToDelete = server.getEvent(id);
+            System.out.println(eventToDelete.getId());
+            server.deleteEvent(eventToDelete);
+            renderTable();
         });
 
         // Attach the context menu to each row in the table
@@ -154,13 +164,9 @@ public class AdminOverviewCtrl {
             return row;
         });
     }
-    public void initialize(boolean en) {
-        sortChoiceBox.setItems(sortChoiceBoxProperties);
-        this.currentLanguage = en ? "EN" : "NL";
-        language();
+    public void renderTable() {
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
-        System.out.println(allEvents);
         for (Event event : allEvents) {
             data.add(new TableRowData(new SimpleLongProperty(event.getId()),
                     new SimpleStringProperty(event.getTitle()),
@@ -169,6 +175,12 @@ public class AdminOverviewCtrl {
         }
         tableView.setItems(data);
         tableInitialize();
+    }
+    public void initialize(boolean en) {
+        sortChoiceBox.setItems(sortChoiceBoxProperties);
+        this.currentLanguage = en ? "EN" : "NL";
+        language();
+        renderTable();
     }
 
     public void languageSwitch() {
