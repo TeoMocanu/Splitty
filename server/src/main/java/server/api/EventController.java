@@ -59,7 +59,7 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-    @PutMapping("/editEvent/{id}")
+    @PostMapping("/editEvent/{id}")
     public ResponseEntity<Event> editEvent(@PathVariable("id") Long id, @RequestBody Event event) {
         if(event == null) {
             return ResponseEntity.badRequest().build();
@@ -72,14 +72,14 @@ public class EventController {
         return ResponseEntity.ok(added);
     }
 
-//    @PostMapping("/updateEvent/{id}")
-//    public ResponseEntity<Event> updateEvent(@PathVariable("id") Long id, @RequestBody Event event) {
-//        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
-//            return ResponseEntity.badRequest().build();
-//        }
-//        listeners.forEach((k, l) -> l.accept(event));
-//        return ResponseEntity.ok(eventRepository.findById(id).get());
-//    }
+    @PostMapping("/updateEvent/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable("id") Long id, @RequestBody Event event) {
+        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
+            return ResponseEntity.badRequest().build();
+        }
+        listeners.forEach((k, l) -> l.accept(event));
+        return ResponseEntity.ok(eventRepository.findById(id).get());
+    }
 
     @GetMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
