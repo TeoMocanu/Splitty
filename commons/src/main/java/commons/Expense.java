@@ -76,7 +76,7 @@ public class Expense {
         this.splitters = owings;
         this.title = title;
         this.amount = amount;
-        this.
+        this.expenseKey = new ExpenseKey(event.getId(), id);
     }
 
     public ExpenseKey getExpenseKey() {
