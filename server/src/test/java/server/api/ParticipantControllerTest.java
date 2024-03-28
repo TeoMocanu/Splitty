@@ -113,4 +113,24 @@ public class ParticipantControllerTest {
         verify(participantRepository).save(participant1);
     }
 
+    @Test
+    void updateParticipant_WhenNotExists_ShouldReturnNotFound() {
+        ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
+        when(participantRepository.existsById(key)).thenReturn(false);
+        ResponseEntity<Participant> response = participantController.updateParticipant(participant1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(participantRepository, never()).save(any(Participant.class));
+    }
+
+    @Test
+    void deleteParticipantTest() {
+        ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
+        when(participantRepository.existsById(key)).thenReturn(true);
+        doNothing().when(participantRepository).deleteById(key);
+        ResponseEntity<Void> response = participantController.deleteParticipant(participant1.getEventId(), participant1.getId());
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(participantRepository).deleteById(key);
+    }
 }
