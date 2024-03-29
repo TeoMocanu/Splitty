@@ -47,7 +47,7 @@ public class ParticipantController {
     }
 
     @PutMapping("/editParticipant")
-    public ResponseEntity<Participant> updateParticipant(@RequestBody Participant participant) {
+    public ResponseEntity<Participant> editParticipant(@RequestBody Participant participant) {
         if (participant == null) {
             return ResponseEntity.badRequest().build();
         }

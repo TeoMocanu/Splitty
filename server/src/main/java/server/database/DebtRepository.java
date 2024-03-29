@@ -18,7 +18,14 @@ package server.database;
 import commons.Debt;
 import commons.primaryKeys.DebtKey;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface DebtRepository extends JpaRepository<Debt, DebtKey> { }
+public interface DebtRepository extends JpaRepository<Debt, DebtKey> {
+    @Query(value = "SELECT * FROM DEBT WHERE EVENT_ID = :eid", nativeQuery = true)
+    List<Debt> findAllByEventId(@Param("eid") Long eid);
+}

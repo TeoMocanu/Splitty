@@ -101,6 +101,7 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensePayersComboBox() {
+        payers.clear();
         payers.add("All");
         for(Participant p : participants) {
             payers.add(p.getName());
