@@ -84,9 +84,10 @@ public class EventOverviewCtrl {
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
 
+        initExpensesScrollPane(event);
         initParticipantsListView(event);
         initExpensePayersComboBox();
-        initExpensesScrollPane(event);
+
 
     }
 
@@ -96,8 +97,8 @@ public class EventOverviewCtrl {
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
         if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
         if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
-        //expensesScrollPane.setFitToHeight(true);
-        //expensesScrollPane.setFitToWidth(true);
+        expensesScrollPane.setFitToHeight(true);
+        expensesScrollPane.setFitToWidth(true);
     }
 
     private void initExpensePayersComboBox() {
