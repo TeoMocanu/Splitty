@@ -17,6 +17,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +26,7 @@ import java.util.function.Consumer;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -241,13 +243,32 @@ public class ServerUtils {
 
     public Event createEvent(String JSON) {
         try {
+            if(JSON.charAt(0) != '"') {
+                JSON = "\"" + JSON + "\"";
+            }
+            System.out.println(JSON);
             ObjectMapper mapper = new ObjectMapper();
-            long title = mapper.readTree(JSON).path("title").asLong();
-//            List<Participant> participants = mapper.readTree(JSON).path("participants").traverse()
-//                    .readValueAs(new GenericType<List<Participant>>() {
-//            });
+            String title = mapper.readTree(JSON).path("title").asText();
+            JsonNode participantsNode = mapper.readTree(JSON).path("participants");
+            List<Participant> participants = mapper.readerFor(new TypeReference<List<Participant>>() {
+            }).readValue(participantsNode);
+            JsonNode expensesNode = mapper.readTree(JSON).path("expenses");
+            List<Expense> expenses = mapper.readerFor(new TypeReference<List<Expense>>() {
+            }).readValue(expensesNode);
+
+            JsonNode typesNoe = mapper.readTree(JSON).path("types");
+            List<String> types = mapper.readerFor(new TypeReference<List<String>>() {
+            }).readValue(typesNoe);
+
+            Event createdEvent = new Event(title);
+            createdEvent.setParticipants(participants);
+            createdEvent.setExpenses(expenses);
+            createdEvent.setTypes(types);
+            return createdEvent;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

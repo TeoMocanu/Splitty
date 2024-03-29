@@ -309,8 +309,8 @@ public class AdminOverviewCtrl {
             okButton.setOnAction(e -> {
                 try {
                     String eventJSON = textArea.getText();
-                    System.out.println(eventJSON);
                     Event newEvent = server.createEvent(eventJSON);
+                    server.addEvent(newEvent);
                     System.out.println(newEvent.toJSONString());
                     renderTable();
                     popup.hide();
