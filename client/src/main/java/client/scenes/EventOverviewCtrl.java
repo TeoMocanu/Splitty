@@ -15,11 +15,13 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -67,8 +69,16 @@ public class EventOverviewCtrl {
     private Button backButton;
     @FXML
     private Button settleDebtsButton;
+//    @FXML
+//    private ScrollPane expensesScrollPane;
     @FXML
-    private ScrollPane expensesScrollPane;
+    private TableView expensesTableView;
+    @FXML
+    private TableColumn<Expense, String> titleColumn;
+    @FXML
+    private TableColumn<Expense, Float> amountColumn;
+    @FXML
+    private TableColumn<Expense, String> payerColumn;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -83,22 +93,55 @@ public class EventOverviewCtrl {
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
+        expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
 
-        initExpensesScrollPane(event);
+//        initExpensesScrollPane(event);
+        initExpensesTableView(event);
         initParticipantsListView(event);
         initExpensePayersComboBox();
 
 
     }
 
-    private void initExpensesScrollPane(Event event) {
+//    private void initExpensesScrollPane(Event event) {
+//        expenses = server.getAllExpensesFromEvent(event.getId());
+//        System.out.println("Expenses: " + expenses);
+//        ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
+//        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
+//        if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
+//        expensesScrollPane.setFitToHeight(true);
+//        expensesScrollPane.setFitToWidth(true);
+//    }
+
+    private void initExpensesTableView(Event event) {
         expenses = server.getAllExpensesFromEvent(event.getId());
-        System.out.println("Expenses: " + expenses);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
-        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
-        if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
-        expensesScrollPane.setFitToHeight(true);
-        expensesScrollPane.setFitToWidth(true);
+
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        payerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPayer().getName()));
+
+        expensesTableView.setItems(observableExpenseList);
+
+//        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(6));
+//        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
+//        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
+
+        ScrollBar vScrollBar = (ScrollBar) expensesTableView.lookup(".scroll-bar:vertical");
+
+        vScrollBar.visibleProperty().addListener((observable, wasVisible, isVisible) -> {
+            if (isVisible) {
+                // If the scrollbar is visible, subtract its width from the table's width
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(6));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
+            } else {
+                // If the scrollbar is not visible, divide the table's width by the number of columns
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
+            }
+        });
     }
 
     private void initExpensePayersComboBox() {
@@ -120,9 +163,15 @@ public class EventOverviewCtrl {
         participantsListView.refresh();
     }
 
-    private void handleExpensesListViewClick(MouseEvent mouseEvent) {
+//    private void handleExpensesListViewClick(MouseEvent mouseEvent) {
+//        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
+//            selectedExpense = (Expense) ((ListView) expensesScrollPane.getContent()).getSelectionModel().getSelectedItem();
+//        }
+//    }
+
+    private void handleExpensesTableViewClick(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
-            selectedExpense = (Expense) ((ListView) expensesScrollPane.getContent()).getSelectionModel().getSelectedItem();
+            selectedExpense = (Expense) expensesTableView.getSelectionModel().getSelectedItem();
         }
     }
 
