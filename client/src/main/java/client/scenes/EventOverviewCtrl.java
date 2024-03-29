@@ -69,8 +69,6 @@ public class EventOverviewCtrl {
     private Button backButton;
     @FXML
     private Button settleDebtsButton;
-//    @FXML
-//    private ScrollPane expensesScrollPane;
     @FXML
     private TableView expensesTableView;
     @FXML
@@ -95,23 +93,12 @@ public class EventOverviewCtrl {
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
 
-//        initExpensesScrollPane(event);
         initExpensesTableView(event);
         initParticipantsListView(event);
         initExpensePayersComboBox();
 
 
     }
-
-//    private void initExpensesScrollPane(Event event) {
-//        expenses = server.getAllExpensesFromEvent(event.getId());
-//        System.out.println("Expenses: " + expenses);
-//        ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
-//        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
-//        if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
-//        expensesScrollPane.setFitToHeight(true);
-//        expensesScrollPane.setFitToWidth(true);
-//    }
 
     private void initExpensesTableView(Event event) {
         expenses = server.getAllExpensesFromEvent(event.getId());
@@ -122,10 +109,6 @@ public class EventOverviewCtrl {
         payerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPayer().getName()));
 
         expensesTableView.setItems(observableExpenseList);
-
-//        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(6));
-//        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
-//        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
 
         ScrollBar vScrollBar = (ScrollBar) expensesTableView.lookup(".scroll-bar:vertical");
 
@@ -162,12 +145,6 @@ public class EventOverviewCtrl {
         participantsListView.setItems(observableParticipantList);
         participantsListView.refresh();
     }
-
-//    private void handleExpensesListViewClick(MouseEvent mouseEvent) {
-//        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
-//            selectedExpense = (Expense) ((ListView) expensesScrollPane.getContent()).getSelectionModel().getSelectedItem();
-//        }
-//    }
 
     private void handleExpensesTableViewClick(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
