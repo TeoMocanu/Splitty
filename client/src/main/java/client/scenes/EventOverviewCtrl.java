@@ -1,6 +1,7 @@
 package client.scenes;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -77,6 +78,8 @@ public class EventOverviewCtrl {
     private TableColumn<Expense, Float> amountColumn;
     @FXML
     private TableColumn<Expense, String> payerColumn;
+    @FXML
+    private TableColumn<Expense, LocalDate> dateColumn;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -107,28 +110,36 @@ public class EventOverviewCtrl {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         payerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPayer().getName()));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("localDate"));
 
         expensesTableView.setItems(observableExpenseList);
+
+        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(2));
+        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+        dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
 
         ScrollBar vScrollBar = (ScrollBar) expensesTableView.lookup(".scroll-bar:vertical");
 
         vScrollBar.visibleProperty().addListener((observable, wasVisible, isVisible) -> {
             if (isVisible) {
-                // If the scrollbar is visible, subtract its width from the table's width
-                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(6));
-                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
-                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(5));
+                // If the scrollbar is visible, divide table width by 3 and subtract scrollbar width
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(6));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
             } else {
-                // If the scrollbar is not visible, divide the table's width by the number of columns
-                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
-                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
-                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(3).subtract(1));
+                // If the scrollbar is not visible, just divide width by nr of columns
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(2));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
             }
         });
     }
 
     private void initExpensePayersComboBox() {
-        payers.clear();
+        payers = new ArrayList<>();
         payers.add("All");
         for(Participant p : participants) {
             payers.add(p.getName());

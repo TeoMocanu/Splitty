@@ -121,6 +121,7 @@
                   <TableColumn fx:id="titleColumn" text="Title" />
                   <TableColumn fx:id="payerColumn" text="Payer" />
                   <TableColumn fx:id="amountColumn" text="Amount (EUR)" />
+                  <TableColumn fx:id="dateColumn" text="Date" />
                </columns>
                <VBox.margin>
                   <Insets bottom="5.0" left="15.0" right="15.0" top="10.0" />
