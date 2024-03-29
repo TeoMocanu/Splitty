@@ -241,22 +241,22 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
-    public Event createEvent(String JSON) {
+    public Event createEvent(String jsonString) {
         try {
-            if(JSON.charAt(0) != '"') {
-                JSON = "\"" + JSON + "\"";
+            if(jsonString.charAt(0) != '"') {
+                jsonString = "\"" + jsonString + "\"";
             }
-            System.out.println(JSON);
+            System.out.println(jsonString);
             ObjectMapper mapper = new ObjectMapper();
-            String title = mapper.readTree(JSON).path("title").asText();
-            JsonNode participantsNode = mapper.readTree(JSON).path("participants");
+            String title = mapper.readTree(jsonString).path("title").asText();
+            JsonNode participantsNode = mapper.readTree(jsonString).path("participants");
             List<Participant> participants = mapper.readerFor(new TypeReference<List<Participant>>() {
             }).readValue(participantsNode);
-            JsonNode expensesNode = mapper.readTree(JSON).path("expenses");
+            JsonNode expensesNode = mapper.readTree(jsonString).path("expenses");
             List<Expense> expenses = mapper.readerFor(new TypeReference<List<Expense>>() {
             }).readValue(expensesNode);
 
-            JsonNode typesNoe = mapper.readTree(JSON).path("types");
+            JsonNode typesNoe = mapper.readTree(jsonString).path("types");
             List<String> types = mapper.readerFor(new TypeReference<List<String>>() {
             }).readValue(typesNoe);
 
