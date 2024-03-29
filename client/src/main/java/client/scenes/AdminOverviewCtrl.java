@@ -15,8 +15,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 
 public class AdminOverviewCtrl {
@@ -37,8 +43,9 @@ public class AdminOverviewCtrl {
             = FXCollections.observableArrayList("ID", "Title");
 
     @FXML
-    public Button importButton;
-
+    public Button importButtonText;
+    @FXML
+    public Button importButtonFile;
     @FXML
     public Button downloadButton;
     @FXML
@@ -118,7 +125,7 @@ public class AdminOverviewCtrl {
     }
 
     public void applySort() {
-        if(sortChoiceBox.getValue().equals("ID")) {
+        if (sortChoiceBox.getValue().equals("ID")) {
             sortById();
         } else {
             sortByTitle();
@@ -130,27 +137,35 @@ public class AdminOverviewCtrl {
         tableView.getSortOrder().add(tableView.getColumns().get(0));
         tableView.sort();
     }
+
     private void sortByTitle() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(1));
         tableView.sort();
     }
+
     public void tableInitialize() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");
+        MenuItem getJSON = new MenuItem("Get JSON String");
         contextMenu.getItems().add(deleteItem);
-
+        contextMenu.getItems().add(getJSON);
         // Setting up the action for the 'Delete' menu item (placeholder for now)
         deleteItem.setOnAction((event) -> {
             TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
             long id = clickedRow.getId();
-            System.out.println(id);
             Event eventToDelete = server.getEvent(id);
-            System.out.println(eventToDelete.getId());
             server.deleteEvent(eventToDelete);
             renderTable();
         });
-
+        getJSON.setOnAction((event) -> {
+            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
+            long id = clickedRow.getId();
+            Event eventToGet = server.getEvent(id);
+            String string = eventToGet.toJSONString();
+            System.out.println(string);
+            renderTable();
+        });
         // Attach the context menu to each row in the table
         tableView.setRowFactory(tv -> {
             TableRow<TableRowData> row = new TableRow<>();
@@ -164,6 +179,7 @@ public class AdminOverviewCtrl {
             return row;
         });
     }
+
     public void renderTable() {
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
@@ -176,6 +192,7 @@ public class AdminOverviewCtrl {
         tableView.setItems(data);
         tableInitialize();
     }
+
     public void initialize(boolean en) {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         this.currentLanguage = en ? "EN" : "NL";
@@ -265,6 +282,74 @@ public class AdminOverviewCtrl {
 //            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
             System.out.println("Failed to fetch Server Health: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void importFromText() {
+        try {
+            TextArea textArea = new TextArea();
+            textArea.setPromptText("Enter JSON here");
+            textArea.setWrapText(true);
+            textArea.setPrefSize(400, 200);
+            Button okButton = new Button("OK");
+
+
+            VBox popupLayout = new VBox();
+            popupLayout.setAlignment(javafx.geometry.Pos.CENTER);
+            popupLayout.setSpacing(10);
+            popupLayout.setPrefSize(400, 300);
+            popupLayout.getChildren().addAll(textArea, okButton);
+
+            Popup popup = new Popup();
+
+            // show the pop up
+            popup.getContent().add(popupLayout);
+            popup.show(importButtonText.getScene().getWindow());
+            okButton.setOnAction(e -> {
+                try {
+                    String eventJSON = textArea.getText();
+                    System.out.println(eventJSON);
+                    Event newEvent = server.createEvent(eventJSON);
+                    System.out.println(newEvent.toJSONString());
+                    renderTable();
+                    popup.hide();
+                } catch (Exception ex) {
+                    System.out.println("Failed to import data: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            });
+            renderTable();
+        } catch (Exception e) {
+            System.out.println("Failed to import data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void importFromFile() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter
+                    = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.setTitle("Open JSON File");
+            File file = fileChooser.showOpenDialog(importButtonFile.getScene().getWindow());
+            if (file != null) {
+                // Read the file's content. Assuming the content is a JSON string you want to import.
+                String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+                renderTable();
+            }
+            renderTable();
+        } catch (Exception e) {
+            System.out.println("Failed to import data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadData() {
+        try {
+        } catch (Exception e) {
+            System.out.println("Failed to download data: " + e.getMessage());
             e.printStackTrace();
         }
     }

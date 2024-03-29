@@ -239,6 +239,20 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
+    public Event createEvent(String JSON) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            long title = mapper.readTree(JSON).path("title").asLong();
+//            List<Participant> participants = mapper.readTree(JSON).path("participants").traverse()
+//                    .readValueAs(new GenericType<List<Participant>>() {
+//            });
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public String fetchAllServerInfo() throws JsonProcessingException {
         Client client = ClientBuilder.newClient(new ClientConfig());
         ObjectMapper mapper = new ObjectMapper();
