@@ -17,6 +17,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +26,7 @@ import java.util.function.Consumer;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -239,6 +241,39 @@ public class ServerUtils {
                 .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
     }
 
+    public Event createEvent(String jsonString) {
+        try {
+            if(jsonString.charAt(0) != '"') {
+                jsonString = "\"" + jsonString + "\"";
+            }
+            System.out.println(jsonString);
+            ObjectMapper mapper = new ObjectMapper();
+            String title = mapper.readTree(jsonString).path("title").asText();
+            JsonNode participantsNode = mapper.readTree(jsonString).path("participants");
+            List<Participant> participants = mapper.readerFor(new TypeReference<List<Participant>>() {
+            }).readValue(participantsNode);
+            JsonNode expensesNode = mapper.readTree(jsonString).path("expenses");
+            List<Expense> expenses = mapper.readerFor(new TypeReference<List<Expense>>() {
+            }).readValue(expensesNode);
+
+            JsonNode typesNoe = mapper.readTree(jsonString).path("types");
+            List<String> types = mapper.readerFor(new TypeReference<List<String>>() {
+            }).readValue(typesNoe);
+
+            Event createdEvent = new Event(title);
+            createdEvent.setParticipants(participants);
+            createdEvent.setExpenses(expenses);
+            createdEvent.setTypes(types);
+            return createdEvent;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+
     public String fetchAllServerInfo() throws JsonProcessingException {
         Client client = ClientBuilder.newClient(new ClientConfig());
         ObjectMapper mapper = new ObjectMapper();
@@ -272,7 +307,18 @@ public class ServerUtils {
         allNode.set("Server Health", healthNode);
         allNode.set("Disk Usage", diskNode);
         allNode.set("CPU Usage", cpuNode);
-        return mapper.writeValueAsString(allNode);
+
+        String serverUP = "Server Status: " + allNode.path("Server Health").path("status").asText();
+        String diskFree = "Disk Free: " + allNode.path("Disk Usage").
+                path("measurements").get(0).path("value").asText();
+        String databaseUP = "Database Status: " + allNode.path("Server Health")
+                .path("components").path("db").path("status").asText();
+        String databaseDetails = "Database Details: " + allNode.path("Server Health")
+                .path("components").path("db").path("details")
+                .path("database").asText();
+        // print each node on a new line
+        System.out.println(serverUP + "\n" + diskFree + "\n" + databaseUP + "\n" + databaseDetails);
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(allNode);
     }
 
     public String generateRandomPassword(int length) {

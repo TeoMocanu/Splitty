@@ -104,6 +104,11 @@ public class Event {
         return this.title + " Ex: " + this.getExpenses().size() + " Pa: " + this.getParticipants().size();
     }
 
+
+    public String toJSONString() {
+        // only include title, participants, expenses, and types
+        return "{title: " + this.title + ", participants: " + this.participants + ", expenses: " + this.expenses + ", types: " + this.types + "}";
+    }
     public void setId(long id) {
         this.id=id;
     }
