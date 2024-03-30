@@ -18,11 +18,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="370.0" stylesheets="/client/scenes/AddExpense.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddExpenseCtrl">
    <children>
       <VBox prefHeight="419.0" prefWidth="396.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="348.0" text="Add Expense" VBox.vgrow="NEVER">
+            <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="348.0" scaleX="1.5" scaleY="1.5" text="Add Expense" VBox.vgrow="NEVER">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
@@ -49,11 +49,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" />
               </rowConstraints>
                <children>
-                  <Label fx:id="paid" prefHeight="18.0" prefWidth="57.0" text="Who paid?" />
+                  <Label fx:id="paid" prefHeight="20.0" prefWidth="97.0" scaleX="1.2" scaleY="1.2" text="Who paid?" translateX="8.0" />
                   <ChoiceBox fx:id="name" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" />
-                  <Label fx:id="what" text="What for?" GridPane.rowIndex="1" />
+                  <Label fx:id="what" scaleX="1.2" scaleY="1.2" text="What for?" translateX="-9.0" GridPane.rowIndex="1" />
                   <TextField fx:id="content" prefHeight="26.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
-                  <Label fx:id="howMany" text="How much?" GridPane.rowIndex="2" />
+                  <Label fx:id="howMany" prefHeight="20.0" prefWidth="97.0" scaleX="1.2" scaleY="1.2" text="How much?" translateX="4.0" GridPane.rowIndex="2" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <TextField fx:id="amount" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="154.0" promptText="0.00" HBox.hgrow="ALWAYS" />
@@ -64,13 +64,13 @@
                         </ChoiceBox>
                      </children>
                   </HBox>
-                  <Label fx:id="when" text="When?" GridPane.rowIndex="3" />
+                  <Label fx:id="when" scaleX="1.2" scaleY="1.2" text="When?" translateX="-15.0" GridPane.rowIndex="3" />
                   <DatePicker fx:id="date" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label fx:id="howSplit" text="How to Split?" GridPane.rowIndex="4" />
+                  <Label fx:id="howSplit" scaleX="1.2" scaleY="1.2" text="How to Split?" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <CheckBox fx:id="everyone" mnemonicParsing="false" onAction="#handleEveryone" text="With everyone" />
-                        <CheckBox fx:id="somePeople" mnemonicParsing="false" onAction="#handleSomePeople" text="Only some people" />
+                        <CheckBox fx:id="everyone" mnemonicParsing="false" onAction="#handleEveryone" text="With everyone" textFill="#00a9ff" />
+                        <CheckBox fx:id="somePeople" mnemonicParsing="false" onAction="#handleSomePeople" text="Only some people" textFill="#00a9ff" />
                         <ListView fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="56.0" prefWidth="160.0" VBox.vgrow="NEVER">
                            <VBox.margin>
                               <Insets />
@@ -81,7 +81,7 @@
                         <Insets />
                      </GridPane.margin>
                   </VBox>
-                  <Label fx:id="typeL" text="Type:" GridPane.rowIndex="5" />
+                  <Label fx:id="typeL" scaleX="1.2" scaleY="1.2" text="Type:" GridPane.rowIndex="5" />
                   <ChoiceBox fx:id="type" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
                <VBox.margin>
