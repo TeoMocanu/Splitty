@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import commons.Event;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import server.database.EventRepository;
 
-
 public class TestEventRepository implements EventRepository {
-
+    private long nextLong = 0;
     public final List<Event> events = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
 
@@ -40,74 +40,64 @@ public class TestEventRepository implements EventRepository {
 
     @Override
     public List<Event> findAll() {
-        calledMethods.add("findAll");
+        call("findAll");
         return events;
     }
 
     @Override
     public List<Event> findAll(Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public List<Event> findAllById(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> List<S> saveAll(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public void flush() {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> S saveAndFlush(S entity) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> List<S> saveAllAndFlush(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAllInBatch(Iterable<Event> entities) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAllInBatch() {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public Event getOne(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Event getById(Long id) {
         call("getById");
-        return find(id).get();
+        return findById(id).orElse(null);
     }
 
     @Override
@@ -117,39 +107,43 @@ public class TestEventRepository implements EventRepository {
     }
 
     private Optional<Event> find(Long id) {
+        call("find");
         return events.stream().filter(q -> q.getId() == id).findFirst();
     }
 
     @Override
     public <S extends Event> List<S> findAll(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> List<S> findAll(Example<S> example, Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Page<Event> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> S save(S entity) {
         call("save");
-        entity.id = (long) events.size();
+        if(entity.getId() == 0)
+            entity.setId(++nextLong);
+        for(Event e: events)
+            if(e.getId() == entity.getId()){
+                events.remove(e);
+                break;
+            }
         events.add(entity);
         return entity;
     }
 
     @Override
     public Optional<Event> findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        call("findById");
+        return events.stream().filter(e -> e.getId() == id).findFirst();
     }
 
     @Override
@@ -165,67 +159,61 @@ public class TestEventRepository implements EventRepository {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-
+        call("deleteById");
+        for(Event event: events){
+            if(event.getId() == id)
+                events.remove(event);
+        }
     }
 
     @Override
     public void delete(Event entity) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAllById(Iterable<? extends Long> ids) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAll(Iterable<? extends Event> entities) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void deleteAll() {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> Optional<S> findOne(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> Page<S> findAll(Example<S> example, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> long count(Example<S> example) {
-        // TODO Auto-generated method stub
-        return 0;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event> boolean exists(Example<S> example) {
-        // TODO Auto-generated method stub
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
     public <S extends Event, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
-    @Override
-    public void addExpenseToEvent(long eventId, long expenseId) {
-        // TODO Auto-generated method stub
-        return;
-    }
+//    @Override
+//    @Deprecated
+//    public void addExpenseToEvent(long eventId, long expenseId) {
+//        throw new NotImplementedException();
+//    }
 }

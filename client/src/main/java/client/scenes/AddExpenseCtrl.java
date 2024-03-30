@@ -135,13 +135,13 @@ public class AddExpenseCtrl {
 
     public void add() {
         try {
-            //Expense expense = createExpense();
-            LocalDate date = LocalDate.of(2024, 12, 12);
-            Participant participant = new Participant("John", event);
-            Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            Expense newExpense = createExpense();
+            //LocalDate date = LocalDate.of(2024, 12, 12);
+            //Participant participant = new Participant("John", event);
+            //Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
             if(expense != null) server.editExpense(expense);
-            else server.addExpense(expense);
+            else server.addExpense(newExpense);
 
             //TODO: edit debts tied to expense
         } catch (Exception e) {
