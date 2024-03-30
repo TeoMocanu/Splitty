@@ -105,7 +105,7 @@ public class ParticipantControllerTest {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.existsById(key)).thenReturn(true);
         when(participantRepository.save(participant1)).thenReturn(participant1);
-        ResponseEntity<Participant> response = participantController.updateParticipant(participant1);
+        ResponseEntity<Participant> response = participantController.editParticipant(participant1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -117,7 +117,7 @@ public class ParticipantControllerTest {
     void updateParticipant_WhenNotExists_ShouldReturnNotFound() {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.existsById(key)).thenReturn(false);
-        ResponseEntity<Participant> response = participantController.updateParticipant(participant1);
+        ResponseEntity<Participant> response = participantController.editParticipant(participant1);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(participantRepository, never()).save(any(Participant.class));
