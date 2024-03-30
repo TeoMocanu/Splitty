@@ -37,16 +37,15 @@ public class ExpenseController {
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /*@GetMapping("/getAllExpensesFromEvent/{eid}")
-    public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
-        List<Expense> ret = new ArrayList<>();
-        for(Expense e : expenseRepository.findAll()){
-            if(e.getEvent().getId() == eid){
-                ret.add(e);
-            }
-        }
-        return ret;
-    }*/
+    @GetMapping("/getAllExpensesFromEventPaidBy/{eid}/{pid}")
+    public List<Expense> getAllExpensesFromEventPaidBy(@PathVariable("eid") Long eid, @PathVariable("pid") Long pid) {
+        return expenseRepository.findByEventIdAndPayerId(eid, pid);
+    }
+
+    @GetMapping("/getAllExpensesFromEventOwedBy/{eid}/{pid}")
+    public List<Expense> getAllExpensesFromEventOwedBy(@PathVariable("eid") Long eid, @PathVariable("pid") Long pid) {
+        return expenseRepository.findByEventIdAndDebtorsId(eid, pid);
+    }
 
     @PostMapping("/addExpense")
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {

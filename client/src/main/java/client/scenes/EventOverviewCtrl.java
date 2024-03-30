@@ -38,9 +38,10 @@ public class EventOverviewCtrl {
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
     private Expense selectedExpense;
+    private int selectedFilteringMode = 0;
     private List<Participant> participants = new ArrayList<>();
     private List<Expense> expenses = new ArrayList<>();
-    private List<String> payers = new ArrayList<>();
+    private List<Participant> payers = new ArrayList<>();
 
     private String eventName;
 
@@ -48,6 +49,8 @@ public class EventOverviewCtrl {
     private ListView participantsListView;
     @FXML
     private ComboBox expensePayersComboBox;
+    @FXML
+    private ComboBox filteringModeComboBox;
     @FXML
     private Label eventTitleLabel;
     @FXML
@@ -95,10 +98,13 @@ public class EventOverviewCtrl {
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
+        expensePayersComboBox.setOnMouseClicked(this::handleExpensePayersComboBoxClick);
+        filteringModeComboBox.setOnMouseClicked(this::handleFilteringModeComboBoxClick);
 
         initExpensesTableView(event);
         initParticipantsListView(event);
         initExpensePayersComboBox();
+        initFilteringModeComboBox();
 
 
     }
@@ -128,30 +134,32 @@ public class EventOverviewCtrl {
                 amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
                 payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
                 dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
-            } else {
-                // If the scrollbar is not visible, just divide width by nr of columns
-                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(2));
-                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
-                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
-                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
             }
         });
     }
 
     private void initExpensePayersComboBox() {
+        Participant all = new Participant("All", new Event("All"));
+        selectedExpensePayer = all;
         payers = new ArrayList<>();
-        payers.add("All");
+        payers.add(all);
+        participants = server.getAllParticipantsFromEvent(event.getId());
         for(Participant p : participants) {
-            payers.add(p.getName());
+            payers.add(p);
         }
-        ObservableList<String> observablePayerList = FXCollections.observableArrayList(payers);
+        ObservableList<Participant> observablePayerList = FXCollections.observableArrayList(payers);
         expensePayersComboBox.setItems(observablePayerList);
         expensePayersComboBox.getSelectionModel().selectFirst();
     }
 
+    private void initFilteringModeComboBox() {
+        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList("Paid by", "Owed by");
+        filteringModeComboBox.setItems(observableSelectionModeList);
+        filteringModeComboBox.getSelectionModel().selectFirst();
+    }
+
     private void initParticipantsListView(Event event) {
         participants = server.getAllParticipantsFromEvent(event.getId());
-        System.out.println("Participants: " + participants);
         ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
         participantsListView.setItems(observableParticipantList);
         participantsListView.refresh();
@@ -166,6 +174,32 @@ public class EventOverviewCtrl {
     private void handleParticipantsListViewClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) { // Left-click
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
+        }
+    }
+    private void handleFilteringModeComboBoxClick(MouseEvent mouseEvent){
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
+            selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
+            filterExpenses();
+        }
+    }
+    private void handleExpensePayersComboBoxClick(MouseEvent mouseEvent){
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
+            selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
+            filterExpenses();
+        }
+    }
+
+    private void filterExpenses() {
+        if(selectedExpensePayer.getName().equals("All")) {
+            initExpensesTableView(event);
+        } else {
+            if (selectedFilteringMode == 0) {
+                expenses = server.getAllExpensesFromEventPaidBy(event.getId(), selectedExpensePayer.getId());
+            }
+            if (selectedFilteringMode == 1) {
+                expenses = server.getAllExpensesFromEventOwedBy(event.getId(), selectedExpensePayer.getId());
+            }
+            expensesTableView.setItems(FXCollections.observableArrayList(expenses));
         }
     }
 
