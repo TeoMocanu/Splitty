@@ -1,0 +1,63 @@
+.root {
+    -fx-background-color: #000000;
+}
+
+.label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ADD8E6;
+}
+
+.text-field {
+    -fx-font-size: 14px;
+    -fx-control-inner-background: #000033;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #5F9EA0;
+    -fx-border-color: #1E90FF;
+    -fx-border-width: 2px;
+}
+
+.button {
+    -fx-background-color: #00008B;
+    -fx-text-fill: #B0E0E6;
+    -fx-font-size: 14px;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 2px;
+    -fx-font-weight: bold;
+}
+
+.list-view {
+    -fx-background-color: #000033;
+    -fx-text-fill: #7B68EE;
+    -fx-border-color: #1E90FF;
+    -fx-border-width: 2px;
+    -fx-border-insets: -2;
+    -fx-padding: 2;
+    -fx-control-inner-background: #000033;
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #27408B;
+}
+
+.button:pressed {
+    -fx-background-color: #4169E1;
+}
+
+.hbox {
+    -fx-background-color: #000021;
+    -fx-padding: 10px;
+}
+
+.flow-pane {
+    -fx-background-color: #000033;
+    -fx-padding: 5px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}
+
+.button:focused, .text-field:focused {
+    -fx-border-color: #00BFFF;
+    -fx-border-width: 3px;
+}
