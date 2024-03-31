@@ -279,12 +279,16 @@ public class StarterPageCtrl {
     }
 
     public void keyPressed(KeyEvent e) {
-        TextField source = (TextField) e.getSource();
-        if (e.getCode() == KeyCode.ENTER) {
-            if (source == createNewEvent) {
-                createNewEvent();
-            } else if (source == joinEvent) {
-                joinEvent();
+        if (e.isControlDown() && e.getCode() == KeyCode.Z) {
+            undoDelete();
+        } else if (e.getSource() instanceof TextField) {
+            TextField source = (TextField) e.getSource();
+            if (e.getCode() == KeyCode.ENTER) {
+                if (source == createNewEvent) {
+                    createNewEvent();
+                } else if (source == joinEvent) {
+                    joinEvent();
+                }
             }
         }
     }
