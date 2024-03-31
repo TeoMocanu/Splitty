@@ -13,6 +13,9 @@ import com.google.inject.Inject;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +104,16 @@ public class StarterPageCtrl {
         }
     }
 
+    private boolean showConfirmationDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmation");
+        alert.initOwner(listView.getScene().getWindow());
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+
 
     private void handleListViewClick(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) { // Right-click
@@ -118,8 +131,10 @@ public class StarterPageCtrl {
                     deleteMenuItem.setText("Verwijderen");
                 }
                 deleteMenuItem.setOnAction(e -> {
-                    eventList.remove(selectedEvent);
-                    updateHistory();
+                    if(showConfirmationDialog("Are you sure you want to delete this event?")) {
+                        eventList.remove(selectedEvent);
+                        updateHistory();
+                    }
                 });
                 contextMenu.getItems().add(deleteMenuItem);
                 contextMenuList.add(contextMenu);
@@ -301,8 +316,10 @@ public class StarterPageCtrl {
     }
 
     public void deleteHistory() {
-        eventList.clear();
-        listView.getItems().clear();
+        if (showConfirmationDialog("Are you sure you want to delete the entire history?")) {
+            eventList.clear();
+            listView.getItems().clear();
+        }
     }
 
     public void admin(){
