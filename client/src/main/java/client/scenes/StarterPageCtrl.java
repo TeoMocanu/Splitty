@@ -16,6 +16,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.util.Stack;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +61,11 @@ public class StarterPageCtrl {
     private Button changeServerButton;
     @FXML
     private List<ContextMenu> contextMenuList;
+    @FXML
+    private Button undoButton;
     private String eventName;
     private List<Event> eventList;
+    private Stack<Event> deletedEventsStack = new Stack<>();
 
     private boolean en;
     @Inject
@@ -92,6 +97,21 @@ public class StarterPageCtrl {
 
     public void stop() {
         server.stop();
+    }
+
+    private void addToDeletedStack(Event event) {
+        deletedEventsStack.push(event);
+        if (deletedEventsStack.size() > 5) {
+            deletedEventsStack.remove(0);
+        }
+    }
+
+    public void undoDelete() {
+        if (!deletedEventsStack.isEmpty()) {
+            Event lastDeletedEvent = deletedEventsStack.pop();
+            eventList.add(lastDeletedEvent);
+            updateHistory();
+        }
     }
 
     private void handleListViewButton(KeyEvent event) {
@@ -133,6 +153,7 @@ public class StarterPageCtrl {
                 deleteMenuItem.setOnAction(e -> {
                     if(showConfirmationDialog("Are you sure you want to delete this event?")) {
                         eventList.remove(selectedEvent);
+                        addToDeletedStack(selectedEvent);
                         updateHistory();
                     }
                 });
@@ -317,9 +338,14 @@ public class StarterPageCtrl {
 
     public void deleteHistory() {
         if (showConfirmationDialog("Are you sure you want to delete the entire history?")) {
+            deletedEventsStack.addAll(eventList);
             eventList.clear();
             listView.getItems().clear();
         }
+    }
+
+    private void updateUndoButtonState() {
+        undoButton.setDisable(deletedEventsStack.isEmpty());
     }
 
     public void admin(){
