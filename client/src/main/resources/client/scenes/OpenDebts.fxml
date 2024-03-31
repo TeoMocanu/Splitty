@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:id="debtsContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="debtsContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Open Debts" textAlignment="CENTER">
+      <Label scaleX="3.0" scaleY="3.0" text="Open Debts" textAlignment="CENTER" translateX="120.0" translateY="30.0">
          <font>
             <Font name="System Bold" size="31.0" />
          </font>
@@ -88,7 +87,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" text="send reminder" translateX="120.0" translateY="-20.0">
+                  <Button mnemonicParsing="false" text="send reminder" translateX="140.0" translateY="-30.0">
                      <font>
                         <Font size="13.0" />
                      </font>

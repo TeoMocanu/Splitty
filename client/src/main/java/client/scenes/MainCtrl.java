@@ -49,6 +49,8 @@ public class MainCtrl {
     private Scene editTitle;
     private OpenDebtsNewCtrl openDebtsNewCtrl;
     private Scene openDebts;
+    //private Scene scene;
+    //private Parent root;
 
 
     public MainCtrl() {
@@ -117,6 +119,8 @@ public class MainCtrl {
         primaryStage.setScene(starterPage);
         starterPageCtrl.initialize(en);
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
+        //scene = new Scene(root);
+        //scene.getStylesheets().add(getClass().getResource("high-contrast-theme.css").toExternalForm());;
     }
 
     public void showAdminLogin(String en) {
