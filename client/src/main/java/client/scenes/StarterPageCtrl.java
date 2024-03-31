@@ -167,6 +167,9 @@ public class StarterPageCtrl {
         if (event.getButton() == MouseButton.PRIMARY) { // Left-click
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
+                eventList.remove(selectedEvent);
+                eventList.add(selectedEvent);
+                updateHistory();
                 mainCtrl.showEventOverview(selectedEvent, en);
                 listView.getSelectionModel().clearSelection();
             }
