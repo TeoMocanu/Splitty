@@ -46,6 +46,8 @@ public class Debt {
 
     @Column(name = "amount")
     private double amount;
+    @Transient
+    private DebtKey debtKey;
 
     @SuppressWarnings("unused")
     protected Debt() {
@@ -58,6 +60,7 @@ public class Debt {
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
+        this.debtKey = new DebtKey(event.getId(), id);
     }
 
     @JsonIgnore
@@ -104,6 +107,8 @@ public class Debt {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public void addAmount(double amount) { this.amount += amount; }
 
     @Override
     public boolean equals(Object obj) {

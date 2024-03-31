@@ -1,18 +1,25 @@
 package commons;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DebtTest {
+    public Event event;
+    public Participant debtor;
+    public Participant creditor;
+    public Debt debt;
+    @BeforeEach
+    public void initialize() {
+        // Create a debt
+        event = new Event("title");
+        debtor = new Participant("name", event);
+        creditor = new Participant("name2", event);
+        debt = new Debt(event, debtor, creditor, 50.0);
+    }
     @Test
     public void testGettersAndSetters() {
-        // Create a debt
-        Event event = new Event("title");
-        Participant debtor = new Participant("name", event);
-        Participant creditor = new Participant("name2", event);
-        Debt debt = new Debt(event, debtor, creditor, 50.0);
-
         // Test getters
         assertEquals(event, debt.getEvent());
         assertEquals(debtor, debt.getDebtor());
@@ -49,12 +56,6 @@ class DebtTest {
     }
     @Test
     public void testHashCode() {
-        // Create a debt
-        Event event = new Event("title");
-        Participant debtor = new Participant("name", event);
-        Participant creditor = new Participant("name1", event);
-        Debt debt = new Debt(event, debtor, creditor, 100.0);
-
         // Calculate hash code
         int expectedHashCode = debt.hashCode();
 
@@ -62,12 +63,13 @@ class DebtTest {
     }
     @Test
     public void testToString() {
-        // Create a debt
-        Event event = new Event("title");
-        Participant debtor = new Participant("name", event);
-        Participant creditor = new Participant("name1", event);
-        Debt debt = new Debt(event, debtor, creditor, 100.0);
-
         assertNotNull(debt.toString());
+    }
+
+    @Test
+    public void testAddAmount() {
+        assertEquals(50.0, debt.getAmount());
+        debt.addAmount(20.0);
+        assertEquals(70.0, debt.getAmount());
     }
 }

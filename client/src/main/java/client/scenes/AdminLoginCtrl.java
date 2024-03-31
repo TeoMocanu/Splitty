@@ -41,8 +41,8 @@ public class AdminLoginCtrl {
     }
 
     @FXML
-    public void initialize(boolean en){
-        this.currentLanguage = en ? "EN" : "NL";
+    public void initialize(String en){
+        this.currentLanguage = en;
         language();
         ServerUtils utils = new ServerUtils();
         int passwordLength = 10;
@@ -52,21 +52,16 @@ public class AdminLoginCtrl {
     }
 
     public void language(){
-        if(currentLanguage.equals("EN")){
-            en();
-        }
-        else{
-            nl();
-        }
+        if(currentLanguage.equals("en")) en();
+        else if(currentLanguage.equals("nl")) nl();
     }
     public void languageSwitch(){
-        if(currentLanguage.equals("EN")){
-            currentLanguage = "NL";
-            nl();
+        if(currentLanguage.equals("en")){
+            currentLanguage = "nl";
         } else {
             currentLanguage = "EN";
-            en();
         }
+        language();
     }
 
     public void en() {
@@ -86,7 +81,7 @@ public class AdminLoginCtrl {
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+        mainCtrl.showStarterPage(currentLanguage);
     }
 
     public void checkPassword() {
@@ -102,12 +97,12 @@ public class AdminLoginCtrl {
 
             if (passwordMatch) {
                 System.out.println("Welcome, admin");
-                mainCtrl.showAdminOverview(currentLanguage.equals("EN"));
+                mainCtrl.showAdminOverview(currentLanguage);
 
             }
             else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
-                mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+                mainCtrl.showStarterPage(currentLanguage);
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -139,6 +134,6 @@ public class AdminLoginCtrl {
 
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage.equals("EN"));
+        mainCtrl.showStarterPage(currentLanguage);
     }
 }

@@ -34,8 +34,6 @@ public class OpenDebtsCtrl {
 
     @FXML
     private TextField desc;
-
-
     @FXML
     private TableView<Debt> table;
     @FXML

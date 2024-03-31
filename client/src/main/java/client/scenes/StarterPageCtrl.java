@@ -59,7 +59,9 @@ public class StarterPageCtrl {
     private String eventName;
     private List<Event> eventList;
 
-    private boolean en;
+    private String en;
+    private List<String> languages = List.of("en", "nl"); // add languages here
+
     @Inject
     public StarterPageCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
@@ -75,7 +77,7 @@ public class StarterPageCtrl {
 //    }
 
     @FXML
-    public void initialize(boolean en) {
+    public void initialize(String en) {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
@@ -114,7 +116,7 @@ public class StarterPageCtrl {
                 ContextMenu contextMenu = new ContextMenu();
 
                 MenuItem deleteMenuItem = new MenuItem("Delete");
-                if(!en){
+                if(en.equals("nl")){
                     deleteMenuItem.setText("Verwijderen");
                 }
                 deleteMenuItem.setOnAction(e -> {
@@ -229,15 +231,15 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            if(en)
+            if(en.equals("en"))
                 ErrorMessage.showError("No event with this invitation code was found.", en);
             else
                 ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.", en);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            if(en)
+            if(en.equals("en"))
                 ErrorMessage.showError("Invalid code.", en);
-            else
+            else if(en.equals("nl"))
                 ErrorMessage.showError("Ongeldige code.", en);
         }
     }
@@ -254,15 +256,17 @@ public class StarterPageCtrl {
     }
 
     public void languageSwitch(){
-        en = !en;
+        int index = languages.indexOf(en) + 1;
+        if(index == languages.size()) index = 0;
+        en = languages.get(index);
         language();
     }
 
     public void language(){
-        if(en){
+        if(en.equals("en")){
             en();
         }
-        else{
+        else if(en.equals("nl")){
             nl();
         }
     }

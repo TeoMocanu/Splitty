@@ -17,6 +17,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Debt;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
@@ -36,8 +37,8 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private Expense expense;
-    private boolean en;
+    private Expense expense = null;
+    private String en;
 
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
@@ -94,7 +95,7 @@ public class AddExpenseCtrl {
     }
 
     @FXML
-    void initialize(Event event, boolean en){
+    void initialize(Event event, String en){
         if(event.getTypes() != null && event.getTypes().size() > 0)
             types = FXCollections.observableArrayList(event.getTypes());
         type.setValue("other");
@@ -110,16 +111,28 @@ public class AddExpenseCtrl {
         menu.setItems(splitOptions);
         name.setItems(participants);
         everyone.setSelected(true);
-        if(expense == null){
-            name.setValue(" ");
-        }
-        else{
+        somePeople.setSelected(false);
+        name.setValue(" ");
+        date.setValue(null);
+        if(expense != null) { // initializing the data from an existing expense into the window
             content.setText(expense.getTitle());
             amount.setText(Float.toString(expense.getAmount()));
             name.setValue(expense.getPayer().getName());
+            date.setValue(expense.getLocalDate());
+            type.setValue(expense.getType());
+
             addButton.setText("Edit");
-            if(!en) addButton.setText("Bewerk");
-            //TODO: load the list of Splitters for the visual
+            if(en.equals("nl")) addButton.setText("Bewerk");
+
+            if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
+            else {
+                somePeople.setSelected(true);
+                for(CheckBox c : splitOptions) {
+                    for(Participant p : expense.getSplitters()) {
+                        if(p.getName().equals(c.getText())) c.setSelected(true);
+                    }
+                }
+            }
         }
 
         this.en = en;
@@ -138,19 +151,38 @@ public class AddExpenseCtrl {
             Expense newExpense = createExpense();
             //LocalDate date = LocalDate.of(2024, 12, 12);
             //Participant participant = new Participant("John", event);
-            //Expense expense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+            //Expense newExpense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
 
-            if(expense != null) server.editExpense(expense);
-            else server.addExpense(newExpense);
+            double amountChange = newExpense.getAmount();
+            if(expense != null) {
+                server.editExpense(newExpense);
+                amountChange = newExpense.getAmount() - expense.getAmount();
+            }
+            else {
+                server.addExpense(newExpense);
+            }
+            this.event = server.updateEvent(event);
 
-            //TODO: edit debts tied to expense
+            //TODO: get debt endpoints working
+            if(false) for(Participant p : newExpense.getSplitters()){
+                    List<Debt> debts = server.getAllDebtsFromEvent(event);
+                    for(Debt debt : debts) {
+                        if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
+                            debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                            server.editDebt(debt);
+                        }
+                    }
+                }
+            // Possibly just replace the whole loop with a new endpoint
+            // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
+
         } catch (Exception e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
-            if(en)
+            if(en.equals("en"))
                 alert.setContentText(e.getMessage() + "- internal error in adding the expense");
-            else
+            else if(en.equals("nl"))
                 alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
             alert.showAndWait();
             return;
@@ -165,9 +197,12 @@ public class AddExpenseCtrl {
         LocalDate date;
         List<Participant> debtors = new ArrayList<>();
         Participant payer = null;
+        String typeSelected;
         try{
             amount = Float.parseFloat(this.amount.getText());
+            if(currency.getValue().equals("USD")) amount *= 0.93;
             date = this.date.getValue();
+            typeSelected = type.getValue();
 
             for(Participant p : event.getParticipants()){
                 if(p.getName().equals(name.getValue())) payer = p;
@@ -192,12 +227,12 @@ public class AddExpenseCtrl {
             alert.showAndWait();
             return null;
         }
-        //return new Expense(LocalDate localDate, Participant payer, List<Participant> debtors, String title, float amount);
+
         if(expense != null){
             if(expense.getLocalDate() != null) date = expense.getLocalDate();
             if(expense.getSplitters() != null) debtors = expense.getSplitters();
         }
-        return new Expense(event, date, payer, debtors, content.getText(), amount);
+        return new Expense(event, date, payer, debtors, content.getText(), amount, typeSelected);
     }
 
     @FXML
@@ -235,7 +270,7 @@ public class AddExpenseCtrl {
     }
 
     public void language(){
-        if(en) en();
+        if(en.equals("en")) en();
         else nl();
     }
 

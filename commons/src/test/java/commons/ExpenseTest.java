@@ -35,7 +35,7 @@ public class ExpenseTest {
         event = new Event("party");
         date = LocalDate.of(2024, 12, 12);
         participant = new Participant("John", event);
-        e = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
+        e = new Expense(event, date, participant, List.of(participant), "parking", 12.5f, "drinks");
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ExpenseTest {
     @Test
     public void notEqualsHashCode() {
         var a = new Expense();
-        var b = new Expense(event, date, participant, List.of(participant), "park", 1.5f);
+        var b = new Expense(event, date, participant, List.of(participant), "park", 1.5f, "drinks");
         assertNotEquals(a, b);
         assertNotEquals(a, e);
         assertNotEquals(e, b);
@@ -64,8 +64,8 @@ public class ExpenseTest {
     // TODO THIS IS A BUG, NEEDS TO BE FIXED
     @Test
     public void getIdTest() {
-        var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-        var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f);
+        var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f, "drinks");
+        var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f, "drinks");
 
         // same properties, should still be a different id
 //        assertNotEquals(e.getId(), a.getId());
