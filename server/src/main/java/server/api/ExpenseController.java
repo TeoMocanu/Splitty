@@ -103,13 +103,11 @@ public class ExpenseController {
 
     @GetMapping("/getAll")
     public List<Expense> getAllExpenses() {
-        //return expenseRepository.findAll();
         return service.getAllExpenses();
     }
 
     @GetMapping("/getAllExpensesFromEvent/{eid}")
     public List<Expense> getAllExpensesFromEvent(@PathVariable("eid") Long eid) {
-        //return expenseRepository.findByEventId(eid);
         return service.getAllExpensesFromEvent(eid);
     }
 
@@ -133,34 +131,16 @@ public class ExpenseController {
 
     @PostMapping("/addExpense")
     public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
-//        if (expense == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        Expense added = expenseRepository.save(expense);
-//        return ResponseEntity.ok(added);
         return service.addExpense(expense);
     }
 
     @PostMapping("/editExpense/{id}")
     public ResponseEntity<Expense> editExpense(@PathVariable("id") ExpenseKey id, @RequestBody Expense expense) {
-//        if (expense == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        if (!expenseRepository.existsById(id)) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        Expense updatedExpense = expenseRepository.save(expense);
-//        return ResponseEntity.ok(updatedExpense);
         return service.editExpense(id, expense);
     }
 
     @DeleteMapping("/deleteExpense/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable("id") ExpenseKey id) {
-//        if (!expenseRepository.existsById(id)) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        expenseRepository.deleteById(id);
-//        return ResponseEntity.noContent().build();
         return service.deleteExpense(id);
     }
 }
