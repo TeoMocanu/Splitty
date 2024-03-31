@@ -193,9 +193,9 @@ public class AdminOverviewCtrl {
         tableInitialize();
     }
 
-    public void initialize(boolean en) {
+    public void initialize(String en) {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
-        this.currentLanguage = en ? "EN" : "NL";
+        this.currentLanguage = en;
         language();
         renderTable();
     }
@@ -203,7 +203,7 @@ public class AdminOverviewCtrl {
     public void languageSwitch() {
         if (currentLanguage.equals("en")) {
             currentLanguage = "nl";
-        } else {
+        } else if(currentLanguage.equals("nl")) {
             currentLanguage = "en";
         }
         language();
