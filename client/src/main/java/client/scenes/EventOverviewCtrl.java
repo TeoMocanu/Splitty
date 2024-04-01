@@ -18,6 +18,7 @@ import commons.Participant;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
@@ -96,8 +97,8 @@ public class EventOverviewCtrl {
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
-        expensePayersComboBox.setOnMouseClicked(this::handleExpensePayersComboBoxClick);
-        filteringModeComboBox.setOnMouseClicked(this::handleFilteringModeComboBoxClick);
+        expensePayersComboBox.setOnAction(e -> handleExpensePayersComboBoxAction());
+        filteringModeComboBox.setOnAction(e -> handleFilteringModeComboBoxAction());
 
         initExpensesTableView(event);
         initParticipantsListView(event);
@@ -174,17 +175,13 @@ public class EventOverviewCtrl {
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
         }
     }
-    private void handleFilteringModeComboBoxClick(MouseEvent mouseEvent){
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
-            selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
-            filterExpenses();
-        }
+    private void handleFilteringModeComboBoxAction(){
+        selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
+        filterExpenses();
     }
-    private void handleExpensePayersComboBoxClick(MouseEvent mouseEvent){
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
-            selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
-            filterExpenses();
-        }
+    private void handleExpensePayersComboBoxAction(){
+        selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
+        filterExpenses();
     }
 
     private void filterExpenses() {

@@ -29,14 +29,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, ExpenseKey> {
     List<Expense> findByEventId(@Param("eid") Long eid);
 
     @Query(value = "SELECT * FROM EXPENSE E " +
-            "JOIN PARTICIPANT P ON E.PAYER_ID = P.ID " +
-            "WHERE E.EVENT_ID = :eid AND P.ID = :pid",
+            "WHERE E.EVENT_ID = :eid AND E.PAYER_ID = :pid",
             nativeQuery = true)
     List<Expense> findByEventIdAndPayerId(@Param("eid") Long eid, @Param("pid") Long pid);
 
     @Query(value = "SELECT * FROM EXPENSE E " +
-            "JOIN PARTICIPANT P ON E.SPLITTER_ID = P.ID " +
-            "WHERE E.EVENT_ID = :eid AND P.ID = :pid",
+            "JOIN E.EXPENSE_SPLITTER ES ON E.EVENT_ID = ES.EXPENSE_EVENT_IS AND E.ID = ES.EXPENSE_ID " +
+            "JOIN PARTICIPANT P ON P.EVENT_ID = ES.SPLITTER_EVENT_ID AND P.ID = ES.SPLITTER_ID " +
+            "WHERE E.EVENT_ID = :eid AND ES.SPLITTER_ID = :pid " +
+            "GROUP BY E.ID",
             nativeQuery = true)
     List<Expense> findByEventIdAndDebtorsId(@Param("eid") Long eid, @Param("pid") Long pid);
 }
