@@ -58,7 +58,7 @@ public class MainCtrl {
 
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        showStarterPage(true);
+        showStarterPage("en");
         primaryStage.show();
     }
 
@@ -106,7 +106,12 @@ public class MainCtrl {
         this.editTitle = new Scene(editTitle.getValue());
     }
 
-    public void showStarterPage(boolean en) {
+    public void setOpenDebtsNewCtrl(Pair<OpenDebtsNewCtrl, Parent> openDebtsNewCtrl){
+        this.openDebtsNewCtrl = openDebtsNewCtrl.getKey();
+        this.openDebts = new Scene(openDebtsNewCtrl.getValue());
+    }
+
+    public void showStarterPage(String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(380);
         primaryStage.setMinHeight(450);
@@ -118,12 +123,7 @@ public class MainCtrl {
         //scene.getStylesheets().add(getClass().getResource("high-contrast-theme.css").toExternalForm());;
     }
 
-    public void setOpenDebtsNewCtrl(Pair<OpenDebtsNewCtrl, Parent> openDebtsNewCtrl){
-        this.openDebtsNewCtrl = openDebtsNewCtrl.getKey();
-        this.openDebts = new Scene(openDebtsNewCtrl.getValue());
-    }
-
-    public void showAdminLogin(boolean en) {
+    public void showAdminLogin(String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
@@ -134,14 +134,14 @@ public class MainCtrl {
         adminLoginCtrl.initialize(en);
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
-    public void showAdminOverview(boolean en) {
+    public void showAdminOverview(String en) {
         primaryStage.setTitle("Admin Overview");
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initialize(en);
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
-    public void showAddExpense(Event event, boolean en) {
+    public void showAddExpense(Event event, String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
@@ -153,7 +153,7 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showEditExpense(Event event, Expense expense, boolean en) {
+    public void showEditExpense(Event event, Expense expense, String en) {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(addExpense);
         addExpenseCtrl.setExpense(expense);
@@ -161,7 +161,7 @@ public class MainCtrl {
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showEventOverview(Event event, boolean en) {
+    public void showEventOverview(Event event, String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(380);
         primaryStage.setMinHeight(450);
@@ -173,7 +173,7 @@ public class MainCtrl {
     }
 
 
-    public void showInvitation(Event event, boolean en){
+    public void showInvitation(Event event, String en){
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(220);
@@ -184,7 +184,7 @@ public class MainCtrl {
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
-    public void showContactDetailsAdd(Event event, boolean en) {
+    public void showContactDetailsAdd(Event event, String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
@@ -196,7 +196,7 @@ public class MainCtrl {
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showContactDetailsEdit(Participant participant, boolean en) {
+    public void showContactDetailsEdit(Participant participant, String en) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
@@ -204,12 +204,11 @@ public class MainCtrl {
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.setParticipant(participant);
-        contactDetailCtrl.initialize(participant.getEvent(), en);
+        contactDetailCtrl.initialize(participant.getEvent(), en, participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showOpenDebts(Event event, boolean en) {
+    public void showOpenDebts(Event event, String en) {
         primaryStage.setTitle("Settle Debts");
         primaryStage.setScene(openDebts);
         openDebtsNewCtrl.initialize(event, en);
@@ -217,14 +216,14 @@ public class MainCtrl {
         openDebts.setOnKeyPressed(e ->openDebtsNewCtrl.keyPressed(e));
     }
 
-    public void showChangeServer(boolean en) {
+    public void showChangeServer(String en) {
         primaryStage.setResizable(false);
         primaryStage.setTitle("Change Server");
         primaryStage.setScene(changeServer);
         changeServerCtrl.initialize(en);
     }
 
-    public void showEditTitle(Event event, boolean en) {
+    public void showEditTitle(Event event, String en) {
         //primaryStage.setResizable(false);
         primaryStage.setTitle("Edit Title");
         primaryStage.setScene(editTitle);

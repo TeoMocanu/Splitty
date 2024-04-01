@@ -19,7 +19,6 @@ public class EventController {
     @Autowired
     private final EventRepository eventRepository;
 
-
     public EventController(EventRepository e){
         this.eventRepository = e;
     }
@@ -29,11 +28,6 @@ public class EventController {
         return eventRepository.findAll();
     }
 
-//    @GetMapping("/get?id={id}")
-//    public Event getById(@PathVariable("id") Long id){
-//        return eventRepository.getReferenceById(id);
-//    }
-
     @GetMapping("/getById/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable("id") Long id){
         if(id <= 0 || !eventRepository.existsById(id)) //check if id given exists or not. If not give back a bad request response.
@@ -41,15 +35,6 @@ public class EventController {
 
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
-
-//    @GetMapping("/getIdById/{id}")
-//    public ResponseEntity<Long> getEventIdById(@PathVariable("id") Long id){
-//        if(id <= 0 || !eventRepository.existsById(id)) {//check if id given exists or not. If not give back a bad request response.
-//            return ResponseEntity.badRequest().build();
-//        }
-//        return ResponseEntity.ok(eventRepository.findById(id).get().getId());
-//    }
-
 
     @PostMapping("/addEvent")
     public ResponseEntity<Event> addEvent(@RequestBody Event event) {
@@ -82,7 +67,7 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.findById(id).get());
     }
 
-    @PutMapping("/deleteEventById/{event_id}")
+    @DeleteMapping("/deleteEventById/{event_id}")
     public ResponseEntity deleteById(@PathVariable("event_id") Long id){
         if(!eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();

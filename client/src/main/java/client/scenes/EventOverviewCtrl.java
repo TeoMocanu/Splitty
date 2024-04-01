@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
-import commons.Debt;
 import commons.Event;
 
 import commons.Expense;
@@ -33,7 +32,7 @@ public class EventOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private boolean en;
+    private String en;
     private Event event;
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
@@ -89,11 +88,10 @@ public class EventOverviewCtrl {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
-    public void initialize(Event event, boolean en) {
+    public void initialize(Event event, String en) {
         this.event = event;
         this.en = en;
-        if(!en) nl();
-        else en();
+        language();
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
@@ -110,7 +108,7 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensesTableView(Event event) {
-        expenses = server.getAllExpensesFromEvent(event.getId());
+        expenses = server.getAllExpensesFromEvent(event);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -250,6 +248,11 @@ public class EventOverviewCtrl {
         }
     }
 
+    public void language() {
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
+    }
+
     public void en() {
         participantsLabel.setText("Participants");
         participantAddButton.setText("Add");
@@ -274,19 +277,4 @@ public class EventOverviewCtrl {
         editExpenseButton.setText("Bewerk Geselecteerde");
         editTitleButton.setText("Titel Bewerken");
     }
-
-    public void test() {
-        List<Debt> debt = server.getDebts(1);
-        System.out.println(debt.get(0));
-    }
-    public void setSettleDebtsButton()
-    {
-        eventName = settleDebtsButton.getText();
-        Event newEvent = new Event(eventName);
-
-
-        Event repEvent = server.addEvent(newEvent);
-        mainCtrl.showOpenDebts(repEvent, en);
-    }
-
 }

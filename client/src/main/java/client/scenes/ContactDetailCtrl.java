@@ -18,6 +18,7 @@ package client.scenes;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
@@ -35,7 +36,7 @@ public class ContactDetailCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private boolean en;
+    private String en;
 
     @FXML
     private TextField nameField;
@@ -79,16 +80,22 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event, Boolean en){
+    public void initialize(Event event, String en){
         this.event = event;
         this.en = en;
         language();
-        if(this.participant != null) {
-            this.nameField.setText(participant.getName());
-            this.emailField.setText(participant.getEmail());
-            this.ibanField.setText(participant.getIban());
-            this.bicField.setText(participant.getBic());
-        }
+    }
+
+    public void initialize(Event event, String en, Participant participant) {
+        this.event = event;
+        this.en = en;
+        language();
+        this.participant = participant;
+
+        this.nameField.setText(participant.getName());
+        this.emailField.setText(participant.getEmail());
+        this.ibanField.setText(participant.getIban());
+        this.bicField.setText(participant.getBic());
     }
 
     public void abort() {
@@ -106,7 +113,16 @@ public class ContactDetailCtrl {
                 Participant par = getParticipant();
                 server.addParticipant(getParticipant());
                 event.addParticipant(par);
-                this.event = server.updateEvent(event);
+
+
+                // creating new debts for new Participant
+                //TODO: get debt endpoints working
+                if(false) for(Participant friend : event.getParticipants()){
+                        Debt debt1 = new Debt(event, friend, par, 0);
+                        Debt debt2 = new Debt(event, par, friend, 0);
+                        server.addDebt(debt1);
+                        server.addDebt(debt2);
+                    }
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
@@ -116,6 +132,7 @@ public class ContactDetailCtrl {
                 server.editParticipant(participant);
                 participant = null;
             }
+
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -135,9 +152,6 @@ public class ContactDetailCtrl {
                 bicField.getText());
     }
 
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
 
     private void clearFields() {
         nameField.clear();
@@ -180,8 +194,8 @@ public class ContactDetailCtrl {
         return true;
     }
     public void language(){
-        if(en) en();
-        else nl();
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
     public void en(){
         nameLabel.setText("Name");

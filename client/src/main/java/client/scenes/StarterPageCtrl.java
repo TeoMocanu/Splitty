@@ -13,6 +13,11 @@ import com.google.inject.Inject;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+import java.util.Stack;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +61,15 @@ public class StarterPageCtrl {
     private Button changeServerButton;
     @FXML
     private List<ContextMenu> contextMenuList;
+    @FXML
+    private Button undoButton;
     private String eventName;
     private List<Event> eventList;
+    private Stack<Event> deletedEventsStack = new Stack<>();
 
-    private boolean en;
+    private String en;
+    private List<String> languages = List.of("en", "nl"); // add languages here
+
     @Inject
     public StarterPageCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
@@ -75,7 +85,7 @@ public class StarterPageCtrl {
 //    }
 
     @FXML
-    public void initialize(boolean en) {
+    public void initialize(String en) {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
@@ -91,6 +101,21 @@ public class StarterPageCtrl {
         server.stop();
     }
 
+    private void addToDeletedStack(Event event) {
+        deletedEventsStack.push(event);
+        if (deletedEventsStack.size() > 5) {
+            deletedEventsStack.remove(0);
+        }
+    }
+
+    public void undoDelete() {
+        if (!deletedEventsStack.isEmpty()) {
+            Event lastDeletedEvent = deletedEventsStack.pop();
+            eventList.add(lastDeletedEvent);
+            updateHistory();
+        }
+    }
+
     private void handleListViewButton(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
@@ -99,6 +124,16 @@ public class StarterPageCtrl {
                 listView.getSelectionModel().clearSelection();
             }
         }
+    }
+
+    private boolean showConfirmationDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmation");
+        alert.initOwner(listView.getScene().getWindow());
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
     }
 
 
@@ -114,12 +149,15 @@ public class StarterPageCtrl {
                 ContextMenu contextMenu = new ContextMenu();
 
                 MenuItem deleteMenuItem = new MenuItem("Delete");
-                if(!en){
+                if(en.equals("nl")){
                     deleteMenuItem.setText("Verwijderen");
                 }
                 deleteMenuItem.setOnAction(e -> {
-                    eventList.remove(selectedEvent);
-                    updateHistory();
+                    if(showConfirmationDialog("Are you sure you want to delete this event?")) {
+                        eventList.remove(selectedEvent);
+                        addToDeletedStack(selectedEvent);
+                        updateHistory();
+                    }
                 });
                 contextMenu.getItems().add(deleteMenuItem);
                 contextMenuList.add(contextMenu);
@@ -131,6 +169,9 @@ public class StarterPageCtrl {
         if (event.getButton() == MouseButton.PRIMARY) { // Left-click
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
+                eventList.remove(selectedEvent);
+                eventList.add(selectedEvent);
+                updateHistory();
                 mainCtrl.showEventOverview(selectedEvent, en);
                 listView.getSelectionModel().clearSelection();
             }
@@ -229,40 +270,46 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            if(en)
+            if(en.equals("en"))
                 ErrorMessage.showError("No event with this invitation code was found.", en);
             else
                 ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.", en);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            if(en)
+            if(en.equals("en"))
                 ErrorMessage.showError("Invalid code.", en);
-            else
+            else if(en.equals("nl"))
                 ErrorMessage.showError("Ongeldige code.", en);
         }
     }
 
     public void keyPressed(KeyEvent e) {
-        TextField source = (TextField) e.getSource();
-        if (e.getCode() == KeyCode.ENTER) {
-            if (source == createNewEvent) {
-                createNewEvent();
-            } else if (source == joinEvent) {
-                joinEvent();
+        if (e.isControlDown() && e.getCode() == KeyCode.Z) {
+            undoDelete();
+        } else if (e.getSource() instanceof TextField) {
+            TextField source = (TextField) e.getSource();
+            if (e.getCode() == KeyCode.ENTER) {
+                if (source == createNewEvent) {
+                    createNewEvent();
+                } else if (source == joinEvent) {
+                    joinEvent();
+                }
             }
         }
     }
 
     public void languageSwitch(){
-        en = !en;
+        int index = languages.indexOf(en) + 1;
+        if(index == languages.size()) index = 0;
+        en = languages.get(index);
         language();
     }
 
     public void language(){
-        if(en){
+        if(en.equals("en")){
             en();
         }
-        else{
+        else if(en.equals("nl")){
             nl();
         }
     }
@@ -301,8 +348,15 @@ public class StarterPageCtrl {
     }
 
     public void deleteHistory() {
-        eventList.clear();
-        listView.getItems().clear();
+        if (showConfirmationDialog("Are you sure you want to delete the entire history?")) {
+            deletedEventsStack.addAll(eventList);
+            eventList.clear();
+            listView.getItems().clear();
+        }
+    }
+
+    private void updateUndoButtonState() {
+        undoButton.setDisable(deletedEventsStack.isEmpty());
     }
 
     public void admin(){

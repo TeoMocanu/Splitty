@@ -110,7 +110,12 @@
             </HBox>
             <HBox prefHeight="29.0" prefWidth="388.0" VBox.vgrow="NEVER">
                <children>
-                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="238.0" text="Server" HBox.hgrow="ALWAYS">
+                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoDelete" prefHeight="25.0" prefWidth="74.0" text="Undo" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="129.0" text="Server" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>

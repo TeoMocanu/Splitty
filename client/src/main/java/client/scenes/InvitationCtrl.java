@@ -16,7 +16,7 @@ public class InvitationCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private boolean en;
+    private String en;
 
     @FXML
     private TextArea emails;
@@ -39,14 +39,14 @@ public class InvitationCtrl {
         this.server = server;
     }
 
-    public void initialize(Event event, boolean en) {
+    public void initialize(Event event, String en) {
         this.event = event;
         this.en = en;
         language();
         code.setText(Long.toString(event.getId()));
+        title.setText(event.getTitle());
     }
 
-    //nimic
     public void cancel() {
         clearFields();
         mainCtrl.showEventOverview(event, en);
@@ -57,14 +57,14 @@ public class InvitationCtrl {
         try {
             emails = getEmails();
         } catch (IllegalArgumentException e) {
-            ErrorMessage.showError(e.getMessage(), true);
+            ErrorMessage.showError(e.getMessage(), en);
             return;
         }
         for (String email : emails) {
             try {
                 server.sendMail(new Invitation(email, event.getId()));
             } catch (WebApplicationException e) {
-                ErrorMessage.showError(e.getMessage(), true);
+                ErrorMessage.showError(e.getMessage(), en);
             }
         }
         clearFields();
@@ -81,7 +81,7 @@ public class InvitationCtrl {
                 mails.add(line);
             } else {
 
-                errors += en ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
+                errors += en.equals("en") ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
             }
         }
         if (!errors.isEmpty()) {
@@ -108,21 +108,19 @@ public class InvitationCtrl {
     }
 
     public void language() {
-        if (en) en();
-        else nl();
+        if (en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
 
     public void en() {
-        title.setText("New Year Party");
-        text1.setText("Give people the following invite code");
+        text1.setText("Give people the following invite code: ");
         text2.setText("Invite the following people by email (one address per line)");
         sendInvites.setText("send invites");
         cancelButton.setText("cancel");
     }
 
     public void nl() {
-        title.setText("nieuwjaarsfeest");
-        text1.setText("Geef mensen de volgende uitnodigingscode");
+        text1.setText("Geef mensen de volgende uitnodigingscode: ");
         text2.setText("Nodig de volgende mensen uit per e-mail (\u00e9\u00e9n adres per regel)");
         sendInvites.setText("stuur uitnodigingen");
         cancelButton.setText("annuleren");

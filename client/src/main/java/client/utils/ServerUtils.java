@@ -76,8 +76,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/events/getAll") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Event>>() {
-                });
+                .get(new GenericType<List<Event>>(){ });
     }
 
     public Event addEvent(Event event) {
@@ -104,12 +103,12 @@ public class ServerUtils {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public Event deleteEvent(Event event) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void deleteEvent(Event event) {
+        ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/events/deleteEventById/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+                .delete(new GenericType<Event>(){ });
     }
 
     public List<Expense> getAllExpenses() {
@@ -117,29 +116,27 @@ public class ServerUtils {
                 .target(SERVER).path("api/expenses/getAll") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Expense>>() {
-                });
+                .get(new GenericType<List<Expense>>(){ });
     }
 
     public List<Expense> getAllExpensesFromEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/getAllFromEvent/" + event.getId()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Expense>>() {
-                });
+                .get(new GenericType<List<Expense>>(){ });
     }
 
-    public void addExpense(Expense expense) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Expense addExpense(Expense expense) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/addExpense") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
-    public void editExpense(Expense expense) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Expense editExpense(Expense expense) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -159,7 +156,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/expenses/deleteExpense" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+                .delete(new GenericType<Expense>(){ });
     }
 
     public List<Participant> getAllParticipantsFromEvent(Event event) {
@@ -180,17 +177,16 @@ public class ServerUtils {
     }
 
 
-    public void addParticipant(Participant participant) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Participant addParticipant(Participant participant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/addParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
     }
 
-    //TODO check the path after api is implemented and redo the method
-    public void editParticipant(Participant participant) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Participant editParticipant(Participant participant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/participants/editParticipant") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
@@ -202,7 +198,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/participants/deleteParticipant" + participant.getEvent().getId() + "/" + participant.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+                .delete(new GenericType<Participant>(){ });
     }
 
     public List<Participant> getAllParticipantsFromEvent(Long id) {
@@ -210,17 +206,15 @@ public class ServerUtils {
                 .target(SERVER).path("api/participants/getAllParticipantsFromEvent/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Participant>>() {
-                });
+                .get(new GenericType<List<Participant>>(){ });
     }
 
-    public List<Expense> getAllExpensesFromEvent(Long id) {
+    public List<Debt> getAllDebtsFromEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/getAllExpensesFromEvent/" + id) //
+                .target(SERVER).path("api/debts/getByEventId/" + event.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Expense>>() {
-                });
+                .get(new GenericType<List<Debt>>(){ });
     }
 
     public List<Expense> getAllExpensesFromEventPaidBy(long id, long id1) {
@@ -240,22 +234,37 @@ public class ServerUtils {
                 .get(new GenericType<List<Expense>>() {
                 });
     }
-    public List<Debt> getDebts(long id) {
+
+    public Debt addDebt(Debt debt) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debt/event/" + id) //
+                .target(SERVER).path("api/debts/add") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Debt>>() {
-                });
+                .post(Entity.entity(debt, APPLICATION_JSON), Debt.class);
     }
 
-    //TODO implement
-    public String sendInvitations(List<String> emails, String code) {
+    public List<Debt> getDebt(Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/event/invitation") //
+                .target(SERVER).path("api/debts/event/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(emails.add(code), APPLICATION_JSON), String.class);
+                .get(new GenericType<List<Debt>>(){ });
+    }
+
+    public Debt editDebt(Debt debt) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debts/edit") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(debt, APPLICATION_JSON), Debt.class);
+    }
+
+    public void deleteDebt(Debt debt) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debts/delete/" + debt.getEvent().getId() + "/" + debt.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(new GenericType<Debt>(){ });
     }
 
     public Event createEvent(String jsonString) {

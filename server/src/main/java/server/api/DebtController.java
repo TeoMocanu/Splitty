@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Debt;
 import commons.primaryKeys.DebtKey;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.DebtRepository;
@@ -9,15 +10,18 @@ import server.database.DebtRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/debt")
+@RequestMapping("/api/debts")
 public class DebtController {
     private final DebtRepository repo;
     private final EventController eventController;
 
+
+    @Autowired
     public DebtController(DebtRepository repo, EventController eventController) {
         this.repo = repo;
         this.eventController = eventController;
     }
+
 
     @GetMapping("/getByEventId/{id}")
     public ResponseEntity<List<Debt>> getAllFromEvent(@PathVariable("id") long idEvent){
@@ -67,7 +71,7 @@ public class DebtController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public ResponseEntity<Debt> editDebt(@RequestBody Debt debt) {
         DebtKey key = debt.getDebtKey();
         Debt debttt = repo.findById(key).orElse(null);

@@ -41,10 +41,10 @@ public class EventTest {
         e.addParticipant(p1);
         e.addParticipant(p2);
         e.addParticipant(p3);
-        e0 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title1", 1);
-        e1 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title2", 2);
-        e2 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title3", 3);
-        e3 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title4", 4);
+        e0 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title1", 1, "drinks");
+        e1 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title2", 2, "drinks");
+        e2 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title3", 3, "drinks");
+        e3 = new Expense(e, LocalDate.now(), p0, List.of(p1), "title4", 4, "drinks");
         e.addExpense(e0);
         e.addExpense(e1);
         e.addExpense(e2);
