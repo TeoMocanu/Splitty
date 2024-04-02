@@ -7,15 +7,15 @@
 | Minute Taker | Matej Kliment                                                                                                       |
 | Attendees:   | Matei Dumitrescu<br/>Matej Kliment<br/>Teodor Mocanu<br/>Sebastian Mustață<br/>Mihai Nicolae<br/>Mario Nicolae<br/> |
 |              |                                                                                                                     |
-Agenda Items:
-- Anouncements by the TA (2 min)
+### Agenda Items:
+- Announcements by the TA (2 min)
 - Opening by chair (1 min)
 - Approval of the agenda - Does anyone have any additions? (1 min)
 - **Check-in**
   - How is everyone doing? Anybody studying for resits next week ? (1min)
   - Progress checkup: Can we all summarize what has been done in the past week? (10 min)
 - **Presenting functionalities of our app to the TA** (5min)
-- **Talking Points**: (Inform/ brainstorm/ decision-making/ discuss)
+- **Talking Points**: (brainstorm / discuss)
   - Product pitch assignment feedback not out yet ? (1min)
   - Self-Reflection Assignment (3min)
   - What is the progress on the event activity log ? (3min)
