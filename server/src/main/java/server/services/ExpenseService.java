@@ -19,4 +19,8 @@ public interface ExpenseService {
     ResponseEntity<Expense> editExpense(ExpenseKey id, Expense expense);
 
     ResponseEntity<Void> deleteExpense(ExpenseKey id);
+
+    List<Expense> findByEventIdAndPayerId(Long eid, Long pid);
+
+    List<Expense> findByEventIdAndDebtorsId(Long eid, Long pid);
 }

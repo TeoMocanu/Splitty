@@ -175,7 +175,7 @@ public class ContactDetailCtrl {
 
     public boolean validateInput(){
 //        return true;
-        if(!nameField.getText().matches("([A-Za-z])+"))
+        if(!nameField.getText().matches("([A-Za-z0-9])+"))
             return false;
         if(!emailField.getText().matches("([A-Za-z0-9@.])+"))
             return false;

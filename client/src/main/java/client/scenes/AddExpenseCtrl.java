@@ -149,10 +149,6 @@ public class AddExpenseCtrl {
     public void add() {
         try {
             Expense newExpense = createExpense();
-            //LocalDate date = LocalDate.of(2024, 12, 12);
-            //Participant participant = new Participant("John", event);
-            //Expense newExpense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-
             double amountChange = newExpense.getAmount();
             if(expense != null) {
                 server.editExpense(newExpense);

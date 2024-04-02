@@ -217,6 +217,24 @@ public class ServerUtils {
                 .get(new GenericType<List<Debt>>(){ });
     }
 
+    public List<Expense> getAllExpensesFromEventPaidBy(long id, long id1) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEventPaidBy/" + id + "/" + id1) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEventOwedBy(long id, long id1) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEventOwedBy/" + id + "/" + id1) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
     public Debt addDebt(Debt debt) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/debts/add") //
@@ -389,4 +407,5 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(invitation, APPLICATION_JSON), Invitation.class);
     }
+
 }

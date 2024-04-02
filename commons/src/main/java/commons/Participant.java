@@ -31,11 +31,11 @@ public class Participant {
     private Event event;
 
     @OneToMany(mappedBy = "payer")
-    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
+    @JsonIgnoreProperties({"event", "payer", "splitters"})
     private List<Expense> expensesPaidBy;
 
     @ManyToMany(mappedBy = "splitters")
-    @JsonIgnoreProperties({"event", "expensesPaidBy", "expensesToPay"})
+    @JsonIgnoreProperties({"event", "payer", "splitters"})
     private List<Expense> expensesToPay;
 
     private String name;
