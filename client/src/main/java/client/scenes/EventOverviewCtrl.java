@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
-
-
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -103,8 +101,6 @@ public class EventOverviewCtrl {
         initParticipantsListView(event);
         initExpensePayersComboBox();
         initFilteringModeComboBox();
-
-
     }
 
     private void initExpensesTableView(Event event) {

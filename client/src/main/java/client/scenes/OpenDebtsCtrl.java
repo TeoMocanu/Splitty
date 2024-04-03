@@ -15,111 +15,180 @@
  */
 package client.scenes;
 
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.Debt;
-import jakarta.ws.rs.WebApplicationException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import commons.Event;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
+import javafx.scene.layout.HBox;
+
+import java.util.List;
 
 public class OpenDebtsCtrl {
 
-    //private final ServerUtils server;
-    //private final MainCtrl mainCtrl;
+    private final ServerUtils server;
+    private final MainCtrl mainCtrl;
 
-    ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
-    ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
+    private String en;
+    private Event event;
+    private List<Debt> currentDebts;
+    @FXML
+    private Label titleLabel;
+    @FXML
+    private Label eventTitleLabel;
+    @FXML
+    private TreeView<HBox> table;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button settleDebtsButton;
 
-    @FXML
-    private TextField desc;
-    @FXML
-    private TableView<Debt> table;
-    @FXML
-    private Button cancelButton;
-    @FXML
-    private Button languageButton;
-    @FXML
-    private Button sendReminder;
-    @FXML
-    private Button markReceived;
-    @FXML
-    private Label gives;
-    @FXML
-    private Label to;
-/*
     @Inject
-    public AddExpenseCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.mainCtrl = mainCtrl;
+    public OpenDebtsCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
+        this.mainCtrl = mainCtrl;
     }
-*/
-    @FXML
-    private void initialize(){
-        en();
+
+    public void initialize(Event event, String en) {
+        this.event = event;
+        this.en = en;
+        language();
+
+        eventTitleLabel.setText(event.getTitle());
+        currentDebts = server.getAllDebtsFromEvent(event);
+        initializeDebtsTable(currentDebts);
     }
-    public void cancel() {
+
+    private void initializeDebtsTable(List<Debt> debts) {
+        //Participant p1 = new Participant(event, "John", "a", "a", "a");
+        //Participant p2 = new Participant(event, "David", "a", "a", "a");
+        //Debt D1 = new Debt(event, p1, p2, 50);
+        //Debt D2 = new Debt(event, p2, p1, 10);
+        //debts = List.of(D1, D2);
+
+        TreeItem<HBox> rootNode = new TreeItem<>(new HBox(new Label("Active Debts")));
+        rootNode.setExpanded(true);
+
+        if(debts != null && debts.size() > 0)
+            for(Debt d : debts) {
+                if(d.getAmount() == 0) continue; // do not display debts with no pending amount
+
+                String text = d.getDebtor().getName() + " gives " + d.getAmount() + "\u20ac to "+ d.getCreditor().getName();
+                if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
+                String received = "Mark Received";
+                if(en.equals("nl")) received = "Merk Ontvangen";
+                Label label = new Label(text);
+                label.setStyle("-fx-font-weight: bold;");
+                TreeItem<HBox> node = new TreeItem<>(new HBox(5.0, label, new Button(received)));
+                node.setExpanded(false);
+
+                if(d.getCreditor().getIban() != null && d.getCreditor().getBic() != null) {
+                    text = "Bank information available, transfer money to:";
+                    if(en.equals("nl")) text = "Bankgegevens beschikbaar, geld overmaken naar:";
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+
+                    text = "Account holder: " + d.getCreditor().getName();
+                    if(en.equals("nl")) text = "Rekeninghouder: " + d.getCreditor().getName();
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label("IBAN: " + d.getCreditor().getIban()))));
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label("BIC: " + d.getCreditor().getBic()))));
+
+                    text = "Send Reminder";
+                    if(en.equals("nl")) text = "Herinnering verzenden";
+                    Button button = new Button(text);
+                    button.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            markReceived(d);
+                        }
+                    });
+                    node.getChildren().add(new TreeItem<>(new HBox(button)));
+
+
+                } else {
+                    text = "Bank information not available, ask holder for more";
+                    if(en.equals("nl")) text = "Bankgegevens niet beschikbaar, vraag de houder om meer";
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+                    if(d.getCreditor().getEmail() != null) {
+                        text = "Send Reminder";
+                        if(en.equals("nl")) text = "Herinnering verzenden";
+                        Button button = new Button(text);
+                        button.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                markReceived(d);
+                            }
+                        });
+                        node.getChildren().add(new TreeItem<>(new HBox(button)));
+                    }
+                }
+
+                rootNode.getChildren().add(node);
+            }
+
+        table.setRoot(rootNode);
+    }
+
+    public void markReceived(Debt debt) {
+        //TODO: add alert asking "are you sure you want to reset this debt amount?"
+        //table.getRoot().getChildren().remove(child);
+        debt.setAmount(0);
+        server.editDebt(debt);
+        initializeDebtsTable(currentDebts);
+    }
+
+    public void back() {
         clearFields();
-        //mainCtrl.showOverview();
+        mainCtrl.showEventOverview(event, en);
     }
 
-    public void add() {
-        try {
-            //server.addExpense(getExpense());
-        } catch (WebApplicationException e) {
-
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
-
-        clearFields();
-        //mainCtrl.showOverview();
-    }
-
-    private String getExpense() {
-        var p = desc.getText();
-        //var q = quote.getText();
-        return p;
+    public void settleAllDebts() {
+        //TODO: also alert about resetting all the debts
+        if(currentDebts != null && currentDebts.size() > 0)
+            for(Debt d : currentDebts){
+                d.setAmount(0);
+            }
+        initializeDebtsTable(currentDebts);
     }
 
     private void clearFields() {
-        desc.clear();
+        table.setRoot(new TreeItem<HBox>());
+        eventTitleLabel.setText("");
     }
 
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
-                add();
+                //
                 break;
             case ESCAPE:
-                cancel();
+                back();
                 break;
             default:
                 break;
         }
     }
 
-    public void language(boolean en){
-        if(en) en();
-        else nl();
+    public void language() {
+        if(en.equals("en")) en();
+        else if(en.equals("nl")) nl();
     }
 
     public void en(){
-        cancelButton.setText("Cancel");
-        markReceived.setText("mark received");
-        sendReminder.setText("send reminder");
-        gives.setText("gives");
-        to.setText("to");
+        titleLabel.setText("Open Debts");
+        backButton.setText("Back");
+        settleDebtsButton.setText("Settle all debts");
     }
     public void nl(){
-        cancelButton.setText("Annuleren");
-        markReceived.setText("merk ontvangen");
-        sendReminder.setText("herinnering sturen");
-        gives.setText("geeft");
-        to.setText("naar");
+        titleLabel.setText("Schulden");
+        backButton.setText("Rug");
+        settleDebtsButton.setText("Regel alle schulden");
     }
 }
