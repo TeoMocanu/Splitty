@@ -118,10 +118,8 @@ public class ContactDetailCtrl {
                 // creating new debts for new Participant
                 //TODO: get debt endpoints working
                 if(false) for(Participant friend : event.getParticipants()){
-                        Debt debt1 = new Debt(event, friend, par, 0);
-                        Debt debt2 = new Debt(event, par, friend, 0);
-                        server.addDebt(debt1);
-                        server.addDebt(debt2);
+                        Debt debt = new Debt(event, par, friend, 0);
+                        server.addDebt(debt);
                     }
             } else {
                 Participant newParticipant = getParticipant();
