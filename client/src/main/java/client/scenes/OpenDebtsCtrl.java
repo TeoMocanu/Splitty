@@ -76,47 +76,30 @@ public class OpenDebtsCtrl {
         rootNode.setExpanded(true);
 
         if(debts != null && debts.size() > 0)
-        for(Debt d : debts) {
-            if(d.getAmount() == 0) continue; // do not display debts with no pending amount
+            for(Debt d : debts) {
+                if(d.getAmount() == 0) continue; // do not display debts with no pending amount
 
-            String text = d.getDebtor().getName() + " gives " + d.getAmount() + "\u20ac to "+ d.getCreditor().getName();
-            if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
-            String received = "Mark Received";
-            if(en.equals("nl")) received = "Merk Ontvangen";
-            Label label = new Label(text);
-            label.setStyle("-fx-font-weight: bold;");
-            TreeItem<HBox> node = new TreeItem<>(new HBox(5.0, label, new Button(received)));
-            node.setExpanded(false);
+                String text = d.getDebtor().getName() + " gives " + d.getAmount() + "\u20ac to "+ d.getCreditor().getName();
+                if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
+                String received = "Mark Received";
+                if(en.equals("nl")) received = "Merk Ontvangen";
+                Label label = new Label(text);
+                label.setStyle("-fx-font-weight: bold;");
+                TreeItem<HBox> node = new TreeItem<>(new HBox(5.0, label, new Button(received)));
+                node.setExpanded(false);
 
-            if(d.getCreditor().getIban() != null && d.getCreditor().getBic() != null) {
-                text = "Bank information available, transfer money to:";
-                if(en.equals("nl")) text = "Bankgegevens beschikbaar, geld overmaken naar:";
-                node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+                if(d.getCreditor().getIban() != null && d.getCreditor().getBic() != null) {
+                    text = "Bank information available, transfer money to:";
+                    if(en.equals("nl")) text = "Bankgegevens beschikbaar, geld overmaken naar:";
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
 
-                text = "Account holder: " + d.getCreditor().getName();
-                if(en.equals("nl")) text = "Rekeninghouder: " + d.getCreditor().getName();
-                node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+                    text = "Account holder: " + d.getCreditor().getName();
+                    if(en.equals("nl")) text = "Rekeninghouder: " + d.getCreditor().getName();
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
 
-                node.getChildren().add(new TreeItem<>(new HBox(new Label("IBAN: " + d.getCreditor().getIban()))));
-                node.getChildren().add(new TreeItem<>(new HBox(new Label("BIC: " + d.getCreditor().getBic()))));
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label("IBAN: " + d.getCreditor().getIban()))));
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label("BIC: " + d.getCreditor().getBic()))));
 
-                text = "Send Reminder";
-                if(en.equals("nl")) text = "Herinnering verzenden";
-                Button button = new Button(text);
-                button.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        markReceived(d);
-                    }
-                });
-                node.getChildren().add(new TreeItem<>(new HBox(button)));
-
-
-            } else {
-                text = "Bank information not available, ask holder for more";
-                if(en.equals("nl")) text = "Bankgegevens niet beschikbaar, vraag de houder om meer";
-                node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
-                if(d.getCreditor().getEmail() != null) {
                     text = "Send Reminder";
                     if(en.equals("nl")) text = "Herinnering verzenden";
                     Button button = new Button(text);
@@ -127,16 +110,33 @@ public class OpenDebtsCtrl {
                         }
                     });
                     node.getChildren().add(new TreeItem<>(new HBox(button)));
-                }
-            }
 
-            rootNode.getChildren().add(node);
-        }
+
+                } else {
+                    text = "Bank information not available, ask holder for more";
+                    if(en.equals("nl")) text = "Bankgegevens niet beschikbaar, vraag de houder om meer";
+                    node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
+                    if(d.getCreditor().getEmail() != null) {
+                        text = "Send Reminder";
+                        if(en.equals("nl")) text = "Herinnering verzenden";
+                        Button button = new Button(text);
+                        button.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                markReceived(d);
+                            }
+                        });
+                        node.getChildren().add(new TreeItem<>(new HBox(button)));
+                    }
+                }
+
+                rootNode.getChildren().add(node);
+            }
 
         table.setRoot(rootNode);
     }
 
-   public void markReceived(Debt debt) {
+    public void markReceived(Debt debt) {
         //TODO: add alert asking "are you sure you want to reset this debt amount?"
         //table.getRoot().getChildren().remove(child);
         debt.setAmount(0);
@@ -152,9 +152,9 @@ public class OpenDebtsCtrl {
     public void settleAllDebts() {
         //TODO: also alert about resetting all the debts
         if(currentDebts != null && currentDebts.size() > 0)
-        for(Debt d : currentDebts){
-            d.setAmount(0);
-        }
+            for(Debt d : currentDebts){
+                d.setAmount(0);
+            }
         initializeDebtsTable(currentDebts);
     }
 
