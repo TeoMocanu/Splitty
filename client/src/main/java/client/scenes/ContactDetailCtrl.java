@@ -106,12 +106,16 @@ public class ContactDetailCtrl {
 
     //TODO Maybe we can create custom exceptions?
     public void ok() {
+        System.out.println("OK");
         try {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
+                System.out.println("we make a new participant based on the text fields");
                 Participant par = getParticipant();
-                server.addParticipant(getParticipant());
+                server.addParticipant(getParticipant()); // after this line it breaks
+                System.out.println(par.getName());
+
                 event.addParticipant(par);
 
 
@@ -129,11 +133,13 @@ public class ContactDetailCtrl {
                 participant.setEmail(newParticipant.getEmail());
                 participant.setIban(newParticipant.getIban());
                 participant.setName(newParticipant.getName());
+                System.out.println(participant.getName());
                 server.editParticipant(participant);
                 participant = null;
             }
 
         } catch (WebApplicationException e) {
+            System.out.println("alert");
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());

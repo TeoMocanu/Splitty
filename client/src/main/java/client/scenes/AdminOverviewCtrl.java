@@ -13,6 +13,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
@@ -24,6 +26,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.io.IOException;
 
 public class AdminOverviewCtrl {
     private final ServerUtils server;
@@ -143,29 +146,60 @@ public class AdminOverviewCtrl {
         tableView.getSortOrder().add(tableView.getColumns().get(1));
         tableView.sort();
     }
-
-    public void tableInitialize() {
+    public Event getSelectedEvent() {
+        TableRowData selectedRow = tableView.getSelectionModel().getSelectedItem();
+        return server.getEvent(selectedRow.getId());
+    }
+    public void tableInitialize()  {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");
-        MenuItem getJSON = new MenuItem("Get JSON String");
+        MenuItem getJSON = new MenuItem("Copy JSON to Clipboard");
+        MenuItem downloadJSON = new MenuItem("Download JSON");
         contextMenu.getItems().add(deleteItem);
         contextMenu.getItems().add(getJSON);
+        contextMenu.getItems().add(downloadJSON);
         // Setting up the action for the 'Delete' menu item (placeholder for now)
         deleteItem.setOnAction((event) -> {
-            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
-            long id = clickedRow.getId();
-            Event eventToDelete = server.getEvent(id);
+            Event eventToDelete = getSelectedEvent();
             server.deleteEvent(eventToDelete);
             renderTable();
         });
         getJSON.setOnAction((event) -> {
-            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
-            long id = clickedRow.getId();
-            Event eventToGet = server.getEvent(id);
-            String string = eventToGet.toJSONString();
-            System.out.println(string);
+            Event eventToGet = getSelectedEvent();
+            String string = null;
+            try {
+                string = eventToGet.toJSONString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(string);
+            clipboard.setContent(content);
+
             renderTable();
         });
+        downloadJSON.setOnAction((event) -> {
+            Event eventToDownload = getSelectedEvent();
+            String string = null;
+            try {
+                string = eventToDownload.toJSONString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save JSON File");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+            File file = fileChooser.showSaveDialog(downloadButton.getScene().getWindow());
+            if (file != null) {
+                try {
+                    Files.write(file.toPath(), string.getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            renderTable();
+        } );
         // Attach the context menu to each row in the table
         tableView.setRowFactory(tv -> {
             TableRow<TableRowData> row = new TableRow<>();
@@ -241,8 +275,6 @@ public class AdminOverviewCtrl {
 
     public void ok() {
         try {
-            // TODO: Add admin functionality, like seeing server instances
-
 
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -275,7 +307,6 @@ public class AdminOverviewCtrl {
     public void showServerInfo() {
         try {
             String serverInfo = server.fetchAllServerInfo();
-//            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
             System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
@@ -299,20 +330,28 @@ public class AdminOverviewCtrl {
 
             Popup popup = new Popup();
 
-            // show the pop up
             popup.getContent().add(popupLayout);
             popup.show(importButtonText.getScene().getWindow());
             okButton.setOnAction(e -> {
                 try {
-                    String eventJSON = textArea.getText();
-                    Event newEvent = server.createEvent(eventJSON);
-                    server.addEvent(newEvent);
-                    System.out.println(newEvent.toJSONString());
+                    String textContent = textArea.getText();
+
+                    List<String> eventsJSON = List.of(textContent.split("\n"));
+                    for(String singleEventJSON :eventsJSON) {
+                        Event newEvent = server.createEvent(singleEventJSON);
+                        server.addEvent(newEvent);
+                    }
                     renderTable();
                     popup.hide();
                 } catch (Exception ex) {
                     System.out.println("Failed to import data: " + ex.getMessage());
                     ex.printStackTrace();
+                }
+            });
+            // Popup closes when clicked outside of it
+            importButtonText.getScene().setOnMouseClicked( e -> {
+                if (!popupLayout.getBoundsInParent().contains(e.getX(), e.getY())) {
+                    popup.hide();
                 }
             });
             renderTable();
@@ -333,6 +372,12 @@ public class AdminOverviewCtrl {
             if (file != null) {
                 // Read the file's content. Assuming the content is a JSON string you want to import.
                 String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+
+                List<String> eventsJSON = List.of(content.split("\n"));
+                for(String singleEventJSON :eventsJSON) {
+                    Event newEvent = server.createEvent(singleEventJSON);
+                    server.addEvent(newEvent);
+                }
                 renderTable();
             }
             renderTable();
@@ -342,8 +387,26 @@ public class AdminOverviewCtrl {
         }
     }
 
-    public void downloadData() {
+    public void downloadAllEvents() {
         try {
+            String version = com.fasterxml.jackson.databind.cfg.PackageVersion.VERSION.toString();
+            System.out.println("Jackson version: " + version);
+
+            List<Event> allEvents = server.getAllEvents();
+            StringBuilder allEventsJSON = new StringBuilder();
+            for(Event event : allEvents) {
+                String json = event.toJSONString();
+                allEventsJSON.append(json).append("\n");
+            }
+
+            String allJSON = allEventsJSON.toString();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save JSON File");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+            File file = fileChooser.showSaveDialog(downloadButton.getScene().getWindow());
+            if (file != null) {
+                Files.write(file.toPath(), allJSON.getBytes());
+            }
         } catch (Exception e) {
             System.out.println("Failed to download data: " + e.getMessage());
             e.printStackTrace();

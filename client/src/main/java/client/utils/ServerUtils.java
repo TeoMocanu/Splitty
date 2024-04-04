@@ -30,6 +30,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import commons.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
@@ -251,32 +252,12 @@ public class ServerUtils {
 
     public Event createEvent(String jsonString) {
         try {
-            if(jsonString.charAt(0) != '"') {
-                jsonString = "\"" + jsonString + "\"";
-            }
-            System.out.println(jsonString);
             ObjectMapper mapper = new ObjectMapper();
-            String title = mapper.readTree(jsonString).path("title").asText();
-            JsonNode participantsNode = mapper.readTree(jsonString).path("participants");
-            List<Participant> participants = mapper.readerFor(new TypeReference<List<Participant>>() {
-            }).readValue(participantsNode);
-            JsonNode expensesNode = mapper.readTree(jsonString).path("expenses");
-            List<Expense> expenses = mapper.readerFor(new TypeReference<List<Expense>>() {
-            }).readValue(expensesNode);
-
-            JsonNode typesNoe = mapper.readTree(jsonString).path("types");
-            List<String> types = mapper.readerFor(new TypeReference<List<String>>() {
-            }).readValue(typesNoe);
-
-            Event createdEvent = new Event(title);
-            createdEvent.setParticipants(participants);
-            createdEvent.setExpenses(expenses);
-            createdEvent.setTypes(types);
+            mapper.registerModule(new JavaTimeModule());
+            Event createdEvent = mapper.readValue(jsonString, Event.class);
             return createdEvent;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
         return null;
     }

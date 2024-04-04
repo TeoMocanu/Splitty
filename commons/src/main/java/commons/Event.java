@@ -1,10 +1,13 @@
 package commons;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,9 +108,13 @@ public class Event {
     }
 
 
-    public String toJSONString() {
+    public String toJSONString() throws IOException {
         // only include title, participants, expenses, and types
-        return "{title: " + this.title + ", participants: " + this.participants + ", expenses: " + this.expenses + ", types: " + this.types + "}";
+//        return "{title: " + this.title + ", participants: " + this.participants + ", expenses: " + this.expenses + ", types: " + this.types + "}";
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        String ret = mapper.writeValueAsString(this);
+        return ret;
     }
     public void setId(long id) {
         this.id=id;
