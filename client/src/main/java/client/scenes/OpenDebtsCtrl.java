@@ -124,7 +124,6 @@ public class OpenDebtsCtrl {
 
     public void markReceived(Debt debt) {
         //TODO: add alert asking "are you sure you want to reset this debt amount?"
-        System.out.println("im here with ");
         debt.setAmount(0);
         server.editDebt(debt);
         currentDebts = server.getAllDebtsFromEvent(event);
