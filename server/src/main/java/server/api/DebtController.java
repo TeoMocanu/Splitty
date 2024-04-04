@@ -74,7 +74,7 @@ public class DebtController {
     @PostMapping("/edit")
     public ResponseEntity<Debt> editDebt(@RequestBody Debt debt) {
         DebtKey key = debt.getDebtKey();
-        Debt debttt = repo.findById(key).orElse(null);
+        //Debt debttt = repo.findById(key).orElse(null);
         if (repo.findById(key).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }

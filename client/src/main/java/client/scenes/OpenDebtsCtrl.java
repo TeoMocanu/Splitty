@@ -19,8 +19,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import commons.Invitation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -66,12 +65,7 @@ public class OpenDebtsCtrl {
     }
 
     private void initializeDebtsTable(List<Debt> debts) {
-        //Participant p1 = new Participant(event, "John", "a", "a", "a");
-        //Participant p2 = new Participant(event, "David", "a", "a", "a");
-        //Debt D1 = new Debt(event, p1, p2, 50);
-        //Debt D2 = new Debt(event, p2, p1, 10);
-        //debts = List.of(D1, D2);
-
+        table.setRoot(null);
         TreeItem<HBox> rootNode = new TreeItem<>(new HBox(new Label("Active Debts")));
         rootNode.setExpanded(true);
 
@@ -85,7 +79,10 @@ public class OpenDebtsCtrl {
                 if(en.equals("nl")) received = "Merk Ontvangen";
                 Label label = new Label(text);
                 label.setStyle("-fx-font-weight: bold;");
-                TreeItem<HBox> node = new TreeItem<>(new HBox(5.0, label, new Button(received)));
+                Button buttonR = new Button(received);
+                buttonR.resize(15, 10); // adjust the size of the button
+                buttonR.setOnAction(e -> { markReceived(d); });
+                TreeItem<HBox> node = new TreeItem<>(new HBox(5.0, label, buttonR));
                 node.setExpanded(false);
 
                 if(d.getCreditor().getIban() != null && d.getCreditor().getBic() != null) {
@@ -103,14 +100,8 @@ public class OpenDebtsCtrl {
                     text = "Send Reminder";
                     if(en.equals("nl")) text = "Herinnering verzenden";
                     Button button = new Button(text);
-                    button.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            markReceived(d);
-                        }
-                    });
+                    button.setOnAction(e -> { sendReminder(d); });
                     node.getChildren().add(new TreeItem<>(new HBox(button)));
-
 
                 } else {
                     text = "Bank information not available, ask holder for more";
@@ -120,12 +111,7 @@ public class OpenDebtsCtrl {
                         text = "Send Reminder";
                         if(en.equals("nl")) text = "Herinnering verzenden";
                         Button button = new Button(text);
-                        button.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                markReceived(d);
-                            }
-                        });
+                        button.setOnAction(e -> { sendReminder(d); });
                         node.getChildren().add(new TreeItem<>(new HBox(button)));
                     }
                 }
@@ -138,10 +124,18 @@ public class OpenDebtsCtrl {
 
     public void markReceived(Debt debt) {
         //TODO: add alert asking "are you sure you want to reset this debt amount?"
-        //table.getRoot().getChildren().remove(child);
         debt.setAmount(0);
         server.editDebt(debt);
+        currentDebts = server.getAllDebtsFromEvent(event);
         initializeDebtsTable(currentDebts);
+    }
+
+    public void sendReminder(Debt debt) {
+        // TODO: adjust invitation object for reminders
+        String email = debt.getDebtor().getEmail();
+        String iban = debt.getCreditor().getIban();
+        Invitation invitation = new Invitation(email, 0L);
+        server.sendMail(invitation);
     }
 
     public void back() {
@@ -154,7 +148,9 @@ public class OpenDebtsCtrl {
         if(currentDebts != null && currentDebts.size() > 0)
             for(Debt d : currentDebts){
                 d.setAmount(0);
+                server.editDebt(d);
             }
+        currentDebts = server.getAllDebtsFromEvent(event);
         initializeDebtsTable(currentDebts);
     }
 

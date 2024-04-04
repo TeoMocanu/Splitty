@@ -82,7 +82,12 @@
                      </GridPane.margin>
                   </VBox>
                   <Label fx:id="typeL" scaleX="1.2" scaleY="1.2" text="Type:" GridPane.rowIndex="5" />
-                  <ChoiceBox fx:id="type" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <ChoiceBox fx:id="type" prefHeight="26.0" prefWidth="129.0" />
+                        <TextField fx:id="newType" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="130.0" promptText="add new type" />
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
