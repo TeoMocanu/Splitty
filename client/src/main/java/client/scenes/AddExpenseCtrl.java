@@ -125,6 +125,7 @@ public class AddExpenseCtrl {
     }
 
     public void initialize(Event event, Expense expense, String en) { // initializing the data from an existing expense into the window
+        expense = server.getExpenseById(expense.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
             types.addAll(event.getTypes());
@@ -184,25 +185,24 @@ public class AddExpenseCtrl {
             }
             this.event = server.updateEvent(event);
 
-            // TODO: get debt endpoints working
-            if(false) for(Participant p : newExpense.getSplitters()){
-                    List<Debt> debts = server.getAllDebtsFromEvent(event);
-                    for(Debt debt : debts) {
-                        if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
-                            debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
-                            server.editDebt(debt);
+            for(Participant p : newExpense.getSplitters()){
+                List<Debt> debts = server.getAllDebtsFromEvent(event);
+                for(Debt debt : debts) {
+                    if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
+                        debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                        server.editDebt(debt);
+                    }
+                    if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == newExpense.getPayer().getId()) {
+                        debt.addAmount((-1.0) * amountChange / newExpense.getSplitters().size());
+                        if(debt.getAmount() < 0) {
+                            debt.setAmount(debt.getAmount() * (-1.0));
+                            debt.setCreditor(debt.getDebtor());
+                            debt.setDebtor(p);
                         }
-                        if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == newExpense.getPayer().getId()) {
-                            debt.addAmount((-1.0) * amountChange / newExpense.getSplitters().size());
-                            if(debt.getAmount() < 0) {
-                                debt.setAmount(debt.getAmount() * (-1.0));
-                                debt.setDebtor(debt.getCreditor());
-                                debt.setDebtor(p);
-                            }
-                            server.editDebt(debt);
-                        }
+                        server.editDebt(debt);
                     }
                 }
+            }
             // Possibly just replace the whole loop with a new endpoint
             // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
 
