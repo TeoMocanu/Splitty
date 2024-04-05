@@ -22,4 +22,18 @@ public class AdminPasswordControllerTest {
         assertFalse(password.isEmpty(), "Password should not be empty.");
     }
 
+    @Test
+    void zeroLength() {
+        int length = 0;
+        String password = adminPasswordController.getAdminPassword(length);
+        assertEquals(0, password.length(), "Password with length 0 should be empty.");
+    }
+
+    @Test
+    void maxLength() {
+        //Check for maximum length based on the byte array used in encoding
+        int maxLength = 32; //Maximum length for base64 encoded string from 24 byte array
+        String password = adminPasswordController.getAdminPassword(maxLength);
+        assertEquals(maxLength, password.length(), "Password should have the maximum possible length.");
+    }
 }
