@@ -19,6 +19,7 @@ import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import client.scenes.*;
 import com.google.inject.Injector;
@@ -30,7 +31,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
-    private static final MyFXML FXML = new MyFXML(INJECTOR);
+    private static final MyFXML FXML = new MyFXML(INJECTOR, new Locale("en"));
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
@@ -38,35 +39,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
-        var addExpense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
-        var starterPage = FXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
-        var adminOverview = FXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
-        var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
-        var contactDetails = FXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
-        var changeServer = FXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
-        var eventOverview = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
-        var invitation = FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
-        var editTitle = FXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
-        var openDebts = FXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
-
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-
-        mainCtrl.starterPage(starterPage);
-        mainCtrl.adminLogin(adminLogin);
-        mainCtrl.adminOverview(adminOverview);
-        mainCtrl.addExpense(addExpense);
-        mainCtrl.contactDetails(contactDetails);
-        mainCtrl.changeServer(changeServer);
-        mainCtrl.eventOverview(eventOverview);
-        mainCtrl.invitation(invitation);
-        mainCtrl.editTitle(editTitle);
-        mainCtrl.settleDebts(openDebts);
+        mainCtrl.load(primaryStage, FXML);
 
         mainCtrl.initialize(primaryStage);
 
-        primaryStage.setOnCloseRequest(e -> {
-            starterPage.getKey().stop();
-        });
+
     }
 }

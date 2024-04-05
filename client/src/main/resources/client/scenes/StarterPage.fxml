@@ -15,7 +15,7 @@
    <children>
       <VBox layoutX="-5.0" maxWidth="1.7976931348623157E308" prefHeight="115.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="createNewEventLabel" prefHeight="27.0" prefWidth="258.0" text="Create New Event" VBox.vgrow="NEVER">
+            <Label fx:id="createNewEventLabel" prefHeight="27.0" prefWidth="258.0" text="%createNewEvent" VBox.vgrow="NEVER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -30,14 +30,14 @@
                         <Insets left="15.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="createButton" mnemonicParsing="false" onAction="#createNewEvent" prefHeight="25.0" prefWidth="83.0" text="Create">
+                  <Button fx:id="createButton" mnemonicParsing="false" onAction="#createNewEvent" prefHeight="25.0" prefWidth="83.0" text="%create">
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <Label fx:id="joinEventLabel" prefHeight="27.0" prefWidth="258.0" text="Join Event" VBox.vgrow="NEVER">
+            <Label fx:id="joinEventLabel" prefHeight="27.0" prefWidth="258.0" text="%joinEvent" VBox.vgrow="NEVER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -52,14 +52,14 @@
                         <Insets left="15.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinEvent" prefHeight="25.0" prefWidth="83.0" text="Join">
+                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinEvent" prefHeight="25.0" prefWidth="83.0" text="%join">
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <Label fx:id="recentlyViewedEventsLabel" prefHeight="27.0" prefWidth="353.0" text="Recently viewed events" VBox.vgrow="NEVER">
+            <Label fx:id="recentlyViewedEventsLabel" prefHeight="27.0" prefWidth="353.0" text="%recentlyViewedEvents" VBox.vgrow="NEVER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -76,7 +76,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="languageButtonStart" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
+                        <Button fx:id="languageButtonStart" mnemonicParsing="false" onAction="#languageSwitch" text="%LG" />
                      </children>
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
@@ -84,7 +84,7 @@
                   </FlowPane>
                   <FlowPane alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#admin" text="Admin">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#admin" text="%admin">
                            <FlowPane.margin>
                               <Insets left="15.0" right="15.0" />
                            </FlowPane.margin>
@@ -96,7 +96,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="deleteHistoryButton" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="26.0" prefWidth="139.0" text="Delete history">
+                        <Button fx:id="deleteHistoryButton" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="26.0" prefWidth="139.0" text="%deleteHistory">
                            <FlowPane.margin>
                               <Insets left="15.0" />
                            </FlowPane.margin>
@@ -110,17 +110,17 @@
             </HBox>
             <HBox prefHeight="29.0" prefWidth="388.0" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoDelete" prefHeight="25.0" prefWidth="74.0" text="Undo" HBox.hgrow="NEVER">
+                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoDelete" prefHeight="25.0" prefWidth="74.0" text="%undo" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="129.0" text="Server" HBox.hgrow="ALWAYS">
+                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="129.0" text="Server..." HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Button fx:id="changeServerButton" mnemonicParsing="false" onAction="#changeServer" prefHeight="26.0" prefWidth="106.0" text="Change Server" HBox.hgrow="NEVER">
+                  <Button fx:id="changeServerButton" mnemonicParsing="false" onAction="#changeServer" prefHeight="26.0" prefWidth="106.0" text="%changeServer" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>

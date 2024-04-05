@@ -19,7 +19,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import javafx.fxml.FXMLLoader;
@@ -32,14 +35,31 @@ import javafx.util.Pair;
 public class MyFXML {
 
     private Injector injector;
+    private Locale locale;
+    private ResourceBundle bundle;
 
-    public MyFXML(Injector injector) {
+    @Inject
+    public MyFXML(Injector injector, Locale locale) {
         this.injector = injector;
+        this.locale = locale;
+        this.bundle = ResourceBundle.getBundle("language.messages", locale);
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public String getFromBundle(String key) {
+        return bundle.getString(key);
     }
 
     public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         try {
-            var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
+            var loader = new FXMLLoader(getLocation(parts), bundle, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
             T ctrl = loader.getController();
             return new Pair<>(ctrl, parent);

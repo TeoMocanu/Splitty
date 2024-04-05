@@ -18,11 +18,17 @@ package client;
 import client.scenes.*;
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
-//import client.scenes.*;
+import java.util.Locale;
 
 public class MyModule implements Module {
+
+    @Provides
+    Locale provideLocale() {
+        return new Locale("en");
+    }
 
     @Override
     public void configure(Binder binder) {
