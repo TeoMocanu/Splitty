@@ -36,4 +36,24 @@ public class AdminPasswordControllerTest {
         String password = adminPasswordController.getAdminPassword(maxLength);
         assertEquals(maxLength, password.length(), "Password should have the maximum possible length.");
     }
+
+    @Test
+    void negativeLength() {
+        int length = -1;
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            adminPasswordController.getAdminPassword(length);
+        }, "Exception for negative lengths.");
+
+        String expMessage = "Length must be non-negative";
+        String actMessage = exception.getMessage();
+
+        assertTrue(actMessage.contains(expMessage), "Exception message should indicate problem with negative length.");
+    }
+
+    @Test
+    void safeChar() {
+        int length = 22;
+        String password = adminPasswordController.getAdminPassword(length);
+        assertTrue(password.matches("^[A-Za-z0-9_-]*$"), "Password should contain only Base64 URL-safe characters.");
+    }
 }
