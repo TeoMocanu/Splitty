@@ -19,7 +19,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
-import commons.Invitation;
+import commons.emails.Reminder;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -131,11 +131,17 @@ public class OpenDebtsCtrl {
     }
 
     public void sendReminder(Debt debt) {
-        // TODO: adjust invitation object for reminders
         String email = debt.getDebtor().getEmail();
-        String iban = debt.getCreditor().getIban();
-        Invitation invitation = new Invitation(email, 0L);
-        server.sendMail(invitation);
+        Reminder reminder = new Reminder(email, event.getTitle(), debt.getAmount(), debt.getCreditor().getName());
+        try{
+            server.sendReminder(reminder);
+        } catch (Exception e) {
+            ErrorMessage.showError(e.getMessage(), en);
+        }
+        if(en.equals("en"))
+            InfoMessage.showInfo("Reminder sent", en);
+        else if(en.equals("nl"))
+            InfoMessage.showInfo("Herinnering verzonden", en);
     }
 
     public void back() {
