@@ -30,7 +30,7 @@ public class EventOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private String en;
+//    private String en;
     private Event event;
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
@@ -86,10 +86,8 @@ public class EventOverviewCtrl {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
-    public void initialize(Event event, String en) {
+    public void initialize(Event event) {
         this.event = event;
-        this.en = en;
-        language();
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
@@ -194,39 +192,39 @@ public class EventOverviewCtrl {
     }
 
     public void addParticipant() {
-        mainCtrl.showContactDetailsAdd(event, en);
+        mainCtrl.showContactDetailsAdd(event);
     }
 
     public void editParticipant() {
         if(selectedParticipant != null) {
-            mainCtrl.showContactDetailsEdit(selectedParticipant, en);
+            mainCtrl.showContactDetailsEdit(selectedParticipant);
         }
     }
 
     public void addExpense() {
-        mainCtrl.showAddExpense(event, en);
+        mainCtrl.showAddExpense(event);
     }
 
     public void settleDebts() {
-        mainCtrl.showOpenDebts(event, en);
+        mainCtrl.showOpenDebts(event);
     }
 
     public void sendInvites() {
-        mainCtrl.showInvitation(event, en);
+        mainCtrl.showInvitation(event);
     }
 
     public void back() {
         server.editEvent(event);
-        mainCtrl.showStarterPage(en);
+        mainCtrl.showStarterPage();
     }
 
     public void editTitle() {
-        mainCtrl.showEditTitle(event, en);
+        mainCtrl.showEditTitle(event);
     }
 
     public void editExpense() {
         if(selectedExpense != null) {
-            mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense, en);
+            mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
         }
     }
 
@@ -239,7 +237,7 @@ public class EventOverviewCtrl {
                 break;
         }
     }
-
+/*
     public void language() {
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -269,4 +267,5 @@ public class EventOverviewCtrl {
         editExpenseButton.setText("Bewerk Geselecteerde");
         editTitleButton.setText("Titel Bewerken");
     }
+ */
 }

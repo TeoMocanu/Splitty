@@ -23,7 +23,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="eventTitleLabel" onMouseClicked="#editTitle" text="Event Title">
+                        <Label fx:id="eventTitleLabel" onMouseClicked="#editTitle" text="%eventTitle">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
@@ -32,8 +32,8 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" prefHeight="25.0" prefWidth="90.0" text="Edit Title" />
-                        <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="25.0" prefWidth="105.0" text="Send Invites">
+                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" prefHeight="25.0" prefWidth="90.0" text="%editTitle" />
+                        <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="25.0" prefWidth="105.0" text="%sendInvites">
                            <FlowPane.margin>
                               <Insets left="10.0" />
                            </FlowPane.margin>
@@ -54,7 +54,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="participantsLabel" text="Participants">
+                        <Label fx:id="participantsLabel" text="%participants">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -63,8 +63,8 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="participantEditButton" mnemonicParsing="false" onAction="#editParticipant" text="Edit Selected" />
-                        <Button fx:id="participantAddButton" mnemonicParsing="false" onAction="#addParticipant" text="Add" />
+                        <Button fx:id="participantEditButton" mnemonicParsing="false" onAction="#editParticipant" text="%editSelected" />
+                        <Button fx:id="participantAddButton" mnemonicParsing="false" onAction="#addParticipant" text="%add" />
                      </children>
                   </FlowPane>
                </children>
@@ -82,7 +82,7 @@
                   <Insets left="15.0" right="15.0" />
                </VBox.margin>
             </Separator>
-            <Label fx:id="expensesLabel" prefHeight="46.0" prefWidth="225.0" text="Expenses" VBox.vgrow="NEVER">
+            <Label fx:id="expensesLabel" prefHeight="46.0" prefWidth="225.0" text="%expenses" VBox.vgrow="NEVER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -94,7 +94,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="278.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Filter:">
+                        <Label text="%filter">
                            <FlowPane.margin>
                               <Insets right="10.0" />
                            </FlowPane.margin>
@@ -112,8 +112,8 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="93.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="editExpenseButton" mnemonicParsing="false" onAction="#editExpense" text="Edit Selected" />
-                        <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="Add">
+                        <Button fx:id="editExpenseButton" mnemonicParsing="false" onAction="#editExpense" text="%editSelected" />
+                        <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="%add">
                            <FlowPane.margin>
                               <Insets left="10.0" />
                            </FlowPane.margin>
@@ -127,10 +127,10 @@
             </HBox>
             <TableView fx:id="expensesTableView" prefHeight="200.0" prefWidth="350.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="titleColumn" text="Title" />
-                  <TableColumn fx:id="payerColumn" text="Payer" />
-                  <TableColumn fx:id="amountColumn" text="Amount (EUR)" />
-                  <TableColumn fx:id="dateColumn" text="Date" />
+                  <TableColumn fx:id="titleColumn" text="%title" />
+                  <TableColumn fx:id="payerColumn" text="%payer" />
+                  <TableColumn fx:id="amountColumn" text="%amountEUR" />
+                  <TableColumn fx:id="dateColumn" text="%date" />
                </columns>
                <VBox.margin>
                   <Insets bottom="5.0" left="15.0" right="15.0" top="10.0" />
@@ -140,7 +140,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="Back">
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="%back">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>
@@ -149,7 +149,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleDebts" text="Settle Debts" />
+                        <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleDebts" text="%settleDebts" />
                      </children>
                   </FlowPane>
                </children>
