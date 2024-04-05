@@ -19,7 +19,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
-import commons.emails.Invitation;
 import commons.emails.Reminder;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
