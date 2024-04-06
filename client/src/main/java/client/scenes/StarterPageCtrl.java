@@ -264,7 +264,7 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            ErrorMessage.showError(mainCtrl.getString("invalidCodeMessage"), mainCtrl);
+            ErrorMessage.showError(mainCtrl.getString("inexistentCodeMessage"), mainCtrl);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
             ErrorMessage.showError(mainCtrl.getString("invalidCode"), mainCtrl);
@@ -341,7 +341,7 @@ public class StarterPageCtrl {
     }
 
     public void deleteHistory() {
-        if (showConfirmationDialog("Are you sure you want to delete the entire history?")) {
+        if (showConfirmationDialog(mainCtrl.getString("confirmationMessageDelete"))) {
             deletedEventsStack.addAll(eventList);
             eventList.clear();
             listView.getItems().clear();

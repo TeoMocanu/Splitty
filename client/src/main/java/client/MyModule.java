@@ -24,7 +24,6 @@ import com.google.inject.Scopes;
 import java.util.Locale;
 
 public class MyModule implements Module {
-
     @Provides
     Locale provideLocale() {
         return new Locale("en");
