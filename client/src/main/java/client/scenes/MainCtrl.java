@@ -120,10 +120,10 @@ public class MainCtrl {
 
         List<Locale> list = LanguageUtils.getSupportedLocales();
         int index = list.indexOf(myFXML.getLocale());
-//        System.out.println("index: " + index);
-//        System.out.println("list: " + list);
-//        System.out.println("locale: " + myFXML.getLocale());
-//        System.out.println("list: " + list.get(0));
+        System.out.println("index: " + index);
+        System.out.println("list: " + list);
+        System.out.println("locale: " + myFXML.getLocale());
+        System.out.println("list: " + list.get(0));
 
         reload(list.get((index+1)%list.size()));
     }

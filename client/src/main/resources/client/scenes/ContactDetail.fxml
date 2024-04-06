@@ -8,20 +8,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="358.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ContactDetailCtrl">
    <children>
-      <Label fx:id="nameLabel" layoutX="14.0" layoutY="65.0" text="Name" translateX="-5.0" />
-      <Label fx:id="emailLabel" layoutX="15.0" layoutY="101.0" text="Email" translateX="-5.0" />
+      <Label fx:id="nameLabel" layoutX="14.0" layoutY="65.0" text="%name" translateX="-5.0" />
+      <Label fx:id="emailLabel" layoutX="15.0" layoutY="101.0" text="%email" translateX="-5.0" />
       <Label fx:id="ibanLabel" layoutX="16.0" layoutY="136.0" text="IBAN" translateX="-5.0" />
       <Label fx:id="bicLabel" layoutX="20.0" layoutY="175.0" text="BIC" translateX="-5.0" />
       <TextField fx:id="nameField" layoutX="58.0" layoutY="61.0" prefHeight="26.0" prefWidth="282.0" />
       <TextField fx:id="emailField" layoutX="58.0" layoutY="97.0" prefHeight="26.0" prefWidth="282.0" />
       <TextField fx:id="ibanField" layoutX="58.0" layoutY="132.0" prefHeight="26.0" prefWidth="282.0" />
       <TextField fx:id="bicField" layoutX="58.0" layoutY="171.0" prefHeight="26.0" prefWidth="282.0" />
-      <Label fx:id="title" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="200.0" text="Add/Edit Participant">
+      <Label fx:id="title" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="200.0" text="%addEditParticipant">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="okButton" layoutX="293.0" layoutY="214.0" mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="46.0" text="Ok" />
-      <Button fx:id="abortButton" layoutX="214.0" layoutY="214.0" mnemonicParsing="false" onAction="#abort" prefHeight="26.0" prefWidth="65.0" text="Abort" />
+      <Button fx:id="okButton" layoutX="293.0" layoutY="214.0" mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="46.0" text="%save" />
+      <Button fx:id="abortButton" layoutX="214.0" layoutY="214.0" mnemonicParsing="false" onAction="#abort" prefHeight="26.0" prefWidth="65.0" text="%cancel" />
    </children>
 </AnchorPane>

@@ -14,9 +14,6 @@ import javafx.stage.Modality;
 public class ChangeServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
-    private String en;
-
     @FXML
     private TextField serverField;
     @FXML
@@ -32,9 +29,7 @@ public class ChangeServerCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(String en){
-        this.en = en;
-        language(en);
+    public void initialize(){
     }
 
     public void save(){
@@ -44,20 +39,23 @@ public class ChangeServerCtrl {
         try {
             server.changeServer(savedServer);
         } catch (Exception e) {
+            /*
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText("Server does not exist or is offline. Please try another one/n/n" + e.getMessage());
             alert.showAndWait();
+             */
+            ErrorMessage.showError(mainCtrl.getString("invalidServerMessage")+"/n/n" + e.getMessage(), mainCtrl);
             server.changeServer("localhost:8080");
             return;
         }
         mainCtrl.getStarterPageCtrl().getServerLabel().setText(server.getServer());
         this.serverField.setText("");
-        mainCtrl.showStarterPage(en);
+        mainCtrl.showStarterPage();
     }
     public void cancel(){
         this.serverField.setText("");
-        mainCtrl.showStarterPage(en);
+        mainCtrl.showStarterPage();
     }
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
@@ -71,6 +69,7 @@ public class ChangeServerCtrl {
                 break;
         }
     }
+    /*
     public void language(String en){
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -85,4 +84,5 @@ public class ChangeServerCtrl {
         cancelButton.setText("Annuleren");
         title.setText("Server Wijzigen");
     }
+     */
 }

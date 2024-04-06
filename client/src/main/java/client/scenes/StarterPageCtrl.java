@@ -82,7 +82,7 @@ public class StarterPageCtrl {
 //    }
 
     @FXML
-    public void initialize(String en) {
+    public void initialize() {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);

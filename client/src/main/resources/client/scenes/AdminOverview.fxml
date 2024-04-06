@@ -6,28 +6,28 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
    <children>
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
-      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="EXIT" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="%LG" />
+      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="%exit" />
 
-      <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" prefWidth="151.0" text="Show server information" />
+      <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" prefWidth="151.0" text="%showServerInfo" />
       <TableView fx:id="tableView" layoutX="221.0" layoutY="21.0" prefHeight="245.0" prefWidth="339.0">
          <columns>
-            <TableColumn fx:id="id" text="Event ID">
+            <TableColumn fx:id="id" text="%eventID">
                <cellValueFactory>
                   <PropertyValueFactory property="id" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="title" text="Title">
+            <TableColumn fx:id="title" text="%title">
                <cellValueFactory>
                   <PropertyValueFactory property="title" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="participants" text="Participants">
+            <TableColumn fx:id="participants" text="%participants">
                <cellValueFactory>
                   <PropertyValueFactory property="participants" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="expenses" text="Expenses">
+            <TableColumn fx:id="expenses" text="%expenses">
                <cellValueFactory>
                   <PropertyValueFactory property="expenses" />
                </cellValueFactory>
@@ -35,9 +35,9 @@
          </columns>
       </TableView>
       <ChoiceBox fx:id="sortChoiceBox" layoutX="225.0" layoutY="280.0" prefWidth="150.0" />
-      <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="Apply Sort" />
-      <Button fx:id="importButtonText" layoutX="39.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="158.0" text="Import Event From text" />
-      <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="Import Event From file" />
-      <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadData" prefHeight="25.0" prefWidth="158.0" text="Download Event Data" />
+      <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="%applySort" />
+      <Button fx:id="importButtonText" layoutX="39.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="158.0" text="%importEventFromText" />
+      <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="%importEventFromFile" />
+      <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadData" prefHeight="25.0" prefWidth="158.0" text="%downloadEventData" />
    </children>
 </AnchorPane>

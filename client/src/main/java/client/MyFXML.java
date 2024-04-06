@@ -47,6 +47,7 @@ public class MyFXML {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+        this.bundle = ResourceBundle.getBundle("language.messages", locale);
     }
 
     public Locale getLocale() {
