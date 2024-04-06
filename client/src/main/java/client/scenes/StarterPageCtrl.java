@@ -264,10 +264,10 @@ public class StarterPageCtrl {
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            ErrorMessage.showError(mainCtrl.getString("invalidCodeMessage"), mainCtrl.getString("error"));
+            ErrorMessage.showError(mainCtrl.getString("invalidCodeMessage"), mainCtrl);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            ErrorMessage.showError(mainCtrl.getString("invalidCode"), mainCtrl.getString("error"));
+            ErrorMessage.showError(mainCtrl.getString("invalidCode"), mainCtrl);
         }
     }
 

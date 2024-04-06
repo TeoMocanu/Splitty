@@ -8,9 +8,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditTitleCtrl">
    <children>
-      <Button fx:id="saveButton" layoutX="149.0" layoutY="109.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="63.0" text="Save" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-      <Button fx:id="cancelButton" layoutX="27.0" layoutY="109.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="12.0" prefHeight="38.0" prefWidth="240.0" text="Edit Title" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <Button fx:id="saveButton" layoutX="149.0" layoutY="109.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="63.0" text="%save" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <Button fx:id="cancelButton" layoutX="27.0" layoutY="109.0" mnemonicParsing="false" onAction="#cancel" text="%cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="12.0" prefHeight="38.0" prefWidth="240.0" text="%editTitle" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <font>
             <Font size="20.0" />
          </font>

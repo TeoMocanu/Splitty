@@ -33,8 +33,6 @@ public class OpenDebtsCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
-    private String en;
     private Event event;
     private List<Debt> currentDebts;
     @FXML
@@ -54,10 +52,8 @@ public class OpenDebtsCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(Event event, String en) {
+    public void initialize(Event event) {
         this.event = event;
-        this.en = en;
-        language();
 
         eventTitleLabel.setText(event.getTitle());
         currentDebts = server.getAllDebtsFromEvent(event);
@@ -73,10 +69,9 @@ public class OpenDebtsCtrl {
             for(Debt d : debts) {
                 if(d.getAmount() == 0) continue; // do not display debts with no pending amount
 
-                String text = d.getDebtor().getName() + " gives " + d.getAmount() + "\u20ac to "+ d.getCreditor().getName();
-                if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
-                String received = "Mark Received";
-                if(en.equals("nl")) received = "Merk Ontvangen";
+                String text = d.getDebtor().getName() + " "+mainCtrl.getString("gives")+" " + d.getAmount() + "\u20ac "+mainCtrl.getString("to")+" "+ d.getCreditor().getName();
+//                if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
+                String received = mainCtrl.getString("markReceived");
                 Label label = new Label(text);
                 label.setStyle("-fx-font-weight: bold;");
                 Button buttonR = new Button(received);
@@ -86,30 +81,34 @@ public class OpenDebtsCtrl {
                 node.setExpanded(false);
 
                 if(d.getCreditor().getIban() != null && d.getCreditor().getBic() != null) {
-                    text = "Bank information available, transfer money to:";
-                    if(en.equals("nl")) text = "Bankgegevens beschikbaar, geld overmaken naar:";
+                    text = mainCtrl.getString("bankInfoAvailable");
+//                    text = "Bank information available, transfer money to:";
+//                    if(en.equals("nl")) text = "Bankgegevens beschikbaar, geld overmaken naar:";
                     node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
 
-                    text = "Account holder: " + d.getCreditor().getName();
-                    if(en.equals("nl")) text = "Rekeninghouder: " + d.getCreditor().getName();
+                    text = mainCtrl.getString("accountHolder") + " " + d.getCreditor().getName();
+//                    if(en.equals("nl")) text = "Rekeninghouder: " + d.getCreditor().getName();
                     node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
 
                     node.getChildren().add(new TreeItem<>(new HBox(new Label("IBAN: " + d.getCreditor().getIban()))));
                     node.getChildren().add(new TreeItem<>(new HBox(new Label("BIC: " + d.getCreditor().getBic()))));
 
-                    text = "Send Reminder";
-                    if(en.equals("nl")) text = "Herinnering verzenden";
+                    text = mainCtrl.getString("sendReminder");
+//                    text = "Send Reminder";
+//                    if(en.equals("nl")) text = "Herinnering verzenden";
                     Button button = new Button(text);
                     button.setOnAction(e -> { sendReminder(d); });
                     node.getChildren().add(new TreeItem<>(new HBox(button)));
 
                 } else {
-                    text = "Bank information not available, ask holder for more";
-                    if(en.equals("nl")) text = "Bankgegevens niet beschikbaar, vraag de houder om meer";
+                    text = mainCtrl.getString("bankInfoUnavailable");
+//                    text = "Bank information not available, ask holder for more";
+//                    if(en.equals("nl")) text = "Bankgegevens niet beschikbaar, vraag de houder om meer";
                     node.getChildren().add(new TreeItem<>(new HBox(new Label(text))));
                     if(d.getCreditor().getEmail() != null) {
-                        text = "Send Reminder";
-                        if(en.equals("nl")) text = "Herinnering verzenden";
+                        text = mainCtrl.getString("sendReminder");
+//                        text = "Send Reminder";
+//                        if(en.equals("nl")) text = "Herinnering verzenden";
                         Button button = new Button(text);
                         button.setOnAction(e -> { sendReminder(d); });
                         node.getChildren().add(new TreeItem<>(new HBox(button)));
@@ -140,7 +139,7 @@ public class OpenDebtsCtrl {
 
     public void back() {
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public void settleAllDebts() {
@@ -171,7 +170,7 @@ public class OpenDebtsCtrl {
                 break;
         }
     }
-
+/*
     public void language() {
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -187,4 +186,5 @@ public class OpenDebtsCtrl {
         backButton.setText("Rug");
         settleDebtsButton.setText("Regel alle schulden");
     }
+ */
 }

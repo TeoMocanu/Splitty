@@ -14,9 +14,6 @@ public class EditTitleCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-
-    private String en;
-
     @FXML
     private TextField titleField;
     @FXML
@@ -32,23 +29,21 @@ public class EditTitleCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize(Event event, String en){
-        this.en = en;
+    public void initialize(Event event){
         this.event = event;
         titleField.setText(event.getTitle());
-        language();
     }
 
     public void save(){
         String newTitle = this.titleField.getText();
         event.setTitle(newTitle);
         server.editEvent(event);
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public void cancel(){
         this.titleField.setText("");
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -63,6 +58,7 @@ public class EditTitleCtrl {
                 break;
         }
     }
+    /*
     public void language(){
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -77,4 +73,5 @@ public class EditTitleCtrl {
         cancelButton.setText("Annuleren");
         title.setText("Titel Bewerken");
     }
+     */
 }
