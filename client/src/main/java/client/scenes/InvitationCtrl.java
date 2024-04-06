@@ -3,7 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
-import commons.Invitation;
+import commons.emails.Invitation;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -58,10 +58,15 @@ public class InvitationCtrl {
         }
         for (String email : emails) {
             try {
-                server.sendMail(new Invitation(email, event.getId()));
+                server.sendInvitation(new Invitation(email, event.getTitle(), event.getId()));
             } catch (WebApplicationException e) {
                 ErrorMessage.showError(e.getMessage(), mainCtrl);
             }
+        }
+        if(en.equals("en")){
+            InfoMessage.showInfo("Invitations sent", en);
+        } else {
+            InfoMessage.showInfo("Uitnodigingen verstuurd", en);
         }
         clearFields();
         mainCtrl.showEventOverview(event);

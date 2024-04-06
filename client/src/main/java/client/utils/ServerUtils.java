@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import commons.*;
+import commons.emails.Invitation;
+import commons.emails.Reminder;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -400,12 +402,20 @@ public class ServerUtils {
         EXEC.shutdownNow();
     }
 
-    public void sendMail(Invitation invitation) {
+    public void sendInvitation(Invitation invitation) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/mail/sendMail") //
+                .target(SERVER).path("api/mail/sendInvitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(invitation, APPLICATION_JSON), Invitation.class);
+    }
+
+    public void sendReminder(Reminder reminder) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/mail/sendReminder") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(reminder, APPLICATION_JSON), Reminder.class);
     }
 
 }
