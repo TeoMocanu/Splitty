@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.EventRepository;
 import server.database.ParticipantRepository;
+import server.implementations.EventServiceImplementation;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 public class DebtControllerTest {
     private TestDebtRepository repo;
     private EventRepository eventRepository = new TestEventRepository();
-    private EventController eventController = new EventController(eventRepository);
+    private EventServiceImplementation eventServiceImplementation = new EventServiceImplementation(eventRepository);
     private ParticipantRepository participantRepository = new TestParticipantRepository();
     private ParticipantController participantController = new ParticipantController(participantRepository);
     private DebtController sut;
@@ -26,12 +27,12 @@ public class DebtControllerTest {
     @BeforeEach
     public void setup() {
         repo = new TestDebtRepository();
-        sut = new DebtController(repo, eventController);
+        sut = new DebtController(repo, eventServiceImplementation);
     }
 
     @Test
     public void addDebtWithValidAmount() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
 
@@ -44,7 +45,7 @@ public class DebtControllerTest {
 
     @Test
     public void addDebtWithInvalidEventId() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
         event.setId(-1);
@@ -57,7 +58,7 @@ public class DebtControllerTest {
 
     @Test
     public void editValidDebt() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
 
@@ -73,7 +74,7 @@ public class DebtControllerTest {
     @Test
     public void editInvalidDebt() {
         // setting an invalid id
-        Event event2 = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event2 = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor2 = participantController.addParticipant(new Participant("debtor", event2)).getBody();
         Participant creditor2 = participantController.addParticipant(new Participant("creditor", event2)).getBody();
         double validAmount2 = 50;
@@ -85,7 +86,7 @@ public class DebtControllerTest {
 
     @Test
     public void deleteValidDebt() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
 
@@ -97,7 +98,7 @@ public class DebtControllerTest {
 
     @Test
     public void deleteInvalidDebt() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
 
@@ -111,8 +112,8 @@ public class DebtControllerTest {
 
     @Test
     public void getAll() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
-        Event event2 = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
+        Event event2 = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant debtor2 = participantController.addParticipant(new Participant("debtor", event2)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
@@ -128,8 +129,8 @@ public class DebtControllerTest {
 
     @Test
     public void getAllFromEvent() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
-        Event event2 = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
+        Event event2 = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant debtor2 = participantController.addParticipant(new Participant("debtor", event2)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
@@ -145,14 +146,14 @@ public class DebtControllerTest {
 
     @Test
     public void getAllFromEventNoDebts() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
 
         var response = sut.getAllFromEvent(event.getId());
         assertEquals(NO_CONTENT, response.getStatusCode());
     }
     @Test
     public void getAllNoDebts() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
 
         var response = sut.getAll();
         assertEquals(NO_CONTENT, response.getStatusCode());
@@ -160,7 +161,7 @@ public class DebtControllerTest {
 
     @Test
     public void getAllFromInvalidEvent() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         event.setId(-1);
         var response = sut.getAllFromEvent(event.getId());
         assertEquals(BAD_REQUEST, response.getStatusCode());
@@ -168,7 +169,7 @@ public class DebtControllerTest {
 
     @Test
     public void getDebtByIds() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
         double validAmount = 50;
@@ -179,7 +180,7 @@ public class DebtControllerTest {
     }
     @Test
     public void getDebtByIdsNoSUchDebt() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
         double validAmount = 50;
@@ -191,7 +192,7 @@ public class DebtControllerTest {
 
     @Test
     public void databaseIsUsed() {
-        Event event = eventController.addEvent(new Event("testEvent")).getBody();
+        Event event = eventServiceImplementation.addEvent(new Event("testEvent")).getBody();
         Participant debtor = participantController.addParticipant(new Participant("debtor", event)).getBody();
         Participant creditor = participantController.addParticipant(new Participant("creditor", event)).getBody();
 

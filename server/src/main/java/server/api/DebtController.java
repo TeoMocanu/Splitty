@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.DebtRepository;
+import server.implementations.EventServiceImplementation;
 
 import java.util.List;
 
@@ -13,19 +14,19 @@ import java.util.List;
 @RequestMapping("/api/debts")
 public class DebtController {
     private final DebtRepository repo;
-    private final EventController eventController;
+    private final EventServiceImplementation eventServiceImplementation;
 
 
     @Autowired
-    public DebtController(DebtRepository repo, EventController eventController) {
+    public DebtController(DebtRepository repo, EventServiceImplementation eventServiceImplementation) {
         this.repo = repo;
-        this.eventController = eventController;
+        this.eventServiceImplementation = eventServiceImplementation;
     }
 
 
     @GetMapping("/getByEventId/{id}")
     public ResponseEntity<List<Debt>> getAllFromEvent(@PathVariable("id") long idEvent){
-        if(idEvent <= 0 || eventController.getEventById(idEvent) == null)
+        if(idEvent <= 0 || eventServiceImplementation.getEventById(idEvent) == null)
             return ResponseEntity.badRequest().build();
         List<Debt> debts = repo.findAllByEventId(idEvent);
         if (debts.isEmpty()) {
@@ -37,7 +38,7 @@ public class DebtController {
     @PostMapping("/add")
     public ResponseEntity<Debt> addDebt(@RequestBody Debt debt){
         long idEvent = debt.getEventId();
-        if(idEvent <= 0 || eventController.getEventById(idEvent) == null)
+        if(idEvent <= 0 || eventServiceImplementation.getEventById(idEvent) == null)
             return ResponseEntity.badRequest().build();
         Debt saved = repo.save(debt);
         return ResponseEntity.ok(saved);
