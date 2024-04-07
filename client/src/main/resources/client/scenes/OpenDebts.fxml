@@ -2,102 +2,64 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="debtsContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="457.0" stylesheets="/client/scenes/EventOverviewHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenDebtsCtrl">
    <children>
-      <Label scaleX="3.0" scaleY="3.0" text="Open Debts" textAlignment="CENTER" translateX="120.0" translateY="30.0">
-         <font>
-            <Font name="System Bold" size="31.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
-         </VBox.margin>
-      </Label>
-      <HBox prefHeight="50.0" prefWidth="100.0">
-         <VBox.margin>
-            <Insets top="250.0" />
-         </VBox.margin>
+      <VBox prefHeight="484.0" prefWidth="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="John gives 123$ to David" textAlignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </Label>
-            <CheckBox mnemonicParsing="false">
-               <HBox.margin>
-                  <Insets left="30.0" top="5.0" />
-               </HBox.margin>
-            </CheckBox>
-            <CheckBox mnemonicParsing="false" translateX="-30.0">
-               <HBox.margin>
-                  <Insets left="100.0" top="5.0" />
-               </HBox.margin>
-            </CheckBox>
-            <Label text="Email" translateX="-110.0">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Label>
-            <Button mnemonicParsing="false" text="Mark Received" translateX="-60.0" translateY="-5.0">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <TitledPane prefHeight="150.0" prefWidth="200.0" text="Bank Information" translateY="-15.0">
-         <content>
-            <VBox prefHeight="110.0" prefWidth="798.0">
+            <HBox prefHeight="46.0" prefWidth="332.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Bank information available, transfer the money to:">
+                  <Label fx:id="titleLabel" prefHeight="54.0" prefWidth="230.0" text="%openDebts">
                      <font>
-                        <Font size="13.0" />
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="eventTitleLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="65.0" prefWidth="222.0" text="%event">
+                     <font>
+                        <Font size="27.0" />
                      </font>
                   </Label>
-                  <Label text="Account Holder: John Foo">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <Label text="IBAN: NL12 3456 7890 1234 56">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <Label text="BIC: ABCDEFGH">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <Label />
-                  <Label text="Email Configured: ">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <Button mnemonicParsing="false" text="send reminder" translateX="140.0" translateY="-30.0">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Button>
                </children>
-            </VBox>
-         </content>
-         <VBox.margin>
-            <Insets left="30.0" right="400.0" />
-         </VBox.margin>
-      </TitledPane>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <TreeView fx:id="table" prefHeight="348.0" prefWidth="474.0">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" />
+               </VBox.margin></TreeView>
+            <HBox prefHeight="17.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <FlowPane alignment="CENTER_LEFT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="%back">
+                           <FlowPane.margin>
+                              <Insets />
+                           </FlowPane.margin>
+                        </Button>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleAllDebts" prefHeight="25.0" prefWidth="159.0" text="%settleDebts" />
+                     </children>
+                  </FlowPane>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

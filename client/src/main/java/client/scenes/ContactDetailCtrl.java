@@ -36,8 +36,6 @@ public class ContactDetailCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private String en;
-
     @FXML
     private TextField nameField;
 
@@ -80,16 +78,12 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event, String en){
+    public void initialize(Event event){
         this.event = event;
-        this.en = en;
-        language();
     }
 
-    public void initialize(Event event, String en, Participant participant) {
+    public void initialize(Event event, Participant participant) {
         this.event = event;
-        this.en = en;
-        language();
         this.participant = participant;
 
         this.nameField.setText(participant.getName());
@@ -101,45 +95,33 @@ public class ContactDetailCtrl {
     public void abort() {
         clearFields();
         participant = null;
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     //TODO Maybe we can create custom exceptions?
     public void ok() {
-        System.out.println("OK");
         try {
             if(!validateInput())
-                throw new WebApplicationException("Invalid input!");
+                throw new WebApplicationException(mainCtrl.getString("invalidInput"));
             if(participant == null){
-                System.out.println("we make a new participant based on the text fields");
-                Participant par = getParticipant();
-                server.addParticipant(getParticipant()); // after this line it breaks
-                System.out.println(par.getName());
-
+                Participant par = server.addParticipant(getParticipant());
+                for(Participant friend : event.getParticipants()){
+                    Debt debt = new Debt(event, par, friend, 0);
+                    server.addDebt(debt);
+                }
                 event.addParticipant(par);
-
-
-                // creating new debts for new Participant
-                //TODO: get debt endpoints working
-                if(false) for(Participant friend : event.getParticipants()){
-                        Debt debt1 = new Debt(event, friend, par, 0);
-                        Debt debt2 = new Debt(event, par, friend, 0);
-                        server.addDebt(debt1);
-                        server.addDebt(debt2);
-                    }
+                server.editEvent(event);
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
                 participant.setEmail(newParticipant.getEmail());
                 participant.setIban(newParticipant.getIban());
                 participant.setName(newParticipant.getName());
-                System.out.println(participant.getName());
                 server.editParticipant(participant);
                 participant = null;
             }
 
         } catch (WebApplicationException e) {
-            System.out.println("alert");
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());
@@ -147,7 +129,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     private Participant getParticipant() {
@@ -181,7 +163,7 @@ public class ContactDetailCtrl {
 
     public boolean validateInput(){
 //        return true;
-        if(!nameField.getText().matches("([A-Za-z])+"))
+        if(!nameField.getText().matches("([A-Za-z0-9])+"))
             return false;
         if(!emailField.getText().matches("([A-Za-z0-9@.])+"))
             return false;
@@ -199,6 +181,7 @@ public class ContactDetailCtrl {
 //            return false;
         return true;
     }
+    /*
     public void language(){
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -222,4 +205,5 @@ public class ContactDetailCtrl {
         title.setText("Deelnemer Details");
 
     }
+     */
 }

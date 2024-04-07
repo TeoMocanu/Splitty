@@ -17,6 +17,10 @@ public class ExpenseServiceImplementation implements ExpenseService {
     @Autowired
     private ExpenseRepository expenseRepository;
 
+    public ExpenseServiceImplementation(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
+    }
+
     @Override
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
@@ -61,5 +65,13 @@ public class ExpenseServiceImplementation implements ExpenseService {
         }
         expenseRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public List<Expense> findByEventIdAndPayerId(Long eid, Long pid) {
+        return expenseRepository.findByEventIdAndPayerId(eid, pid);
+    }
+
+    public List<Expense> findByEventIdAndDebtorsId(Long eid, Long pid) {
+        return expenseRepository.findByEventIdAndDebtorsId(eid, pid);
     }
 }

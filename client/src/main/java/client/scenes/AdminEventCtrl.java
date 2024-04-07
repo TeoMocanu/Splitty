@@ -30,8 +30,6 @@ public class AdminEventCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
 
-    private String en;
-
     @FXML
     private TextField title;
 
@@ -54,10 +52,8 @@ public class AdminEventCtrl {
         //mainCtrl.showOverview();
     }
 
-    public void initialize(Event event, String en){
+    public void initialize(Event event){
         this.event = event;
-        this.en = en;
-        language();
     }
     public void add() {
         try {
@@ -92,7 +88,7 @@ public class AdminEventCtrl {
                 break;
         }
     }
-
+/*
     public void language(){
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -109,4 +105,5 @@ public class AdminEventCtrl {
         lastActivity.setText("Laatst geziene activiteiten");
         delete.setText("Evenement verwijderen");
     }
+ */
 }

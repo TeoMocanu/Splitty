@@ -9,16 +9,16 @@
 
 <AnchorPane prefHeight="168.0" prefWidth="378.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginCtrl">
    <children>
-      <Label layoutX="118.0" layoutY="4.0" prefHeight="39.0" prefWidth="157.0" scaleX="1.3" scaleY="1.3" text="Administrator Login">
+      <Label layoutX="118.0" layoutY="4.0" prefHeight="39.0" prefWidth="157.0" scaleX="1.3" scaleY="1.3" text="%administratorLogin">
          <font>
             <Font size="28.0" />
          </font></Label>
       <TextField fx:id="password" layoutX="93.0" layoutY="71.0" prefHeight="34.0" prefWidth="267.0" />
-      <Label layoutX="6.0" layoutY="72.0" prefHeight="25.0" prefWidth="76.0" text="Password:" />
-      <Button fx:id="enterButton" layoutX="163.0" layoutY="128.0" mnemonicParsing="false" onAction="#checkPassword" text="ENTER" />
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="128.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
-      <Button fx:id="backButton" layoutX="23.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToStart" text="Back" translateY="-5.0" />
-      <Button fx:id="helpButton" layoutX="316.0" layoutY="128.0" mnemonicParsing="false" text="HELP" />
+      <Label layoutX="6.0" layoutY="72.0" prefHeight="25.0" prefWidth="76.0" text="%password" />
+      <Button fx:id="enterButton" layoutX="163.0" layoutY="128.0" mnemonicParsing="false" onAction="#checkPassword" text="%enter" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="128.0" mnemonicParsing="false" onAction="#languageSwitch" text="%LG" />
+      <Button fx:id="backButton" layoutX="23.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToStart" text="%back" translateY="-5.0" />
+      <Button fx:id="helpButton" layoutX="316.0" layoutY="128.0" mnemonicParsing="false" text="%help" />
       <Separator layoutX="4.8" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="4.8" AnchorPane.rightAnchor="4.800000000000011" />
    </children>
 </AnchorPane>

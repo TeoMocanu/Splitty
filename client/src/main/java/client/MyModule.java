@@ -20,8 +20,6 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
-//import client.scenes.*;
-
 public class MyModule implements Module {
 
     @Override

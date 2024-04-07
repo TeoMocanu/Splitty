@@ -35,9 +35,9 @@
          </columns>
       </TableView>
       <ChoiceBox fx:id="sortChoiceBox" layoutX="225.0" layoutY="280.0" prefWidth="150.0" />
-      <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="Apply Sort" />
-      <Button fx:id="importButtonText" layoutX="39.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="158.0" text="Import Events from text" />
-      <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="Import Events from file" />
-      <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadAllEvents" prefHeight="25.0" prefWidth="158.0" text="Download All Event Data" />
+      <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="%applySort" />
+      <Button fx:id="importButtonText" layoutX="39.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="158.0" text="%importEventFromText" />
+      <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="%importEventFromFile" />
+      <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadData" prefHeight="25.0" prefWidth="158.0" text="%downloadEventData" />
    </children>
 </AnchorPane>

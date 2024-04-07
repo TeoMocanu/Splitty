@@ -13,6 +13,10 @@ import java.util.Base64;
 public class AdminPasswordController {
     @GetMapping("/generate-password")
     public String getAdminPassword(@RequestParam("length") int length) {
+        if(length < 0)
+        {
+            throw new IllegalArgumentException("Length must be non-negative");
+        }
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[24];
         random.nextBytes(bytes);
