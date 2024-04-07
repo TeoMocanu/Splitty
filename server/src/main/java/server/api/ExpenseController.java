@@ -97,8 +97,8 @@ public class ExpenseController {
     @Autowired
     private final ExpenseServiceImplementation service;
 
-    public ExpenseController() {
-        service = null;
+    public ExpenseController(ExpenseServiceImplementation service) {
+        this.service = service;
     }
 
     @GetMapping("/getAll")
