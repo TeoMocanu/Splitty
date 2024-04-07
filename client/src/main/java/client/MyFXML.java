@@ -15,7 +15,6 @@
  */
 package client;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +32,6 @@ import javafx.util.Builder;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
-import org.springframework.beans.factory.annotation.Value;
 
 public class MyFXML {
 
