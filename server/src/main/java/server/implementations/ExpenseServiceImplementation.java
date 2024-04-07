@@ -62,4 +62,12 @@ public class ExpenseServiceImplementation implements ExpenseService {
         expenseRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    public List<Expense> findByEventIdAndPayerId(Long eid, Long pid) {
+        return expenseRepository.findByEventIdAndPayerId(eid, pid);
+    }
+
+    public List<Expense> findByEventIdAndDebtorsId(Long eid, Long pid) {
+        return expenseRepository.findByEventIdAndDebtorsId(eid, pid);
+    }
 }

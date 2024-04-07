@@ -111,22 +111,13 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
-                System.out.println("we make a new participant based on the text fields");
-                Participant par = getParticipant();
-                server.addParticipant(getParticipant()); // after this line it breaks
-                System.out.println(par.getName());
-
+                Participant par = server.addParticipant(getParticipant());
+                for(Participant friend : event.getParticipants()){
+                    Debt debt = new Debt(event, par, friend, 0);
+                    server.addDebt(debt);
+                }
                 event.addParticipant(par);
-
-
-                // creating new debts for new Participant
-                //TODO: get debt endpoints working
-                if(false) for(Participant friend : event.getParticipants()){
-                        Debt debt1 = new Debt(event, friend, par, 0);
-                        Debt debt2 = new Debt(event, par, friend, 0);
-                        server.addDebt(debt1);
-                        server.addDebt(debt2);
-                    }
+                server.editEvent(event);
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
@@ -181,7 +172,7 @@ public class ContactDetailCtrl {
 
     public boolean validateInput(){
 //        return true;
-        if(!nameField.getText().matches("([A-Za-z])+"))
+        if(!nameField.getText().matches("([A-Za-z0-9])+"))
             return false;
         if(!emailField.getText().matches("([A-Za-z0-9@.])+"))
             return false;

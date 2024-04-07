@@ -1,10 +1,9 @@
 package client.scenes;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
-
-
 
 import com.google.inject.Inject;
 
@@ -14,11 +13,13 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -34,9 +35,10 @@ public class EventOverviewCtrl {
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
     private Expense selectedExpense;
+    private int selectedFilteringMode = 0;
     private List<Participant> participants = new ArrayList<>();
     private List<Expense> expenses = new ArrayList<>();
-    private List<String> payers = new ArrayList<>();
+    private List<Participant> payers = new ArrayList<>();
 
     private String eventName;
 
@@ -44,6 +46,8 @@ public class EventOverviewCtrl {
     private ListView participantsListView;
     @FXML
     private ComboBox expensePayersComboBox;
+    @FXML
+    private ComboBox filteringModeComboBox;
     @FXML
     private Label eventTitleLabel;
     @FXML
@@ -67,7 +71,15 @@ public class EventOverviewCtrl {
     @FXML
     private Button settleDebtsButton;
     @FXML
-    private ScrollPane expensesScrollPane;
+    private TableView expensesTableView;
+    @FXML
+    private TableColumn<Expense, String> titleColumn;
+    @FXML
+    private TableColumn<Expense, Float> amountColumn;
+    @FXML
+    private TableColumn<Expense, String> payerColumn;
+    @FXML
+    private TableColumn<Expense, LocalDate> dateColumn;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -81,51 +93,103 @@ public class EventOverviewCtrl {
 
         eventTitleLabel.setText(event.getTitle());
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
+        expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
+        expensePayersComboBox.setOnAction(e -> handleExpensePayersComboBoxAction());
+        filteringModeComboBox.setOnAction(e -> handleFilteringModeComboBoxAction());
 
+        initExpensesTableView(event);
         initParticipantsListView(event);
         initExpensePayersComboBox();
-        initExpensesScrollPane(event);
-
+        initFilteringModeComboBox();
     }
 
-    private void initExpensesScrollPane(Event event) {
+    private void initExpensesTableView(Event event) {
         expenses = server.getAllExpensesFromEvent(event);
-        System.out.println("Expenses: " + expenses);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
-        if(!observableExpenseList.isEmpty()) expensesScrollPane.setContent(new ListView(observableExpenseList));
-        if(expensesScrollPane != null) expensesScrollPane.setOnMouseClicked(this::handleExpensesListViewClick);
-        //expensesScrollPane.setFitToHeight(true);
-        //expensesScrollPane.setFitToWidth(true);
+
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        payerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPayer().getName()));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("localDate"));
+
+        expensesTableView.setItems(observableExpenseList);
+
+        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(2));
+        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+        dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+
+        ScrollBar vScrollBar = (ScrollBar) expensesTableView.lookup(".scroll-bar:vertical");
+
+        vScrollBar.visibleProperty().addListener((observable, wasVisible, isVisible) -> {
+            if (isVisible) {
+                // If the scrollbar is visible, divide table width by 3 and subtract scrollbar width
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(6));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+            }
+        });
     }
 
     private void initExpensePayersComboBox() {
-        payers.clear();
-        payers.add("All");
+        Participant all = new Participant("All", new Event("All"));
+        selectedExpensePayer = all;
+        payers = new ArrayList<>();
+        payers.add(all);
+        participants = server.getAllParticipantsFromEvent(event.getId());
         for(Participant p : participants) {
-            payers.add(p.getName());
+            payers.add(p);
         }
-        ObservableList<String> observablePayerList = FXCollections.observableArrayList(payers);
+        ObservableList<Participant> observablePayerList = FXCollections.observableArrayList(payers);
         expensePayersComboBox.setItems(observablePayerList);
         expensePayersComboBox.getSelectionModel().selectFirst();
     }
 
+    private void initFilteringModeComboBox() {
+        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList("Paid by", "Owed by");
+        filteringModeComboBox.setItems(observableSelectionModeList);
+        filteringModeComboBox.getSelectionModel().selectFirst();
+    }
+
     private void initParticipantsListView(Event event) {
         participants = server.getAllParticipantsFromEvent(event.getId());
-        System.out.println("Participants: " + participants);
         ObservableList<Participant> observableParticipantList = FXCollections.observableArrayList(participants);
         participantsListView.setItems(observableParticipantList);
         participantsListView.refresh();
     }
 
-    private void handleExpensesListViewClick(MouseEvent mouseEvent) {
+    private void handleExpensesTableViewClick(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
-            selectedExpense = (Expense) ((ListView) expensesScrollPane.getContent()).getSelectionModel().getSelectedItem();
+            selectedExpense = (Expense) expensesTableView.getSelectionModel().getSelectedItem();
         }
     }
 
     private void handleParticipantsListViewClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) { // Left-click
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
+        }
+    }
+    private void handleFilteringModeComboBoxAction(){
+        selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
+        filterExpenses();
+    }
+    private void handleExpensePayersComboBoxAction(){
+        selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
+        filterExpenses();
+    }
+
+    private void filterExpenses() {
+        if(selectedExpensePayer.getName().equals("All")) {
+            initExpensesTableView(event);
+        } else {
+            if (selectedFilteringMode == 0) {
+                expenses = server.getAllExpensesFromEventPaidBy(event.getId(), selectedExpensePayer.getId());
+            }
+            if (selectedFilteringMode == 1) {
+                expenses = server.getAllExpensesFromEventOwedBy(event.getId(), selectedExpensePayer.getId());
+            }
+            expensesTableView.setItems(FXCollections.observableArrayList(expenses));
         }
     }
 

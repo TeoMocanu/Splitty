@@ -27,4 +27,16 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, ExpenseKey> {
     @Query(value = "SELECT * FROM EXPENSE WHERE EVENT_ID = :eid", nativeQuery = true)
     List<Expense> findByEventId(@Param("eid") Long eid);
+
+    @Query(value = "SELECT * FROM EXPENSE E " +
+            "WHERE E.EVENT_ID = :eid AND E.PAYER_ID = :pid",
+            nativeQuery = true)
+    List<Expense> findByEventIdAndPayerId(@Param("eid") Long eid, @Param("pid") Long pid);
+
+    @Query(value = "SELECT E.EVENT_ID, E.EXPENSE_ID, E.DATE, E.PAYER_EVENT_ID, E.PAYER_ID, E.TITLE, E.AMOUNT, E.TYPE FROM EXPENSE AS E " +
+            "JOIN EXPENSE_SPLITTER AS ES ON E.EVENT_ID = ES.EXPENSE_EVENT_ID AND E.EXPENSE_ID = ES.EXPENSE_ID " +
+            "WHERE E.EVENT_ID = :eid AND ES.SPLITTER_ID = :pid " +
+            "GROUP BY E.EXPENSE_ID",
+            nativeQuery = true)
+    List<Expense> findByEventIdAndDebtorsId(@Param("eid") Long eid, @Param("pid") Long pid);
 }

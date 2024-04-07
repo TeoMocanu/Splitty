@@ -86,6 +86,8 @@ public class AddExpenseCtrl {
     private Button cancelButton;
     @FXML
     private ListView<CheckBox> menu;
+    @FXML
+    private TextField newType;
 
 
     @Inject
@@ -94,14 +96,16 @@ public class AddExpenseCtrl {
         this.server = server;
     }
 
-    @FXML
+
     void initialize(Event event, String en){
-        if(event.getTypes() != null && event.getTypes().size() > 0)
-            types = FXCollections.observableArrayList(event.getTypes());
-        type.setValue("other");
+        if(event.getTypes() != null && event.getTypes().size() > 0) {
+            types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
+            types.addAll(event.getTypes());
+        }
         type.setItems(types);
-        currency.setValue("EUR");
+        type.setValue("other");
         currency.setItems(currencies);
+        currency.setValue("EUR");
         participants = FXCollections.observableArrayList();
         splitOptions = FXCollections.observableArrayList();
         for(Participant p : event.getParticipants()){
@@ -114,26 +118,48 @@ public class AddExpenseCtrl {
         somePeople.setSelected(false);
         name.setValue(" ");
         date.setValue(null);
-        if(expense != null) { // initializing the data from an existing expense into the window
-            content.setText(expense.getTitle());
-            amount.setText(Float.toString(expense.getAmount()));
-            name.setValue(expense.getPayer().getName());
-            date.setValue(expense.getLocalDate());
-            type.setValue(expense.getType());
 
-            addButton.setText("Edit");
-            if(en.equals("nl")) addButton.setText("Bewerk");
+        this.en = en;
+        language();
+        this.event = server.getEvent(event.getId());
+    }
 
-            if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
-            else {
-                somePeople.setSelected(true);
-                for(CheckBox c : splitOptions) {
-                    for(Participant p : expense.getSplitters()) {
-                        if(p.getName().equals(c.getText())) c.setSelected(true);
-                    }
+    public void initialize(Event event, Expense expense, String en) { // initializing the data from an existing expense into the window
+        expense = server.getExpenseById(expense.getId());
+        if(event.getTypes() != null && event.getTypes().size() > 0) {
+            types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
+            types.addAll(event.getTypes());
+        }
+        type.setItems(types);
+        type.setValue(expense.getType());
+        currency.setItems(currencies);
+        currency.setValue("EUR");
+        participants = FXCollections.observableArrayList();
+        splitOptions = FXCollections.observableArrayList();
+        for(Participant p : event.getParticipants()){
+            participants.add(p.getName());
+            splitOptions.add(new CheckBox(p.getName()));
+        }
+        name.setItems(participants);
+
+        content.setText(expense.getTitle());
+        amount.setText(Float.toString(expense.getAmount()));
+        name.setValue(expense.getPayer().getName());
+        date.setValue(expense.getLocalDate());
+
+        addButton.setText("Edit");
+        if(en.equals("nl")) addButton.setText("Bewerk");
+
+        if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
+        else {
+            somePeople.setSelected(true);
+            for(CheckBox c : splitOptions) {
+                for(Participant p : expense.getSplitters()) {
+                    if(p.getName().equals(c.getText())) c.setSelected(true);
                 }
             }
         }
+        menu.setItems(splitOptions);
 
         this.en = en;
         language();
@@ -149,10 +175,6 @@ public class AddExpenseCtrl {
     public void add() {
         try {
             Expense newExpense = createExpense();
-            //LocalDate date = LocalDate.of(2024, 12, 12);
-            //Participant participant = new Participant("John", event);
-            //Expense newExpense = new Expense(event, date, participant, List.of(participant), "parking", 12.5f);
-
             double amountChange = newExpense.getAmount();
             if(expense != null) {
                 server.editExpense(newExpense);
@@ -163,16 +185,24 @@ public class AddExpenseCtrl {
             }
             this.event = server.updateEvent(event);
 
-            //TODO: get debt endpoints working
-            if(false) for(Participant p : newExpense.getSplitters()){
-                    List<Debt> debts = server.getAllDebtsFromEvent(event);
-                    for(Debt debt : debts) {
-                        if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
-                            debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
-                            server.editDebt(debt);
+            for(Participant p : newExpense.getSplitters()){
+                List<Debt> debts = server.getAllDebtsFromEvent(event);
+                for(Debt debt : debts) {
+                    if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
+                        debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                        server.editDebt(debt);
+                    }
+                    if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == newExpense.getPayer().getId()) {
+                        debt.addAmount((-1.0) * amountChange / newExpense.getSplitters().size());
+                        if(debt.getAmount() < 0) {
+                            debt.setAmount(debt.getAmount() * (-1.0));
+                            debt.setCreditor(debt.getDebtor());
+                            debt.setDebtor(p);
                         }
+                        server.editDebt(debt);
                     }
                 }
+            }
             // Possibly just replace the whole loop with a new endpoint
             // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
 
@@ -198,7 +228,7 @@ public class AddExpenseCtrl {
         List<Participant> debtors = new ArrayList<>();
         Participant payer = null;
         String typeSelected;
-        try{
+        try {
             amount = Float.parseFloat(this.amount.getText());
             if(currency.getValue().equals("USD")) amount *= 0.93;
             date = this.date.getValue();
@@ -259,7 +289,14 @@ public class AddExpenseCtrl {
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
-                add();
+                if(!newType.getText().equals("")) {
+                    event.addType(newType.getText());
+                    server.editEvent(event);
+                    types.add(newType.getText());
+                    type.setItems(types);
+                    type.setValue(newType.getText());
+                    newType.clear();
+                } else add();
                 break;
             case ESCAPE:
                 cancel();
@@ -299,9 +336,5 @@ public class AddExpenseCtrl {
         howSplit.setText("Hoe splitsen?");
         everyone.setText("Met iedereen");
         somePeople.setText("Slechts enkele mensen");
-    }
-
-    public void setExpense(Expense expense) {
-        this.expense = expense;
     }
 }

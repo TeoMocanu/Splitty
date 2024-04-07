@@ -32,6 +32,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import commons.*;
+import commons.emails.Invitation;
+import commons.emails.Reminder;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -218,6 +220,24 @@ public class ServerUtils {
                 .get(new GenericType<List<Debt>>(){ });
     }
 
+    public List<Expense> getAllExpensesFromEventPaidBy(long id, long id1) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEventPaidBy/" + id + "/" + id1) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
+    public List<Expense> getAllExpensesFromEventOwedBy(long id, long id1) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/expenses/getAllExpensesFromEventOwedBy/" + id + "/" + id1) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Expense>>() {
+                });
+    }
+
     public Debt addDebt(Debt debt) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/debts/add") //
@@ -363,11 +383,20 @@ public class ServerUtils {
         EXEC.shutdownNow();
     }
 
-    public void sendMail(Invitation invitation) {
+    public void sendInvitation(Invitation invitation) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/mail/sendMail") //
+                .target(SERVER).path("api/mail/sendInvitation") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(invitation, APPLICATION_JSON), Invitation.class);
     }
+
+    public void sendReminder(Reminder reminder) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/mail/sendReminder") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(reminder, APPLICATION_JSON), Reminder.class);
+    }
+
 }

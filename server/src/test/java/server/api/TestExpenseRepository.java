@@ -31,6 +31,16 @@ public class TestExpenseRepository implements ExpenseRepository {
     }
 
     @Override
+    public List<Expense> findByEventIdAndPayerId(Long eid, Long pid) {
+        return null;
+    }
+
+    @Override
+    public List<Expense> findByEventIdAndDebtorsId(Long eid, Long pid) {
+        return null;
+    }
+
+    @Override
     public void flush() {
         throw new NotImplementedException();
     }

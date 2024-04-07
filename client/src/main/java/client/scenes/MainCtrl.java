@@ -47,11 +47,8 @@ public class MainCtrl {
     private Scene eventOverview;
     private EditTitleCtrl editTitleCtrl;
     private Scene editTitle;
-    private OpenDebtsNewCtrl openDebtsNewCtrl;
+    private OpenDebtsCtrl openDebtsCtrl;
     private Scene openDebts;
-    //private Scene scene;
-    //private Parent root;
-
 
     public MainCtrl() {
     }
@@ -106,9 +103,9 @@ public class MainCtrl {
         this.editTitle = new Scene(editTitle.getValue());
     }
 
-    public void setOpenDebtsNewCtrl(Pair<OpenDebtsNewCtrl, Parent> openDebtsNewCtrl){
-        this.openDebtsNewCtrl = openDebtsNewCtrl.getKey();
-        this.openDebts = new Scene(openDebtsNewCtrl.getValue());
+    public void settleDebts(Pair<OpenDebtsCtrl, Parent> openDebts){
+        this.openDebtsCtrl = openDebts.getKey();
+        this.openDebts = new Scene(openDebts.getValue());
     }
 
     public void showStarterPage(String en) {
@@ -156,8 +153,7 @@ public class MainCtrl {
     public void showEditExpense(Event event, Expense expense, String en) {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.setExpense(expense);
-        addExpenseCtrl.initialize(event, en);
+        addExpenseCtrl.initialize(event, expense, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
@@ -211,9 +207,8 @@ public class MainCtrl {
     public void showOpenDebts(Event event, String en) {
         primaryStage.setTitle("Settle Debts");
         primaryStage.setScene(openDebts);
-        openDebtsNewCtrl.initialize(event, en);
-        //openDebtsNewCtrl.displayEvent();
-        openDebts.setOnKeyPressed(e ->openDebtsNewCtrl.keyPressed(e));
+        openDebtsCtrl.initialize(event, en);
+        openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
     }
 
     public void showChangeServer(String en) {
