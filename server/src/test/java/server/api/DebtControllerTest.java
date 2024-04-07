@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.EventRepository;
 import server.database.ParticipantRepository;
+import server.implementations.DebtServiceImplementation;
 import server.implementations.EventServiceImplementation;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public class DebtControllerTest {
     private EventServiceImplementation eventServiceImplementation = new EventServiceImplementation(eventRepository);
     private ParticipantRepository participantRepository = new TestParticipantRepository();
     private ParticipantController participantController = new ParticipantController(participantRepository);
-    private DebtController sut;
+    private DebtServiceImplementation sut;
 
     @BeforeEach
     public void setup() {
         repo = new TestDebtRepository();
-        sut = new DebtController(repo, eventServiceImplementation);
+        sut = new DebtServiceImplementation(repo, eventServiceImplementation);
     }
 
     @Test
