@@ -21,18 +21,19 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.implementations.EventServiceImplementation;
 
 public class EventControllerTest {
 
     public int nextInt;
     private TestEventRepository repo;
 
-    private EventController sut;
+    private EventServiceImplementation sut;
 
     @BeforeEach
     public void setup() {
         repo = new TestEventRepository();
-        sut = new EventController(repo);
+        sut = new EventServiceImplementation(repo);
     }
 
     @Test

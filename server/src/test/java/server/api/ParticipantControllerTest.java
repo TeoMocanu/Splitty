@@ -16,6 +16,7 @@ import static org.mockito.Mockito.*;
 import server.database.ParticipantRepository;
 import commons.Participant;
 import commons.primaryKeys.ParticipantKey;
+import server.implementations.ParticipantServiceImplementation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ParticipantControllerTest {
     private ParticipantRepository participantRepository;
 
     @InjectMocks
-    private ParticipantController participantController;
+    private ParticipantServiceImplementation participantServiceImplementation;
 
     private Event event1;
     private Event event2;
@@ -48,7 +49,7 @@ public class ParticipantControllerTest {
     @Test
     void getAllParticipantsTest() {
         when(participantRepository.findAll()).thenReturn(participantList);
-        List<Participant> results = participantController.getAllParticipants();
+        List<Participant> results = participantServiceImplementation.getAllParticipants();
 
         assertNotNull(results);
         assertEquals(2, results.size());
@@ -60,7 +61,7 @@ public class ParticipantControllerTest {
     void getAllParticipantsFromEventTest() {
         Long eventId = 1L;
         when(participantRepository.findByEventId(eventId)).thenReturn(participantList);
-        List<Participant> results = participantController.getAllParticipantsFromEvent(eventId);
+        List<Participant> results = participantServiceImplementation.getAllParticipantsFromEvent(eventId);
 
         assertNotNull(results);
         assertEquals(2, results.size());
@@ -72,7 +73,7 @@ public class ParticipantControllerTest {
     void getParticipantByIdTest() {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.findById(key)).thenReturn(Optional.of(participant1));
-        ResponseEntity<Participant> response = participantController.getParticipantById(participant1.getEventId(), participant1.getId());
+        ResponseEntity<Participant> response = participantServiceImplementation.getParticipantById(participant1.getEventId(), participant1.getId());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -83,7 +84,7 @@ public class ParticipantControllerTest {
     @Test
     void addParticipantTest() {
         when(participantRepository.save(participant1)).thenReturn(participant1);
-        ResponseEntity<Participant> response = participantController.addParticipant(participant1);
+        ResponseEntity<Participant> response = participantServiceImplementation.addParticipant(participant1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -93,7 +94,7 @@ public class ParticipantControllerTest {
 
     @Test
     void addParticipant_WithNull_ShouldReturnBadRequest() {
-        ResponseEntity<Participant> response = participantController.addParticipant(null);
+        ResponseEntity<Participant> response = participantServiceImplementation.addParticipant(null);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNull(response.getBody());
@@ -105,7 +106,7 @@ public class ParticipantControllerTest {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.existsById(key)).thenReturn(true);
         when(participantRepository.save(participant1)).thenReturn(participant1);
-        ResponseEntity<Participant> response = participantController.editParticipant(participant1);
+        ResponseEntity<Participant> response = participantServiceImplementation.editParticipant(participant1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -117,7 +118,7 @@ public class ParticipantControllerTest {
     void updateParticipant_WhenNotExists_ShouldReturnNotFound() {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.existsById(key)).thenReturn(false);
-        ResponseEntity<Participant> response = participantController.editParticipant(participant1);
+        ResponseEntity<Participant> response = participantServiceImplementation.editParticipant(participant1);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(participantRepository, never()).save(any(Participant.class));
@@ -128,7 +129,7 @@ public class ParticipantControllerTest {
         ParticipantKey key = new ParticipantKey(participant1.getEventId(), participant1.getId());
         when(participantRepository.existsById(key)).thenReturn(true);
         doNothing().when(participantRepository).deleteById(key);
-        ResponseEntity<Void> response = participantController.deleteParticipant(participant1.getEventId(), participant1.getId());
+        ResponseEntity<Void> response = participantServiceImplementation.deleteParticipant(participant1.getEventId(), participant1.getId());
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(participantRepository).deleteById(key);
