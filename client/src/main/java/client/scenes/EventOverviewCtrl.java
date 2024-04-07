@@ -102,6 +102,8 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensesTableView(Event event) {
+        expensesTableView.setPlaceholder(new Label(mainCtrl.getString("noExpensesYet")));
+
         expenses = server.getAllExpensesFromEvent(event);
         ObservableList<Expense> observableExpenseList = FXCollections.observableArrayList(expenses);
 
@@ -145,7 +147,7 @@ public class EventOverviewCtrl {
     }
 
     private void initFilteringModeComboBox() {
-        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList("Paid by", "Owed by");
+        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList(mainCtrl.getString("paidBy"), mainCtrl.getString("owedBy"));
         filteringModeComboBox.setItems(observableSelectionModeList);
         filteringModeComboBox.getSelectionModel().selectFirst();
     }

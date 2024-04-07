@@ -120,6 +120,7 @@ public class AddExpenseCtrl {
     }
 
     public void initialize(Event event, Expense expense) { // initializing the data from an existing expense into the window
+        newType.setPromptText(mainCtrl.getString("addNewType"));
         expense = server.getExpenseById(expense.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");

@@ -42,7 +42,7 @@ public class ChangeServerCtrl {
             alert.setContentText("Server does not exist or is offline. Please try another one/n/n" + e.getMessage());
             alert.showAndWait();
              */
-            ErrorMessage.showError(mainCtrl.getString("invalidServerMessage")+"/n/n" + e.getMessage(), mainCtrl);
+            ErrorMessage.showError(mainCtrl.getString("invalidServerMessage")+"\n\n" + e.getMessage(), mainCtrl);
             server.changeServer("localhost:8080");
             return;
         }

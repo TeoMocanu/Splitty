@@ -184,7 +184,7 @@ public class MainCtrl {
 
     public void showStarterPage() {
         primaryStage.setResizable(true);
-        primaryStage.setMinWidth(380);
+        primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(450);
         primaryStage.setTitle(getString("starterPage"));
         primaryStage.setScene(starterPage);
@@ -279,23 +279,35 @@ public class MainCtrl {
     }
 
     public void showOpenDebts(Event event) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(250);
+        primaryStage.setMinHeight(250);
         primaryStage.setTitle(getString("settleDebts"));
         primaryStage.setScene(openDebts);
+        primaryStage.sizeToScene();
         openDebtsCtrl.initialize(event);
         openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
     }
 
     public void showChangeServer() {
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle(getString("changeServer"));
         primaryStage.setScene(changeServer);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         changeServerCtrl.initialize();
     }
 
     public void showEditTitle(Event event) {
-        //primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
         primaryStage.setTitle(getString("editTitle"));
         primaryStage.setScene(editTitle);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
         editTitleCtrl.initialize(event);
         editTitle.setOnKeyPressed(e ->editTitleCtrl.keyPressed(e));
     }

@@ -85,7 +85,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <children>
                         <ChoiceBox fx:id="type" prefHeight="26.0" prefWidth="129.0" />
-                        <TextField fx:id="newType" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="130.0" promptText="add new type" />
+                        <TextField fx:id="newType" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="130.0" promptText="%addNewType" />
                      </children>
                   </HBox>
                </children>
@@ -97,12 +97,12 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="NEVER">
                      <children>
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="78.0" text="%cancel" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="%cancel" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="78.0" text="%add" />
+                        <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" onAction="#add" text="%add" />
                      </children>
                   </FlowPane>
                </children>

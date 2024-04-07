@@ -62,7 +62,7 @@ public class OpenDebtsCtrl {
 
     private void initializeDebtsTable(List<Debt> debts) {
         table.setRoot(null);
-        TreeItem<HBox> rootNode = new TreeItem<>(new HBox(new Label("Active Debts")));
+        TreeItem<HBox> rootNode = new TreeItem<>(new HBox(new Label(mainCtrl.getString("activeDebts"))));
         rootNode.setExpanded(true);
 
         if(debts != null && debts.size() > 0)
@@ -135,12 +135,10 @@ public class OpenDebtsCtrl {
         try{
             server.sendReminder(reminder);
         } catch (Exception e) {
-            ErrorMessage.showError(e.getMessage(), en);
+            ErrorMessage.showError(e.getMessage(), mainCtrl);
         }
-        if(en.equals("en"))
-            InfoMessage.showInfo("Reminder sent", en);
-        else if(en.equals("nl"))
-            InfoMessage.showInfo("Herinnering verzonden", en);
+
+        InfoMessage.showInfo(mainCtrl.getString("reminderSent"), mainCtrl);
     }
 
     public void back() {

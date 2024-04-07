@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="380.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="438.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StarterPageCtrl">
    <children>
-      <VBox layoutX="-5.0" maxWidth="1.7976931348623157E308" prefHeight="115.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="406.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="createNewEventLabel" prefHeight="27.0" prefWidth="258.0" text="%createNewEvent" VBox.vgrow="NEVER">
                <font>
@@ -96,7 +96,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="deleteHistoryButton" mnemonicParsing="false" onAction="#deleteHistory" prefHeight="26.0" prefWidth="139.0" text="%deleteHistory">
+                        <Button fx:id="deleteHistoryButton" mnemonicParsing="false" onAction="#deleteHistory" text="%deleteHistory">
                            <FlowPane.margin>
                               <Insets left="15.0" />
                            </FlowPane.margin>
@@ -110,17 +110,17 @@
             </HBox>
             <HBox prefHeight="29.0" prefWidth="388.0" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoDelete" prefHeight="25.0" prefWidth="74.0" text="%undo" HBox.hgrow="NEVER">
+                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoDelete" text="%undo" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="129.0" text="Server..." HBox.hgrow="ALWAYS">
+                  <Label fx:id="serverLabel" alignment="CENTER_RIGHT" centerShape="false" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Server..." HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Button fx:id="changeServerButton" mnemonicParsing="false" onAction="#changeServer" prefHeight="26.0" prefWidth="106.0" text="%changeServer" HBox.hgrow="NEVER">
+                  <Button fx:id="changeServerButton" mnemonicParsing="false" onAction="#changeServer" prefHeight="26.0" prefWidth="118.0" text="%changeServer" HBox.hgrow="NEVER">
                      <HBox.margin>
                         <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                      </HBox.margin>

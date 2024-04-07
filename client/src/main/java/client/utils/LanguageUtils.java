@@ -1,12 +1,10 @@
 package client.utils;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LanguageUtils {
@@ -25,5 +23,36 @@ public class LanguageUtils {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public static String getLanguageFromFile() {
+        try {
+            Properties properties = new Properties();
+            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("language/language.properties");
+
+            properties.load(input);
+            return properties.getProperty("language");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setLanguageToFile(String language) {
+        try {
+            Properties properties = new Properties();
+            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("language/language.properties");
+
+            properties.load(input);
+            properties.setProperty("language", language);
+
+            String dir = System.getProperty("user.dir");
+            String file = dir.concat("/client/src/main/resources/language/language.properties");
+
+            FileOutputStream output = new FileOutputStream(file);
+            properties.store(output , null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

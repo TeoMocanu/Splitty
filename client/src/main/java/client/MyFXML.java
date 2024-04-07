@@ -15,6 +15,7 @@
  */
 package client;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -31,6 +33,7 @@ import javafx.util.Builder;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
+import org.springframework.beans.factory.annotation.Value;
 
 public class MyFXML {
 
@@ -39,14 +42,16 @@ public class MyFXML {
     private ResourceBundle bundle;
 
     @Inject
-    public MyFXML(Injector injector, Locale locale) {
+    public MyFXML(Injector injector) {
         this.injector = injector;
-        this.locale = locale;
+        String language = LanguageUtils.getLanguageFromFile();
+        this.locale = new Locale(language);
         this.bundle = ResourceBundle.getBundle("language.messages", locale);
     }
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+        LanguageUtils.setLanguageToFile(locale.getLanguage());
         this.bundle = ResourceBundle.getBundle("language.messages", locale);
     }
 

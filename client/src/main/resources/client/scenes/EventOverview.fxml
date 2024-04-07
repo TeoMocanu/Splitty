@@ -14,14 +14,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="604.0" stylesheets="/client/scenes/EventOverviewHigh-contrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
       <VBox prefHeight="484.0" prefWidth="651.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="46.0" prefWidth="332.0" VBox.vgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="209.0" HBox.hgrow="NEVER">
                      <children>
                         <Label fx:id="eventTitleLabel" onMouseClicked="#editTitle" text="%eventTitle">
                            <font>
@@ -30,10 +29,10 @@
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" prefHeight="25.0" prefWidth="90.0" text="%editTitle" />
-                        <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" prefHeight="25.0" prefWidth="105.0" text="%sendInvites">
+                        <Button fx:id="editTitleButton" mnemonicParsing="false" onAction="#editTitle" text="%editTitle" />
+                        <Button fx:id="sendInvitesButton" mnemonicParsing="false" onAction="#sendInvites" text="%sendInvites">
                            <FlowPane.margin>
                               <Insets left="10.0" />
                            </FlowPane.margin>
@@ -52,7 +51,7 @@
             </Separator>
             <HBox prefHeight="54.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
                         <Label fx:id="participantsLabel" text="%participants">
                            <font>
@@ -61,7 +60,7 @@
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_RIGHT" hgap="20.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Button fx:id="participantEditButton" mnemonicParsing="false" onAction="#editParticipant" text="%editSelected" />
                         <Button fx:id="participantAddButton" mnemonicParsing="false" onAction="#addParticipant" text="%add" />
@@ -92,7 +91,7 @@
             </Label>
             <HBox prefHeight="40.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="278.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="%filter">
                            <FlowPane.margin>
@@ -102,15 +101,18 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="filteringModeComboBox" prefHeight="25.0" prefWidth="107.0">
+                        <ComboBox fx:id="filteringModeComboBox">
                            <FlowPane.margin>
                               <Insets right="10.0" />
                            </FlowPane.margin>
                         </ComboBox>
-                        <ComboBox fx:id="expensePayersComboBox" prefHeight="21.0" prefWidth="163.0" />
+                        <ComboBox fx:id="expensePayersComboBox">
+                           <FlowPane.margin>
+                              <Insets right="20.0" />
+                           </FlowPane.margin></ComboBox>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="93.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
                      <children>
                         <Button fx:id="editExpenseButton" mnemonicParsing="false" onAction="#editExpense" text="%editSelected" />
                         <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="%add">
@@ -138,7 +140,7 @@
             </TableView>
             <HBox prefHeight="17.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="CENTER_LEFT" hgap="20.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_LEFT" hgap="20.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="%back">
                            <FlowPane.margin>
@@ -147,7 +149,7 @@
                         </Button>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
                         <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleDebts" text="%settleDebts" />
                      </children>

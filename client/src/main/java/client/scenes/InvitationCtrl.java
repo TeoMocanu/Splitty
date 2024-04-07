@@ -63,11 +63,7 @@ public class InvitationCtrl {
                 ErrorMessage.showError(e.getMessage(), mainCtrl);
             }
         }
-        if(en.equals("en")){
-            InfoMessage.showInfo("Invitations sent", en);
-        } else {
-            InfoMessage.showInfo("Uitnodigingen verstuurd", en);
-        }
+        InfoMessage.showInfo(mainCtrl.getString("invitationsSent"), mainCtrl);
         clearFields();
         mainCtrl.showEventOverview(event);
     }
