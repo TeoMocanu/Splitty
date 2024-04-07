@@ -40,5 +40,6 @@
       <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="%importEventFromFile" />
       <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadAllEvents" prefHeight="25.0" prefWidth="158.0" text="%downloadEventData" />
       <Button fx:id="helpButton" layoutX="492.0" layoutY="360.0" mnemonicParsing="false" onAction="#showHelp" prefHeight="25.0" prefWidth="68.0" text="Help" />
+      <Button fx:id="settingsButton" layoutX="391.0" layoutY="360.0" mnemonicParsing="false" onAction="#showSettings" prefHeight="25.0" prefWidth="68.0" text="Settings" />
    </children>
 </AnchorPane>

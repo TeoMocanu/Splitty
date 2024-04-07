@@ -50,6 +50,8 @@ public class AdminOverviewCtrl {
     @FXML
     public Button helpButton;
     @FXML
+    public Button settingsButton;
+    @FXML
     public Button downloadButton;
     @FXML
     public Button languageButton;
@@ -232,14 +234,21 @@ public class AdminOverviewCtrl {
     public void initialize() {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
+        setupShortcuts();
+
+    }
+    public void setupShortcuts() {
         Platform.runLater(() -> {
             Scene scene = tableView.getScene();
             scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
                 KeyCodeCombination downloadCombination = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
                 KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-
+                KeyCodeCombination importCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
+                KeyCodeCombination importCombinationText = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
                 if (downloadCombination.match(e)) downloadAllEvents();
                 if (help.match(e)) showHelp();
+                if (importCombination.match(e)) importFromFile();
+                if (importCombinationText.match(e)) importFromText();
             });
         });
     }
@@ -453,7 +462,10 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+    public void showSettings() {
 
+
+    }
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }
