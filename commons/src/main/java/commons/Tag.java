@@ -36,12 +36,12 @@ public class Tag {
     @JsonIgnoreProperties({"event", "tag", "payer", "splitters"})
     @JoinTable(name = "expense_tag",
             joinColumns = {
-                    @JoinColumn(name = "tag_id", referencedColumnName = "tag_id"),
-                    @JoinColumn(name = "tag_event_id", referencedColumnName = "event_id")
+                @JoinColumn(name = "tag_id", referencedColumnName = "tag_id"),
+                @JoinColumn(name = "tag_event_id", referencedColumnName = "event_id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "expense_id", referencedColumnName = "expense_id"),
-                    @JoinColumn(name = "expense_event_id", referencedColumnName = "event_id")})
+                @JoinColumn(name = "expense_id", referencedColumnName = "expense_id"),
+                @JoinColumn(name = "expense_event_id", referencedColumnName = "event_id")})
     List<Expense> expenses;
 
     private String name;
