@@ -84,4 +84,31 @@ public class ExpenseControllerTest {
         assertEquals(expenseList, results);
         verify(service).getAllExpensesFromEvent(eventId);
     }
+
+
+    @Test
+    void getExpenseByIdTest() {
+        long eventId = 1L;
+        long expenseId = 100L;
+        ExpenseKey key = new ExpenseKey(eventId, expenseId);
+
+        when(service.getExpenseById(key)).thenReturn(ResponseEntity.ok(expense1));
+        ResponseEntity<Expense> response = expenseController.getExpenseById(key);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expense1, response.getBody());
+        verify(service).getExpenseById(key);
+    }
+
+    @Test
+    void addExpenseTest() {
+        when(service.addExpense(expense1)).thenReturn(ResponseEntity.ok(expense1));
+        ResponseEntity<Expense> response = expenseController.addExpense(expense1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expense1, response.getBody());
+        verify(service).addExpense(expense1);
+    }
 }
