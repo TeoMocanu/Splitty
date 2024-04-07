@@ -38,8 +38,6 @@ public class AddExpenseCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private Expense expense = null;
-    private String en;
-
     ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
@@ -97,7 +95,7 @@ public class AddExpenseCtrl {
     }
 
 
-    void initialize(Event event, String en){
+    void initialize(Event event){
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
             types.addAll(event.getTypes());
@@ -118,13 +116,11 @@ public class AddExpenseCtrl {
         somePeople.setSelected(false);
         name.setValue(" ");
         date.setValue(null);
-
-        this.en = en;
-        language();
         this.event = server.getEvent(event.getId());
     }
 
-    public void initialize(Event event, Expense expense, String en) { // initializing the data from an existing expense into the window
+    public void initialize(Event event, Expense expense) { // initializing the data from an existing expense into the window
+        newType.setPromptText(mainCtrl.getString("addNewType"));
         expense = server.getExpenseById(expense.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
@@ -147,8 +143,8 @@ public class AddExpenseCtrl {
         name.setValue(expense.getPayer().getName());
         date.setValue(expense.getLocalDate());
 
-        addButton.setText("Edit");
-        if(en.equals("nl")) addButton.setText("Bewerk");
+        addButton.setText(mainCtrl.getString("edit"));
+//        if(en.equals("nl")) addButton.setText("Bewerk");
 
         if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
         else {
@@ -160,16 +156,13 @@ public class AddExpenseCtrl {
             }
         }
         menu.setItems(splitOptions);
-
-        this.en = en;
-        language();
         this.event = server.getEvent(event.getId());
     }
 
     public void cancel() {
         clearFields();
         expense = null;
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public void add() {
@@ -207,7 +200,7 @@ public class AddExpenseCtrl {
             // server.editDebt(server.getDebt(event, expense.getPayer(), p).addAmount(expense.getAmount()));
 
         } catch (Exception e) {
-
+/*
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             if(en.equals("en"))
@@ -215,11 +208,13 @@ public class AddExpenseCtrl {
             else if(en.equals("nl"))
                 alert.setContentText(e.getMessage() + "- interne fout bij het toevoegen van de kosten");
             alert.showAndWait();
+ */
+            ErrorMessage.showError(mainCtrl.getString("internalErrorMessage")+" "+e.getMessage(), mainCtrl);
             return;
         }
 
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     private Expense createExpense() {
@@ -305,7 +300,7 @@ public class AddExpenseCtrl {
                 break;
         }
     }
-
+/*
     public void language(){
         if(en.equals("en")) en();
         else nl();
@@ -337,4 +332,5 @@ public class AddExpenseCtrl {
         everyone.setText("Met iedereen");
         somePeople.setText("Slechts enkele mensen");
     }
+ */
 }

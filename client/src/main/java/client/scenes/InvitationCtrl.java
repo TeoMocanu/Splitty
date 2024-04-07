@@ -16,8 +16,6 @@ public class InvitationCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private String en;
-
     @FXML
     private TextArea emails;
     @FXML
@@ -39,17 +37,15 @@ public class InvitationCtrl {
         this.server = server;
     }
 
-    public void initialize(Event event, String en) {
+    public void initialize(Event event) {
         this.event = event;
-        this.en = en;
-        language();
         code.setText(Long.toString(event.getId()));
         title.setText(event.getTitle());
     }
 
     public void cancel() {
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public void send() {
@@ -57,23 +53,19 @@ public class InvitationCtrl {
         try {
             emails = getEmails();
         } catch (IllegalArgumentException e) {
-            ErrorMessage.showError(e.getMessage(), en);
+            ErrorMessage.showError(e.getMessage(), mainCtrl);
             return;
         }
         for (String email : emails) {
             try {
                 server.sendInvitation(new Invitation(email, event.getTitle(), event.getId()));
             } catch (WebApplicationException e) {
-                ErrorMessage.showError(e.getMessage(), en);
+                ErrorMessage.showError(e.getMessage(), mainCtrl);
             }
         }
-        if(en.equals("en")){
-            InfoMessage.showInfo("Invitations sent", en);
-        } else {
-            InfoMessage.showInfo("Uitnodigingen verstuurd", en);
-        }
+        InfoMessage.showInfo(mainCtrl.getString("invitationsSent"), mainCtrl);
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     public List<String> getEmails() throws IllegalArgumentException {
@@ -85,8 +77,8 @@ public class InvitationCtrl {
             if (line.matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9]{2,}")) {
                 mails.add(line);
             } else {
-
-                errors += en.equals("en") ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
+                errors += mainCtrl.getString("invalidEmail") + " " + line + "\n";
+//                errors += en.equals("en") ? ("Invalid mail: " + line + "\n") : ("Ongeldige mail: " + line + "\n");
             }
         }
         if (!errors.isEmpty()) {
@@ -111,7 +103,7 @@ public class InvitationCtrl {
                 break;
         }
     }
-
+/*
     public void language() {
         if (en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -130,4 +122,6 @@ public class InvitationCtrl {
         sendInvites.setText("stuur uitnodigingen");
         cancelButton.setText("annuleren");
     }
+
+ */
 }

@@ -16,10 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.util.Stack;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class StarterPageCtrl {
@@ -67,15 +64,15 @@ public class StarterPageCtrl {
     private List<Event> eventList;
     private Stack<Event> deletedEventsStack = new Stack<>();
 
-    private String en;
-    private List<String> languages = List.of("en", "nl"); // add languages here
+//    private String en;
+//    private List<String> languages = List.of("en", "nl"); // add languages here
 
     @Inject
     public StarterPageCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.eventList = new ArrayList<>();
-        this.listView= new ListView<>();
+        this.listView = new ListView<>();
         this.contextMenuList = new ArrayList<>();
     }
 
@@ -85,12 +82,12 @@ public class StarterPageCtrl {
 //    }
 
     @FXML
-    public void initialize(String en) {
+    public void initialize() {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
-        this.en = en;
-        language();
+//        this.en = en;
+//        language();
         this.serverLabel.setText(server.getServer());
         server.registerForUpdates(e -> {
             updateEvents(e);
@@ -120,7 +117,7 @@ public class StarterPageCtrl {
         if (event.getCode() == KeyCode.ENTER) {
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
-                mainCtrl.showEventOverview(selectedEvent, en);
+                mainCtrl.showEventOverview(selectedEvent);
                 listView.getSelectionModel().clearSelection();
             }
         }
@@ -130,7 +127,7 @@ public class StarterPageCtrl {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText(message);
         alert.setHeaderText(null);
-        alert.setTitle("Confirmation");
+        alert.setTitle(mainCtrl.getString("confirmation"));
         alert.initOwner(listView.getScene().getWindow());
         alert.showAndWait();
         return alert.getResult() == ButtonType.OK;
@@ -142,18 +139,15 @@ public class StarterPageCtrl {
             Event selectedEvent = listView.getSelectionModel().getSelectedItem();
             if (selectedEvent != null) {
                 // Create ContextMenu
-                if(!contextMenuList.isEmpty()) {
+                if (!contextMenuList.isEmpty()) {
                     contextMenuList.get(0).hide();
                     contextMenuList.remove(0);
                 }
                 ContextMenu contextMenu = new ContextMenu();
 
-                MenuItem deleteMenuItem = new MenuItem("Delete");
-                if(en.equals("nl")){
-                    deleteMenuItem.setText("Verwijderen");
-                }
+                MenuItem deleteMenuItem = new MenuItem(mainCtrl.getString("delete"));
                 deleteMenuItem.setOnAction(e -> {
-                    if(showConfirmationDialog("Are you sure you want to delete this event?")) {
+                    if (showConfirmationDialog(mainCtrl.getString("confirmationMessageDelete"))) {
                         eventList.remove(selectedEvent);
                         addToDeletedStack(selectedEvent);
                         updateHistory();
@@ -172,7 +166,7 @@ public class StarterPageCtrl {
                 eventList.remove(selectedEvent);
                 eventList.add(selectedEvent);
                 updateHistory();
-                mainCtrl.showEventOverview(selectedEvent, en);
+                mainCtrl.showEventOverview(selectedEvent);
                 listView.getSelectionModel().clearSelection();
             }
         }
@@ -196,7 +190,7 @@ public class StarterPageCtrl {
 
     public List<Event> lastSearch() {
         List<Event> searches = new ArrayList<>();
-        for(int i = eventList.size() - 1; i >= 0 && searches.size() < 4; i--)
+        for (int i = eventList.size() - 1; i >= 0 && searches.size() < 4; i--)
             searches.add(eventList.get(i));
         return searches;
     }
@@ -227,7 +221,7 @@ public class StarterPageCtrl {
     public void updateEvents(Event event) {
         // updating all the events and their expenses and participants
         List<Event> updatedList = new ArrayList<Event>(eventList.size());
-        for(int i=0; i<eventList.size(); i++) {
+        for (int i = 0; i < eventList.size(); i++) {
             Event e = server.getEvent(eventList.get(i).getId());
             //e.setExpenses(server.getAllExpensesFromEvent(e));
             //e.setParticipants(server.getAllParticipantsFromEvent(e));
@@ -249,7 +243,7 @@ public class StarterPageCtrl {
         createNewEvent.clear();
         updateHistory();
 
-        mainCtrl.showEventOverview(repEvent, en);
+        mainCtrl.showEventOverview(repEvent);
     }
 
     public void joinEvent() {
@@ -258,28 +252,22 @@ public class StarterPageCtrl {
             Event event = server.getEvent(eventId);
 
             if (event != null) {
-                for(Event e : eventList){
-                    if(e.getId() == event.getId()){
+                for (Event e : eventList) {
+                    if (e.getId() == event.getId()) {
                         eventList.remove(e);
                     }
                 }
                 eventList.add(event);
                 joinEvent.clear();
                 updateHistory();
-                mainCtrl.showEventOverview(event, en);
+                mainCtrl.showEventOverview(event);
             }
         } catch (jakarta.ws.rs.BadRequestException e) {
             // Handle the HTTP 400 exception
-            if(en.equals("en"))
-                ErrorMessage.showError("No event with this invitation code was found.", en);
-            else
-                ErrorMessage.showError("Er is geen evenement met deze uitnodigingscode gevonden.", en);
+            ErrorMessage.showError(mainCtrl.getString("inexistentCodeMessage"), mainCtrl);
         } catch (java.lang.NumberFormatException e) {
             // Handle the number format exception
-            if(en.equals("en"))
-                ErrorMessage.showError("Invalid code.", en);
-            else if(en.equals("nl"))
-                ErrorMessage.showError("Ongeldige code.", en);
+            ErrorMessage.showError(mainCtrl.getString("invalidCode"), mainCtrl);
         }
     }
 
@@ -298,43 +286,48 @@ public class StarterPageCtrl {
         }
     }
 
-    public void languageSwitch(){
-        int index = languages.indexOf(en) + 1;
-        if(index == languages.size()) index = 0;
-        en = languages.get(index);
-        language();
+    public void languageSwitch() {
+        String createNewEventText = createNewEvent.getText();
+        String joinEventText = joinEvent.getText();
+
+        mainCtrl.changeLanguage();
+        mainCtrl.showStarterPage();
+
+        refresh();
+        joinEvent.setText(joinEventText);
+        createNewEvent.setText(createNewEventText);
     }
 
-    public void language(){
-        if(en.equals("en")){
-            en();
+    /*
+        public void language(){
+            if(en.equals("en")){
+                en();
+            }
+            else if(en.equals("nl")){
+                nl();
+            }
         }
-        else if(en.equals("nl")){
-            nl();
+        public void en(){
+            languageButtonStart.setText("EN");
+            createButton.setText("Create");
+            joinButton.setText("Join");
+            deleteHistoryButton.setText("Delete history");
+            createNewEventLabel.setText("Create New Event");
+            joinEventLabel.setText("Join Event");
+            recentlyViewedEventsLabel.setText("Recently viewed events");
+            changeServerButton.setText("Change Server");
         }
-    }
-
-    public void en(){
-        languageButtonStart.setText("EN");
-        createButton.setText("Create");
-        joinButton.setText("Join");
-        deleteHistoryButton.setText("Delete history");
-        createNewEventLabel.setText("Create New Event");
-        joinEventLabel.setText("Join Event");
-        recentlyViewedEventsLabel.setText("Recently viewed events");
-        changeServerButton.setText("Change Server");
-    }
-    public void nl(){
-        languageButtonStart.setText("NL");
-        createButton.setText("Cre\u00ebren");
-        joinButton.setText("Meedoen");
-        deleteHistoryButton.setText("Verwijder geschiedenis");
-        createNewEventLabel.setText("Nieuw evenement maken");
-        joinEventLabel.setText("Doe mee aan evenement");
-        recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
-        changeServerButton.setText("Server Wijzigen");
-    }
-
+        public void nl(){
+            languageButtonStart.setText("NL");
+            createButton.setText("Cre\u00ebren");
+            joinButton.setText("Meedoen");
+            deleteHistoryButton.setText("Verwijder geschiedenis");
+            createNewEventLabel.setText("Nieuw evenement maken");
+            joinEventLabel.setText("Doe mee aan evenement");
+            recentlyViewedEventsLabel.setText("Recent bekeken evenementen");
+            changeServerButton.setText("Server Wijzigen");
+        }
+    */
     public void refresh() {
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventList);
         listView.setItems(observableEventList);
@@ -348,7 +341,7 @@ public class StarterPageCtrl {
     }
 
     public void deleteHistory() {
-        if (showConfirmationDialog("Are you sure you want to delete the entire history?")) {
+        if (showConfirmationDialog(mainCtrl.getString("confirmationMessageDelete"))) {
             deletedEventsStack.addAll(eventList);
             eventList.clear();
             listView.getItems().clear();
@@ -359,12 +352,16 @@ public class StarterPageCtrl {
         undoButton.setDisable(deletedEventsStack.isEmpty());
     }
 
-    public void admin(){
-        mainCtrl.showAdminLogin(en);
+    public void admin() {
+        mainCtrl.showAdminLogin();
     }
 
-    public void changeServer(){ mainCtrl.showChangeServer(en); }
+    public void changeServer() {
+        mainCtrl.showChangeServer();
+    }
 
-    public Label getServerLabel() { return serverLabel; }
+    public Label getServerLabel() {
+        return serverLabel;
+    }
 
 }

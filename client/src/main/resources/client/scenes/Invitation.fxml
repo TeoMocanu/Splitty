@@ -24,7 +24,7 @@
             </Label>
             <HBox prefHeight="35.0" prefWidth="470.0" VBox.vgrow="NEVER">
                <children>
-                    <Label fx:id="text1" text="Give people the following invite Code: ">
+                    <Label fx:id="text1" text="%giveCode">
                         <font>
                             <Font size="17.0" />
                         </font>
@@ -39,7 +39,7 @@
                   <Insets left="15.0" right="15.0" top="5.0" />
                </VBox.margin>
             </HBox>
-              <Label fx:id="text2" prefWidth="438.0" text="Invite the following people by email (one adderss per line):">
+              <Label fx:id="text2" prefWidth="438.0" text="%writeEmailsBelow">
                   <font>
                       <Font size="16.0" />
                   </font>
@@ -56,12 +56,12 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="%cancel" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                          <Button fx:id="sendInvites" mnemonicParsing="false" onAction="#send" text="Send Invites">
+                          <Button fx:id="sendInvites" mnemonicParsing="false" onAction="#send" text="%sendInvites">
                               <font>
                                   <Font size="13.0" />
                               </font>

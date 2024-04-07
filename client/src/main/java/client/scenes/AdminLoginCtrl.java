@@ -29,8 +29,6 @@ public class AdminLoginCtrl {
     @FXML
     private Button languageButton;
 
-    private String currentLanguage;
-
     @FXML
     private TextField password;
 
@@ -41,27 +39,25 @@ public class AdminLoginCtrl {
     }
 
     @FXML
-    public void initialize(String en){
-        this.currentLanguage = en;
-        language();
+    public void initialize(){
         ServerUtils utils = new ServerUtils();
         int passwordLength = 10;
         String randomPassword = utils.generateRandomPassword(passwordLength);
         this.adminPassword = randomPassword;
         System.out.println("Admin Password: " + randomPassword);
     }
+    public void languageSwitch(){
+        String password = this.password.getText();
 
+        mainCtrl.changeLanguage();
+        mainCtrl.showAdminLogin();
+
+        this.password.setText(password);
+    }
+/*
     public void language(){
         if(currentLanguage.equals("en")) en();
         else if(currentLanguage.equals("nl")) nl();
-    }
-    public void languageSwitch(){
-        if(currentLanguage.equals("en")){
-            currentLanguage = "nl";
-        } else {
-            currentLanguage = "EN";
-        }
-        language();
     }
 
     public void en() {
@@ -77,11 +73,11 @@ public class AdminLoginCtrl {
         backButton.setText("TERUG");
         helpButton.setText("HELP");
     }
-
+*/
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage);
+        mainCtrl.showStarterPage();
     }
 
     public void checkPassword() {
@@ -97,12 +93,12 @@ public class AdminLoginCtrl {
 
             if (passwordMatch) {
                 System.out.println("Welcome, admin");
-                mainCtrl.showAdminOverview(currentLanguage);
+                mainCtrl.showAdminOverview();
 
             }
             else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
-                mainCtrl.showStarterPage(currentLanguage);
+                mainCtrl.showStarterPage();
             }
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -134,6 +130,6 @@ public class AdminLoginCtrl {
 
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
-        mainCtrl.showStarterPage(currentLanguage);
+        mainCtrl.showStarterPage();
     }
 }

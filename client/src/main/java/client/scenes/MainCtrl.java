@@ -16,6 +16,8 @@
 package client.scenes;
 
 
+import client.MyFXML;
+import client.utils.LanguageUtils;
 import commons.Expense;
 import commons.Participant;
 import commons.Event;
@@ -24,13 +26,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.List;
+import java.util.Locale;
 public class MainCtrl {
 
     private Stage primaryStage;
-
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
-
     private InvitationCtrl invitationCtrl;
     private Scene invitation;
     private AddExpenseCtrl addExpenseCtrl;
@@ -49,13 +51,85 @@ public class MainCtrl {
     private Scene editTitle;
     private OpenDebtsCtrl openDebtsCtrl;
     private Scene openDebts;
+    private MyFXML myFXML;
 
     public MainCtrl() {
     }
 
-    public void initialize(Stage primaryStage) {
+    public void load(Stage primaryStage, MyFXML myFXML){
+        this.myFXML = myFXML;
         this.primaryStage = primaryStage;
-        showStarterPage("en");
+
+        var addExpense = myFXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
+        var starterPage = myFXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
+        var adminOverview = myFXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
+        var adminLogin = myFXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
+        var contactDetails = myFXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
+        var changeServer = myFXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
+        var eventOverview = myFXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
+        var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
+        var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
+        var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+
+        this.starterPage(starterPage);
+        this.adminLogin(adminLogin);
+        this.adminOverview(adminOverview);
+        this.addExpense(addExpense);
+        this.contactDetails(contactDetails);
+        this.changeServer(changeServer);
+        this.eventOverview(eventOverview);
+        this.invitation(invitation);
+        this.editTitle(editTitle);
+        this.settleDebts(openDebts);
+
+        primaryStage.setOnCloseRequest(e -> {
+            starterPage.getKey().stop();
+        });
+    }
+
+    public void reload(Locale locale){
+        myFXML.setLocale(locale);
+        var addExpense = myFXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
+        var starterPage = myFXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
+        var adminOverview = myFXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
+        var adminLogin = myFXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
+        var contactDetails = myFXML.load(ContactDetailCtrl.class, "client", "scenes", "ContactDetail.fxml");
+        var changeServer = myFXML.load(ChangeServerCtrl.class, "client", "scenes", "ChangeServer.fxml");
+        var eventOverview = myFXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
+        var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
+        var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
+        var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+
+        this.starterPage(starterPage);
+        this.adminLogin(adminLogin);
+        this.adminOverview(adminOverview);
+        this.addExpense(addExpense);
+        this.contactDetails(contactDetails);
+        this.changeServer(changeServer);
+        this.eventOverview(eventOverview);
+        this.invitation(invitation);
+        this.editTitle(editTitle);
+        this.settleDebts(openDebts);
+
+        primaryStage.setOnCloseRequest(e -> {
+            starterPage.getKey().stop();
+        });
+    }
+
+    public void changeLanguage(){
+
+        List<Locale> list = LanguageUtils.getSupportedLocales();
+        int index = list.indexOf(myFXML.getLocale());
+        System.out.println("index: " + index);
+        System.out.println("list: " + list);
+        System.out.println("locale: " + myFXML.getLocale());
+        System.out.println("list: " + list.get(0));
+
+        reload(list.get((index+1)%list.size()));
+    }
+
+    public void initialize(Stage primaryStage) {
+        showStarterPage();
         primaryStage.show();
     }
 
@@ -108,125 +182,141 @@ public class MainCtrl {
         this.openDebts = new Scene(openDebts.getValue());
     }
 
-    public void showStarterPage(String en) {
+    public void showStarterPage() {
         primaryStage.setResizable(true);
-        primaryStage.setMinWidth(380);
+        primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(450);
-        primaryStage.setTitle("Starter Page");
+        primaryStage.setTitle(getString("starterPage"));
         primaryStage.setScene(starterPage);
-        starterPageCtrl.initialize(en);
+        starterPageCtrl.initialize();
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
         //scene = new Scene(root);
         //scene.getStylesheets().add(getClass().getResource("high-contrast-theme.css").toExternalForm());;
     }
 
-    public void showAdminLogin(String en) {
+    public void showAdminLogin() {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Admin Login");
+        primaryStage.setTitle(getString("adminLogin"));
         primaryStage.setScene(adminLogin);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        adminLoginCtrl.initialize(en);
+        adminLoginCtrl.initialize();
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
     }
-    public void showAdminOverview(String en) {
-        primaryStage.setTitle("Admin Overview");
+    public void showAdminOverview() {
+        primaryStage.setTitle(getString("adminOverview"));
         primaryStage.setScene(adminOverview);
-        adminOverviewCtrl.initialize(en);
+        adminOverviewCtrl.initialize();
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
     }
 
-    public void showAddExpense(Event event, String en) {
+    public void showAddExpense(Event event) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Add Expense");
+        primaryStage.setTitle(getString("addExpense"));
         primaryStage.setScene(addExpense);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        addExpenseCtrl.initialize(event, en);
+        addExpenseCtrl.initialize(event);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showEditExpense(Event event, Expense expense, String en) {
-        primaryStage.setTitle("Edit Expense");
+    public void showEditExpense(Event event, Expense expense) {
+        primaryStage.setTitle(getString("editExpense"));
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.initialize(event, expense, en);
+        addExpenseCtrl.initialize(event, expense);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 
-    public void showEventOverview(Event event, String en) {
+    public void showEventOverview(Event event) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(380);
         primaryStage.setMinHeight(450);
-        primaryStage.setTitle("Create/Edit Event");
+        primaryStage.setTitle(getString("createEditEvent"));
         primaryStage.setScene(eventOverview);
         primaryStage.sizeToScene();
-        eventOverviewCtrl.initialize(event, en);
+        eventOverviewCtrl.initialize(event);
         eventOverview.setOnKeyPressed(e ->eventOverviewCtrl.keyPressed(e));
     }
 
 
-    public void showInvitation(Event event, String en){
+    public void showInvitation(Event event){
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(220);
-        primaryStage.setTitle("Invitation");
+        primaryStage.setTitle(getString("invitation"));
         primaryStage.setScene(invitation);
         primaryStage.sizeToScene();
-        invitationCtrl.initialize(event, en);
+        invitationCtrl.initialize(event);
         invitation.setOnKeyPressed(e -> invitationCtrl.keyPressed(e));
     }
 
-    public void showContactDetailsAdd(Event event, String en) {
+    public void showContactDetailsAdd(Event event) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Add Participant");
+        primaryStage.setTitle(getString("addParticipant"));
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.initialize(event, en);
+        contactDetailCtrl.initialize(event);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showContactDetailsEdit(Participant participant, String en) {
+    public void showContactDetailsEdit(Participant participant) {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
         primaryStage.setMinHeight(Double.MIN_VALUE);
-        primaryStage.setTitle("Edit Participant");
+        primaryStage.setTitle(getString("editParticipant"));
         primaryStage.setScene(contactDetails);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
-        contactDetailCtrl.initialize(participant.getEvent(), en, participant);
+        contactDetailCtrl.initialize(participant.getEvent(), participant);
         contactDetails.setOnKeyPressed(e ->contactDetailCtrl.keyPressed(e));
     }
 
-    public void showOpenDebts(Event event, String en) {
-        primaryStage.setTitle("Settle Debts");
+    public void showOpenDebts(Event event) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(250);
+        primaryStage.setMinHeight(250);
+        primaryStage.setTitle(getString("settleDebts"));
         primaryStage.setScene(openDebts);
-        openDebtsCtrl.initialize(event, en);
+        primaryStage.sizeToScene();
+        openDebtsCtrl.initialize(event);
         openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
     }
 
-    public void showChangeServer(String en) {
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Change Server");
+    public void showChangeServer() {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
+        primaryStage.setTitle(getString("changeServer"));
         primaryStage.setScene(changeServer);
-        changeServerCtrl.initialize(en);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
+        changeServerCtrl.initialize();
     }
 
-    public void showEditTitle(Event event, String en) {
-        //primaryStage.setResizable(false);
-        primaryStage.setTitle("Edit Title");
+    public void showEditTitle(Event event) {
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(Double.MIN_VALUE);
+        primaryStage.setMinHeight(Double.MIN_VALUE);
+        primaryStage.setTitle(getString("editTitle"));
         primaryStage.setScene(editTitle);
-        editTitleCtrl.initialize(event, en);
+        primaryStage.sizeToScene();
+        primaryStage.setResizable(false);
+        editTitleCtrl.initialize(event);
         editTitle.setOnKeyPressed(e ->editTitleCtrl.keyPressed(e));
     }
 
     public StarterPageCtrl getStarterPageCtrl() {
         return starterPageCtrl;
+    }
+
+    public String getString(String key) {
+        return myFXML.getFromBundle(key);
     }
 }

@@ -36,8 +36,6 @@ public class ContactDetailCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private String en;
-
     @FXML
     private TextField nameField;
 
@@ -80,16 +78,12 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event, String en){
+    public void initialize(Event event){
         this.event = event;
-        this.en = en;
-        language();
     }
 
-    public void initialize(Event event, String en, Participant participant) {
+    public void initialize(Event event, Participant participant) {
         this.event = event;
-        this.en = en;
-        language();
         this.participant = participant;
 
         this.nameField.setText(participant.getName());
@@ -101,14 +95,14 @@ public class ContactDetailCtrl {
     public void abort() {
         clearFields();
         participant = null;
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     //TODO Maybe we can create custom exceptions?
     public void ok() {
         try {
             if(!validateInput())
-                throw new WebApplicationException("Invalid input!");
+                throw new WebApplicationException(mainCtrl.getString("invalidInput"));
             if(participant == null){
                 Participant par = server.addParticipant(getParticipant());
                 for(Participant friend : event.getParticipants()){
@@ -135,7 +129,7 @@ public class ContactDetailCtrl {
             return;
         }
         clearFields();
-        mainCtrl.showEventOverview(event, en);
+        mainCtrl.showEventOverview(event);
     }
 
     private Participant getParticipant() {
@@ -187,6 +181,7 @@ public class ContactDetailCtrl {
 //            return false;
         return true;
     }
+    /*
     public void language(){
         if(en.equals("en")) en();
         else if(en.equals("nl")) nl();
@@ -210,4 +205,5 @@ public class ContactDetailCtrl {
         title.setText("Deelnemer Details");
 
     }
+     */
 }
