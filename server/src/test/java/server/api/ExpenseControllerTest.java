@@ -146,4 +146,43 @@ public class ExpenseControllerTest {
         assertEquals(editedExpense, response.getBody());
         verify(service).editExpense(eq(key), any(Expense.class));
     }
+
+    @Test
+    void deleteExpenseTest() {
+        long eventId = 1L;
+        long expenseId = 100L;
+        ExpenseKey key = new ExpenseKey(eventId, expenseId);
+
+        when(service.deleteExpense(key)).thenReturn(ResponseEntity.noContent().build());
+        ResponseEntity<Void> response = expenseController.deleteExpense(key);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(service).deleteExpense(key);
+    }
+
+    @Test
+    void getAllExpensesFromEventOwedByTest() {
+        Long eventId = 1L;
+        Long debtorId = 15L;
+        when(service.findByEventIdAndDebtorsId(eventId, debtorId)).thenReturn(expenseList);
+        List<Expense> results = expenseController.getAllExpensesFromEventOwedBy(eventId, debtorId);
+
+        assertNotNull(results);
+        assertEquals(2, results.size());
+        assertEquals(expenseList, results);
+        verify(service).findByEventIdAndDebtorsId(eventId, debtorId);
+    }
+
+    @Test
+    void getAllExpensesFromEventPaidByTest() {
+        Long eventId = 1L;
+        Long payerId = 10L;
+        when(service.findByEventIdAndPayerId(eventId, payerId)).thenReturn(expenseList);
+        List<Expense> results = expenseController.getAllExpensesFromEventPaidBy(eventId, payerId);
+
+        assertNotNull(results);
+        assertEquals(2, results.size());
+        assertEquals(expenseList, results);
+        verify(service).findByEventIdAndPayerId(eventId, payerId);
+    }
 }
