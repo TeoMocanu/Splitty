@@ -153,8 +153,7 @@ public class MainCtrl {
     public void showEditExpense(Event event, Expense expense, String en) {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(addExpense);
-        addExpenseCtrl.setExpense(expense);
-        addExpenseCtrl.initialize(event, en);
+        addExpenseCtrl.initialize(event, expense, en);
         addExpense.setOnKeyPressed(e ->addExpenseCtrl.keyPressed(e));
     }
 

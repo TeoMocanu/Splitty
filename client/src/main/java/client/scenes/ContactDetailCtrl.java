@@ -110,19 +110,13 @@ public class ContactDetailCtrl {
             if(!validateInput())
                 throw new WebApplicationException("Invalid input!");
             if(participant == null){
-                Participant par = getParticipant();
-                server.addParticipant(getParticipant());
+                Participant par = server.addParticipant(getParticipant());
+                for(Participant friend : event.getParticipants()){
+                    Debt debt = new Debt(event, par, friend, 0);
+                    server.addDebt(debt);
+                }
                 event.addParticipant(par);
-
-
-                // creating new debts for new Participant
-                //TODO: get debt endpoints working
-                if(false) for(Participant friend : event.getParticipants()){
-                        Debt debt1 = new Debt(event, friend, par, 0);
-                        Debt debt2 = new Debt(event, par, friend, 0);
-                        server.addDebt(debt1);
-                        server.addDebt(debt2);
-                    }
+                server.editEvent(event);
             } else {
                 Participant newParticipant = getParticipant();
                 participant.setBic(newParticipant.getBic());
