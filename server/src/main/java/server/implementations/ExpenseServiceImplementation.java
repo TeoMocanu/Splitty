@@ -17,6 +17,10 @@ public class ExpenseServiceImplementation implements ExpenseService {
     @Autowired
     private ExpenseRepository expenseRepository;
 
+    public ExpenseServiceImplementation(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
+    }
+
     @Override
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
