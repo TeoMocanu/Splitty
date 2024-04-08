@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -33,29 +34,9 @@ public class StarterPageCtrl {
     private ListView<Event> listView;
 
     @FXML
-    private Button languageButtonStart;
-
-    @FXML
-    private Button createButton;
-
-    @FXML
-    private Button joinButton;
-
-    @FXML
-    private Button deleteHistoryButton;
-
-    @FXML
-    private Label createNewEventLabel;
-
-    @FXML
-    private Label joinEventLabel;
-
-    @FXML
-    private Label recentlyViewedEventsLabel;
+    private ImageView flagView;
     @FXML
     private Label serverLabel;
-    @FXML
-    private Button changeServerButton;
     @FXML
     private List<ContextMenu> contextMenuList;
     @FXML
@@ -86,8 +67,9 @@ public class StarterPageCtrl {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
-//        this.en = en;
-//        language();
+
+        flagView.setImage(mainCtrl.getFlag());
+
         this.serverLabel.setText(server.getServer());
         server.registerForUpdates(e -> {
             updateEvents(e);
@@ -296,6 +278,8 @@ public class StarterPageCtrl {
         refresh();
         joinEvent.setText(joinEventText);
         createNewEvent.setText(createNewEventText);
+
+        flagView.setImage(mainCtrl.getFlag());
     }
 
     /*
