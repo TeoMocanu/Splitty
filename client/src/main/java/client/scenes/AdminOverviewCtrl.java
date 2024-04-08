@@ -24,6 +24,8 @@ import javafx.stage.Popup;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.io.IOException;
 
@@ -41,7 +43,7 @@ public class AdminOverviewCtrl {
     public ChoiceBox<String> sortChoiceBox;
 
     ObservableList<String> sortChoiceBoxProperties
-            = FXCollections.observableArrayList("ID", "Title");
+            = FXCollections.observableArrayList("ID", "Title", "Creation date", "Last activity");
 
     @FXML
     public Button importButtonText;
@@ -68,15 +70,20 @@ public class AdminOverviewCtrl {
         private final SimpleStringProperty title;
         private final SimpleListProperty<Participant> participants;
         private final SimpleListProperty<Expense> expenses;
-
+        private final SimpleStringProperty creationDate;
 
         public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
                             SimpleListProperty<Participant> participants,
-                            SimpleListProperty<Expense> expenses) {
+                            SimpleListProperty<Expense> expenses, SimpleStringProperty creationDate) {
             this.id = id;
             this.title = title;
             this.participants = participants;
             this.expenses = expenses;
+            this.creationDate = creationDate;
+        }
+
+        public String getCreationDate() {
+            return creationDate.get();
         }
 
         public long getId() {
@@ -132,8 +139,14 @@ public class AdminOverviewCtrl {
     public void applySort() {
         if (sortChoiceBox.getValue().equals("ID")) {
             sortById();
-        } else {
+        } else if (sortChoiceBox.getValue().equals("Title")) {
             sortByTitle();
+        }
+        else if(sortChoiceBox.getValue().equals("Creation date")) {
+            sortByCreationDate();
+        }
+        else if(sortChoiceBox.getValue().equals("Last activity")) {
+            //sortByLastActivity();
         }
     }
 
@@ -148,7 +161,11 @@ public class AdminOverviewCtrl {
         tableView.getSortOrder().add(tableView.getColumns().get(1));
         tableView.sort();
     }
-
+    private void sortByCreationDate() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(4));
+        tableView.sort();
+    }
     public Event getSelectedEvent() {
         TableRowData selectedRow = tableView.getSelectionModel().getSelectedItem();
         return server.getEvent(selectedRow.getId());
@@ -222,10 +239,13 @@ public class AdminOverviewCtrl {
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
         for (Event event : allEvents) {
-            data.add(new TableRowData(new SimpleLongProperty(event.getId()),
+            data.add(new TableRowData
+                    (new SimpleLongProperty(event.getId()),
                     new SimpleStringProperty(event.getTitle()),
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
-                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses()))));
+                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
+                    new SimpleStringProperty(event.getCreationDate())
+                    ));
         }
         tableView.setItems(data);
         tableInitialize();

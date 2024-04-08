@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
@@ -21,6 +22,7 @@ public class Event {
     public long id;
     private String title;
     private List<String> types;
+    private String creationDate;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"event", "expensesToPay", "expensesPaidBy"})
     private List<Participant> participants;
@@ -33,12 +35,18 @@ public class Event {
         this.participants = new ArrayList<Participant>(0);
         this.expenses = new ArrayList<Expense>(0);
         this.types = new ArrayList<String>(0);
+        Date now = new Date();
+        this.creationDate = now.toString();
     }
 
 
     @SuppressWarnings("unused")
     protected Event() {
         // for object mappers
+    }
+
+    public String getCreationDate() {
+        return creationDate;
     }
 
     public long getId() {
