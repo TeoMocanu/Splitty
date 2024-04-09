@@ -19,6 +19,7 @@ Agenda Items:
     - Discuss grading with the TA (5 min)
 - Talking Points: (Inform/ brainstorm/ decision-making/ discuss) (22 min)
     - Are we missing any basic requirements? (4 min)
+      - Testing progress checkup
       - BackLog read-through 
     - What bonus features can we implement? (9 min)
       - Live Language Switch
