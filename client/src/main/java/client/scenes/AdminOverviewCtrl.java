@@ -285,8 +285,7 @@ public class AdminOverviewCtrl {
         for (Event event : allEvents) {
             String lastModified;
             lastModified = transformLastModifiedString(event.getLastModifiedDate(), event.getLastModifiedAction());
-            data.add(new TableRowData
-                    (new SimpleLongProperty(event.getId()),
+            data.add(new TableRowData(new SimpleLongProperty(event.getId()),
                             new SimpleStringProperty(event.getTitle()),
                             new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
                             new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
