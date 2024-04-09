@@ -6,15 +6,16 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.io.IOException;
 
 public class AdminOverviewCtrl {
     private final ServerUtils server;
@@ -45,6 +47,10 @@ public class AdminOverviewCtrl {
     public Button importButtonText;
     @FXML
     public Button importButtonFile;
+    @FXML
+    public Button helpButton;
+    @FXML
+    public Button settingsButton;
     @FXML
     public Button downloadButton;
     @FXML
@@ -143,26 +149,59 @@ public class AdminOverviewCtrl {
         tableView.sort();
     }
 
+    public Event getSelectedEvent() {
+        TableRowData selectedRow = tableView.getSelectionModel().getSelectedItem();
+        return server.getEvent(selectedRow.getId());
+    }
+
     public void tableInitialize() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");
-        MenuItem getJSON = new MenuItem("Get JSON String");
+        MenuItem getJSON = new MenuItem("Copy JSON to Clipboard");
+        MenuItem downloadJSON = new MenuItem("Download JSON");
         contextMenu.getItems().add(deleteItem);
         contextMenu.getItems().add(getJSON);
+        contextMenu.getItems().add(downloadJSON);
         // Setting up the action for the 'Delete' menu item (placeholder for now)
         deleteItem.setOnAction((event) -> {
-            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
-            long id = clickedRow.getId();
-            Event eventToDelete = server.getEvent(id);
+            Event eventToDelete = getSelectedEvent();
             server.deleteEvent(eventToDelete);
             renderTable();
         });
         getJSON.setOnAction((event) -> {
-            TableRowData clickedRow = tableView.getSelectionModel().getSelectedItem();
-            long id = clickedRow.getId();
-            Event eventToGet = server.getEvent(id);
-            String string = eventToGet.toJSONString();
-            System.out.println(string);
+            Event eventToGet = getSelectedEvent();
+            String string = null;
+            try {
+                string = eventToGet.toJSONString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(string);
+            clipboard.setContent(content);
+
+            renderTable();
+        });
+        downloadJSON.setOnAction((event) -> {
+            Event eventToDownload = getSelectedEvent();
+            String string = null;
+            try {
+                string = eventToDownload.toJSONString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save JSON File");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+            File file = fileChooser.showSaveDialog(downloadButton.getScene().getWindow());
+            if (file != null) {
+                try {
+                    Files.write(file.toPath(), string.getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             renderTable();
         });
         // Attach the context menu to each row in the table
@@ -195,6 +234,23 @@ public class AdminOverviewCtrl {
     public void initialize() {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
+        setupShortcuts();
+
+    }
+    public void setupShortcuts() {
+        Platform.runLater(() -> {
+            Scene scene = tableView.getScene();
+            scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+                KeyCodeCombination downloadCombination = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
+                KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+                KeyCodeCombination importCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
+                KeyCodeCombination importCombinationText = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+                if (downloadCombination.match(e)) downloadAllEvents();
+                if (help.match(e)) showHelp();
+                if (importCombination.match(e)) importFromFile();
+                if (importCombinationText.match(e)) importFromText();
+            });
+        });
     }
 
     public void languageSwitch() {
@@ -202,25 +258,26 @@ public class AdminOverviewCtrl {
         mainCtrl.showAdminOverview();
         initialize();
     }
-/*
-    public void language() {
-        if (currentLanguage.equals("en")) en();
-        else if(currentLanguage.equals("nl")) nl();
-    }
 
-    public void en() {
-        languageButton.setText("EN");
-        serverInfoButton.setText("Server Info");
-        backButton.setText("EXIT");
+    /*
+        public void language() {
+            if (currentLanguage.equals("en")) en();
+            else if(currentLanguage.equals("nl")) nl();
+        }
 
-    }
+        public void en() {
+            languageButton.setText("EN");
+            serverInfoButton.setText("Server Info");
+            backButton.setText("EXIT");
 
-    public void nl() {
-        languageButton.setText("NL");
-        serverInfoButton.setText("Server Informatie");
-        backButton.setText("AFSLUITEN");
-    }
-*/
+        }
+
+        public void nl() {
+            languageButton.setText("NL");
+            serverInfoButton.setText("Server Informatie");
+            backButton.setText("AFSLUITEN");
+        }
+    */
     @Inject
     public AdminOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -235,8 +292,6 @@ public class AdminOverviewCtrl {
 
     public void ok() {
         try {
-            // TODO: Add admin functionality, like seeing server instances
-
 
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -269,7 +324,6 @@ public class AdminOverviewCtrl {
     public void showServerInfo() {
         try {
             String serverInfo = server.fetchAllServerInfo();
-//            System.out.println("Server Health: " + serverInfo);
         } catch (Exception e) {
             System.out.println("Failed to fetch Server Health: " + e.getMessage());
             e.printStackTrace();
@@ -293,20 +347,28 @@ public class AdminOverviewCtrl {
 
             Popup popup = new Popup();
 
-            // show the pop up
             popup.getContent().add(popupLayout);
             popup.show(importButtonText.getScene().getWindow());
             okButton.setOnAction(e -> {
                 try {
-                    String eventJSON = textArea.getText();
-                    Event newEvent = server.createEvent(eventJSON);
-                    server.addEvent(newEvent);
-                    System.out.println(newEvent.toJSONString());
+                    String textContent = textArea.getText();
+
+                    List<String> eventsJSON = List.of(textContent.split("\n"));
+                    for (String singleEventJSON : eventsJSON) {
+                        Event newEvent = server.createEvent(singleEventJSON);
+                        server.addEvent(newEvent);
+                    }
                     renderTable();
                     popup.hide();
                 } catch (Exception ex) {
                     System.out.println("Failed to import data: " + ex.getMessage());
                     ex.printStackTrace();
+                }
+            });
+            // Popup closes when clicked outside of it
+            importButtonText.getScene().setOnMouseClicked(e -> {
+                if (!popupLayout.getBoundsInParent().contains(e.getX(), e.getY())) {
+                    popup.hide();
                 }
             });
             renderTable();
@@ -327,6 +389,12 @@ public class AdminOverviewCtrl {
             if (file != null) {
                 // Read the file's content. Assuming the content is a JSON string you want to import.
                 String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+
+                List<String> eventsJSON = List.of(content.split("\n"));
+                for (String singleEventJSON : eventsJSON) {
+                    Event newEvent = server.createEvent(singleEventJSON);
+                    server.addEvent(newEvent);
+                }
                 renderTable();
             }
             renderTable();
@@ -336,14 +404,68 @@ public class AdminOverviewCtrl {
         }
     }
 
-    public void downloadData() {
+    public void downloadAllEvents() {
         try {
+            String version = com.fasterxml.jackson.databind.cfg.PackageVersion.VERSION.toString();
+            System.out.println("Jackson version: " + version);
+
+            List<Event> allEvents = server.getAllEvents();
+            StringBuilder allEventsJSON = new StringBuilder();
+            for (Event event : allEvents) {
+                String json = event.toJSONString();
+                allEventsJSON.append(json).append("\n");
+            }
+
+            String allJSON = allEventsJSON.toString();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save JSON File");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+            File file = fileChooser.showSaveDialog(downloadButton.getScene().getWindow());
+            if (file != null) {
+                Files.write(file.toPath(), allJSON.getBytes());
+            }
         } catch (Exception e) {
             System.out.println("Failed to download data: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    public void showHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help & Shortcuts");
+        alert.setHeaderText("Application Help and Keyboard Shortcuts");
+
+        StringBuilder content = new StringBuilder();
+        content.append("Here are some tips to get you started:\n\n");
+
+        content.append("Importing Data:\n")
+                .append("- File: Click 'Import from file' or press Ctrl+I. Select the file to import.\n")
+                .append("- Text: Click 'Import from text' or press Ctrl+T. Paste the JSON data.\n\n");
+
+        content.append("Downloading Data:\n")
+                .append("- To download all events, click the 'Download' button or press Ctrl+D.\n\n");
+
+        content.append("Help:\n")
+                .append("- Press Ctrl + H to open up the help menu.\n\n");
+
+        content.append("Language & Sorting:\n")
+                .append("- Change language: Click the 'Language' button or press Ctrl+L.\n")
+                .append("- Sort data: Click 'Sort', then select the property. Alternatively, press Ctrl+S.\n\n");
+
+        content.append("Navigation:\n")
+                .append("- Exit the admin overview by clicking 'Exit' or pressing Esc.\n\n");
+
+        content.append("Remember, you can access this help anytime by pressing F1.");
+
+        alert.setContentText(content.toString());
+
+        alert.getDialogPane().setPrefSize(480, 320);
+        alert.showAndWait();
+    }
+    public void showSettings() {
+
+
+    }
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }
