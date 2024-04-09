@@ -23,6 +23,8 @@ public class Event {
     private String title;
     private List<String> types;
     private String creationDate;
+    private String lastModifiedDate;
+    private String lastModifiedAction;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"event", "expensesToPay", "expensesPaidBy"})
     private List<Participant> participants;
@@ -37,12 +39,34 @@ public class Event {
         this.types = new ArrayList<String>(0);
         Date now = new Date();
         this.creationDate = now.toString();
+        this.lastModifiedDate = now.toString();
+        lastModifiedAction = "created";
     }
 
 
     @SuppressWarnings("unused")
     protected Event() {
         // for object mappers
+    }
+    public void setLastAction(String action) {
+        Date date = new Date();
+        this.lastModifiedDate = date.toString();
+        this.lastModifiedAction = action;
+    }
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedAction() {
+        return lastModifiedAction;
+    }
+
+    public void setLastModifiedAction(String lastModifiedAction) {
+        this.lastModifiedAction = lastModifiedAction;
     }
 
     public String getCreationDate() {

@@ -37,7 +37,7 @@
                   <PropertyValueFactory property="creationDate" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="lastActivity" text="Creation date">
+            <TableColumn fx:id="lastActivity" text="Last activity">
                <cellValueFactory>
                   <PropertyValueFactory property="lastActivity" />
                </cellValueFactory>

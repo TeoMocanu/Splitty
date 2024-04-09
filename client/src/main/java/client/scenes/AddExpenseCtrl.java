@@ -175,6 +175,7 @@ public class AddExpenseCtrl {
             }
             else {
                 server.addExpense(newExpense);
+                event.setLastAction("added expense");
             }
             this.event = server.updateEvent(event);
 

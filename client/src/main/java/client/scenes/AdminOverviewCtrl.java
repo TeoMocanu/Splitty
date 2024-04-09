@@ -245,18 +245,47 @@ public class AdminOverviewCtrl {
             return row;
         });
     }
+    private String monthToInt(String month) {
+        if(month.equals("Jan")) return "01";
+        if(month.equals("Feb")) return "02";
+        if(month.equals("Mar")) return "03";
+        if(month.equals("Apr")) return "04";
+        if(month.equals("May")) return "05";
+        if(month.equals("Jun")) return "06";
+        if(month.equals("Jul")) return "07";
+        if(month.equals("Aug")) return "08";
+        if(month.equals("Sep")) return "09";
+        if(month.equals("Oct")) return "10";
+        if(month.equals("Nov")) return "11";
+        if(month.equals("Dec")) return "12";
+        return "00";
+    }
+    private String transformLastModifiedString(String date, String action) {
+        if(date==null || action==null) return "not properly tracked";
+        String[] parts = date.split(" ", 6);
+        if(parts.length < 6) return "not tracked";
+        String month = parts[1];
+        String monthNr = monthToInt(month);
+        String day = parts[2];
+        String hour = parts[3];
+        String timezone = parts[4];
+        String year = parts[5];
+        return day + "-" + monthNr + "-" + year + " " + hour + " " + timezone + " " + action;
+    }
 
     public void renderTable() {
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
         for (Event event : allEvents) {
+            String lastModified;
+            lastModified = transformLastModifiedString(event.getLastModifiedDate(), event.getLastModifiedAction());
             data.add(new TableRowData
                     (new SimpleLongProperty(event.getId()),
                     new SimpleStringProperty(event.getTitle()),
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
                     new SimpleStringProperty(event.getCreationDate()),
-                    new SimpleStringProperty("dummy")
+                    new SimpleStringProperty(lastModified)
                     ));
         }
         tableView.setItems(data);
