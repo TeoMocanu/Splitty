@@ -37,9 +37,14 @@
                   <PropertyValueFactory property="creationDate" />
                </cellValueFactory>
             </TableColumn>
+            <TableColumn fx:id="lastActivity" text="Creation date">
+               <cellValueFactory>
+                  <PropertyValueFactory property="lastActivity" />
+               </cellValueFactory>
+            </TableColumn>
          </columns>
       </TableView>
-      <ChoiceBox fx:id="sortChoiceBox" layoutX="225.0" layoutY="280.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="sortChoiceBox" layoutX="225.0" layoutY="280.0" prefWidth="150.0"/>
       <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="%applySort" />
       <Button fx:id="importButtonText" layoutX="18.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="188.0" text="%importEventFromText" />
       <Button fx:id="importButtonFile" layoutX="18.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="188.0" text="%importEventFromFile" />

@@ -25,6 +25,9 @@
     -fx-border-width: 2px;
     -fx-font-weight: bold;
 }
+.choice-box .label {
+    -fx-text-fill: black;
+}
 .table-view {
     -fx-background-color: #000033;
     -fx-text-fill: #7B68EE;
@@ -33,10 +36,13 @@
     -fx-border-insets: -2;
     -fx-padding: 2;
     -fx-control-inner-background: #000033;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 .table-view .column-header-background .label {
     -fx-text-fill: black;
+}
+.scroll-bar {
+    -fx-background-color: #000033;
 }
 .list-view {
     -fx-background-color: #000033;

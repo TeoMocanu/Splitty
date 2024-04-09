@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -71,15 +72,16 @@ public class AdminOverviewCtrl {
         private final SimpleListProperty<Participant> participants;
         private final SimpleListProperty<Expense> expenses;
         private final SimpleStringProperty creationDate;
-
+        private final SimpleStringProperty lastActivity;
         public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
                             SimpleListProperty<Participant> participants,
-                            SimpleListProperty<Expense> expenses, SimpleStringProperty creationDate) {
+                            SimpleListProperty<Expense> expenses, SimpleStringProperty creationDate, SimpleStringProperty lastActivity) {
             this.id = id;
             this.title = title;
             this.participants = participants;
             this.expenses = expenses;
             this.creationDate = creationDate;
+            this.lastActivity = lastActivity;
         }
 
         public String getCreationDate() {
@@ -89,7 +91,12 @@ public class AdminOverviewCtrl {
         public long getId() {
             return id.get();
         }
-
+        public String getLastActivity() {
+            return lastActivity.get();
+        }
+        public void setLastActivity(String lastActivity) {
+            this.lastActivity.set(lastActivity);
+        }
         public SimpleLongProperty idProperty() {
             return id;
         }
@@ -146,7 +153,7 @@ public class AdminOverviewCtrl {
             sortByCreationDate();
         }
         else if(sortChoiceBox.getValue().equals("Last activity")) {
-            //sortByLastActivity();
+            sortByLastActivity();
         }
     }
 
@@ -155,7 +162,11 @@ public class AdminOverviewCtrl {
         tableView.getSortOrder().add(tableView.getColumns().get(0));
         tableView.sort();
     }
-
+    private void sortByLastActivity() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(5));
+        tableView.sort();
+    }
     private void sortByTitle() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(1));
@@ -244,7 +255,8 @@ public class AdminOverviewCtrl {
                     new SimpleStringProperty(event.getTitle()),
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
                     new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
-                    new SimpleStringProperty(event.getCreationDate())
+                    new SimpleStringProperty(event.getCreationDate()),
+                    new SimpleStringProperty("dummy")
                     ));
         }
         tableView.setItems(data);
@@ -356,14 +368,20 @@ public class AdminOverviewCtrl {
             textArea.setPromptText("Enter JSON here");
             textArea.setWrapText(true);
             textArea.setPrefSize(400, 200);
-            Button okButton = new Button("OK");
 
+            Button okButton = new Button("OK");
+            Button cancelButton = new Button("Cancel");
+
+            HBox buttonLayout = new HBox();
+            buttonLayout.setAlignment(javafx.geometry.Pos.CENTER);
+            buttonLayout.setSpacing(10);
+            buttonLayout.getChildren().addAll(okButton, cancelButton);
 
             VBox popupLayout = new VBox();
             popupLayout.setAlignment(javafx.geometry.Pos.CENTER);
             popupLayout.setSpacing(10);
             popupLayout.setPrefSize(400, 300);
-            popupLayout.getChildren().addAll(textArea, okButton);
+            popupLayout.getChildren().addAll(textArea, buttonLayout);
 
             Popup popup = new Popup();
 
@@ -384,6 +402,9 @@ public class AdminOverviewCtrl {
                     System.out.println("Failed to import data: " + ex.getMessage());
                     ex.printStackTrace();
                 }
+            });
+            cancelButton.setOnAction(e -> {
+                popup.hide();
             });
             // Popup closes when clicked outside of it
             importButtonText.getScene().setOnMouseClicked(e -> {
