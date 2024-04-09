@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -51,25 +52,7 @@ public class EventOverviewCtrl {
     @FXML
     private Label eventTitleLabel;
     @FXML
-    private Button sendInvitesButton;
-    @FXML
-    private Button editTitleButton;
-    @FXML
-    private Label participantsLabel;
-    @FXML
-    private Button participantAddButton;
-    @FXML
-    private Button participantEditButton;
-    @FXML
-    private Label expensesLabel;
-    @FXML
-    private Button addExpenseButton;
-    @FXML
-    private Button editExpenseButton;
-    @FXML
-    private Button backButton;
-    @FXML
-    private Button settleDebtsButton;
+    private ImageView flagView;
     @FXML
     private TableView expensesTableView;
     @FXML
@@ -90,6 +73,9 @@ public class EventOverviewCtrl {
         this.event = event;
 
         eventTitleLabel.setText(event.getTitle());
+
+        flagView.setImage(mainCtrl.getFlag());
+
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
         expensePayersComboBox.setOnAction(e -> handleExpensePayersComboBoxAction());
@@ -239,35 +225,11 @@ public class EventOverviewCtrl {
                 break;
         }
     }
-/*
-    public void language() {
-        if(en.equals("en")) en();
-        else if(en.equals("nl")) nl();
-    }
 
-    public void en() {
-        participantsLabel.setText("Participants");
-        participantAddButton.setText("Add");
-        participantEditButton.setText("Edit Selected");
-        expensesLabel.setText("Expenses");
-        addExpenseButton.setText("Add");
-        settleDebtsButton.setText("Settle Debts");
-        sendInvitesButton.setText("Send Invites");
-        backButton.setText("Back");
-        editExpenseButton.setText("Edit Selected");
-        editTitleButton.setText("Edit Title");
+    public void languageSwitch() {
+        mainCtrl.changeLanguage();
+        mainCtrl.showEventOverview(this.event);
+
+        initialize(this.event);
     }
-    public void nl() {
-        participantsLabel.setText("Deelnemers");
-        participantAddButton.setText("Toevoegen");
-        participantEditButton.setText("Bewerk Geselecteerde");
-        expensesLabel.setText("Uitgaven");
-        addExpenseButton.setText("Toevoegen");
-        settleDebtsButton.setText("Schulden Vereffenen");
-        sendInvitesButton.setText("Uitnodigingen Versturen");
-        backButton.setText("Terug");
-        editExpenseButton.setText("Bewerk Geselecteerde");
-        editTitleButton.setText("Titel Bewerken");
-    }
- */
 }

@@ -6,8 +6,8 @@ import jakarta.ws.rs.WebApplicationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
@@ -18,16 +18,7 @@ public class AdminLoginCtrl {
     private String adminPassword;
 
     @FXML
-    private Button backButton;
-
-    @FXML
-    private Button helpButton;
-
-    @FXML
-    private Button enterButton;
-
-    @FXML
-    private Button languageButton;
+    private ImageView flagView;
 
     @FXML
     private TextField password;
@@ -45,6 +36,8 @@ public class AdminLoginCtrl {
         String randomPassword = utils.generateRandomPassword(passwordLength);
         this.adminPassword = randomPassword;
         System.out.println("Admin Password: " + randomPassword);
+
+        flagView.setImage(mainCtrl.getFlag());
     }
     public void languageSwitch(){
         String password = this.password.getText();
@@ -53,6 +46,8 @@ public class AdminLoginCtrl {
         mainCtrl.showAdminLogin();
 
         this.password.setText(password);
+
+        flagView.setImage(mainCtrl.getFlag());
     }
 /*
     public void language(){

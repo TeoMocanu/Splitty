@@ -1,10 +1,13 @@
 package client.utils;
 
+import javafx.scene.image.Image;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class LanguageUtils {
@@ -54,5 +57,12 @@ public class LanguageUtils {
             e.printStackTrace();
         }
 
+    }
+
+    public static Image getFlag(Locale locale) {
+        String dir = System.getProperty("user.dir");
+        File file = new File(dir += "/client/src/main/resources/language/flag_"+locale.getLanguage()+".png");
+        Image flag = new Image(file.toURI().toString());
+        return flag;
     }
 }
