@@ -9,9 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-import java.util.Date;
-
-
 public class EditTitleCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;

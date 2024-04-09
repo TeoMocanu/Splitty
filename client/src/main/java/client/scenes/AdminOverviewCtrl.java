@@ -25,8 +25,6 @@ import javafx.stage.Popup;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.io.IOException;
 
@@ -73,6 +71,7 @@ public class AdminOverviewCtrl {
         private final SimpleListProperty<Expense> expenses;
         private final SimpleStringProperty creationDate;
         private final SimpleStringProperty lastActivity;
+
         public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
                             SimpleListProperty<Participant> participants,
                             SimpleListProperty<Expense> expenses, SimpleStringProperty creationDate, SimpleStringProperty lastActivity) {
@@ -91,12 +90,15 @@ public class AdminOverviewCtrl {
         public long getId() {
             return id.get();
         }
+
         public String getLastActivity() {
             return lastActivity.get();
         }
+
         public void setLastActivity(String lastActivity) {
             this.lastActivity.set(lastActivity);
         }
+
         public SimpleLongProperty idProperty() {
             return id;
         }
@@ -148,11 +150,9 @@ public class AdminOverviewCtrl {
             sortById();
         } else if (sortChoiceBox.getValue().equals("Title")) {
             sortByTitle();
-        }
-        else if(sortChoiceBox.getValue().equals("Creation date")) {
+        } else if (sortChoiceBox.getValue().equals("Creation date")) {
             sortByCreationDate();
-        }
-        else if(sortChoiceBox.getValue().equals("Last activity")) {
+        } else if (sortChoiceBox.getValue().equals("Last activity")) {
             sortByLastActivity();
         }
     }
@@ -162,21 +162,25 @@ public class AdminOverviewCtrl {
         tableView.getSortOrder().add(tableView.getColumns().get(0));
         tableView.sort();
     }
+
     private void sortByLastActivity() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(5));
         tableView.sort();
     }
+
     private void sortByTitle() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(1));
         tableView.sort();
     }
+
     private void sortByCreationDate() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(4));
         tableView.sort();
     }
+
     public Event getSelectedEvent() {
         TableRowData selectedRow = tableView.getSelectionModel().getSelectedItem();
         return server.getEvent(selectedRow.getId());
@@ -245,25 +249,27 @@ public class AdminOverviewCtrl {
             return row;
         });
     }
+
     private String monthToInt(String month) {
-        if(month.equals("Jan")) return "01";
-        if(month.equals("Feb")) return "02";
-        if(month.equals("Mar")) return "03";
-        if(month.equals("Apr")) return "04";
-        if(month.equals("May")) return "05";
-        if(month.equals("Jun")) return "06";
-        if(month.equals("Jul")) return "07";
-        if(month.equals("Aug")) return "08";
-        if(month.equals("Sep")) return "09";
-        if(month.equals("Oct")) return "10";
-        if(month.equals("Nov")) return "11";
-        if(month.equals("Dec")) return "12";
+        if (month.equals("Jan")) return "01";
+        if (month.equals("Feb")) return "02";
+        if (month.equals("Mar")) return "03";
+        if (month.equals("Apr")) return "04";
+        if (month.equals("May")) return "05";
+        if (month.equals("Jun")) return "06";
+        if (month.equals("Jul")) return "07";
+        if (month.equals("Aug")) return "08";
+        if (month.equals("Sep")) return "09";
+        if (month.equals("Oct")) return "10";
+        if (month.equals("Nov")) return "11";
+        if (month.equals("Dec")) return "12";
         return "00";
     }
+
     private String transformLastModifiedString(String date, String action) {
-        if(date==null || action==null) return "not properly tracked";
+        if (date == null || action == null) return "not properly tracked";
         String[] parts = date.split(" ", 6);
-        if(parts.length < 6) return "not tracked";
+        if (parts.length < 6) return "not tracked";
         String month = parts[1];
         String monthNr = monthToInt(month);
         String day = parts[2];
@@ -281,11 +287,11 @@ public class AdminOverviewCtrl {
             lastModified = transformLastModifiedString(event.getLastModifiedDate(), event.getLastModifiedAction());
             data.add(new TableRowData
                     (new SimpleLongProperty(event.getId()),
-                    new SimpleStringProperty(event.getTitle()),
-                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
-                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
-                    new SimpleStringProperty(event.getCreationDate()),
-                    new SimpleStringProperty(lastModified)
+                            new SimpleStringProperty(event.getTitle()),
+                            new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
+                            new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
+                            new SimpleStringProperty(event.getCreationDate()),
+                            new SimpleStringProperty(lastModified)
                     ));
         }
         tableView.setItems(data);
@@ -298,6 +304,7 @@ public class AdminOverviewCtrl {
         setupShortcuts();
 
     }
+
     public void setupShortcuts() {
         Platform.runLater(() -> {
             Scene scene = tableView.getScene();
@@ -532,10 +539,12 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+
     public void showSettings() {
 
 
     }
+
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }
