@@ -15,7 +15,6 @@
  */
 package client.scenes;
 
-import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -55,11 +54,6 @@ public class AdminEventCtrl {
 
     public void initialize(Event event){
         this.event = event;
-
-        LanguageUtils.update(title);
-        LanguageUtils.update(date);
-        LanguageUtils.update(lastActivity);
-        LanguageUtils.update(delete);
     }
     public void add() {
         try {

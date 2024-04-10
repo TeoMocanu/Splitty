@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -62,6 +63,8 @@ public class AdminOverviewCtrl {
 
     @FXML
     private Button backButton;
+    @FXML
+    private ImageView flagView;
 
     public class TableRowData {
         private final SimpleLongProperty id;
@@ -233,16 +236,12 @@ public class AdminOverviewCtrl {
     }
 
     public void initialize() {
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(serverInfoButton);
-        LanguageUtils.update(backButton);
-
+        rebindUI();
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
         setupShortcuts();
 
     }
-
     public void setupShortcuts() {
         Platform.runLater(() -> {
             Scene scene = tableView.getScene();
@@ -260,10 +259,33 @@ public class AdminOverviewCtrl {
     }
 
     public void languageSwitch() {
-        LanguageUtils.switchLanguage();
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(serverInfoButton);
-        LanguageUtils.update(backButton);
+        mainCtrl.changeLanguage();
+        rebindUI();
+    }
+
+    public void rebindUI(){
+        LanguageUtils.update(backButton, "exit");
+        LanguageUtils.update(importButtonText, "importEventFromText");
+        LanguageUtils.update(importButtonFile, "importEventFromFile");
+        LanguageUtils.update(downloadButton, "downloadEventData");
+        LanguageUtils.update(sortButton, "applySort");
+        LanguageUtils.update(languageButton, "LG");
+        LanguageUtils.update(serverInfoButton, "showServerInformation");
+        LanguageUtils.update(settingsButton, "settings");
+        LanguageUtils.update(helpButton, "help");
+        flagView.setImage(mainCtrl.getFlag());
+        tableView.setPlaceholder(new Label(mainCtrl.getString("noContetYet")));
+        tableView.getColumns().forEach(column -> {
+            if (column.getId().equals("id")) {
+                LanguageUtils.update(column, "eventID");
+            } else if (column.getId().equals("title")) {
+                LanguageUtils.update(column, "title");
+            } else if (column.getId().equals("participants")) {
+                LanguageUtils.update(column, "participants");
+            } else if (column.getId().equals("expenses")) {
+                LanguageUtils.update(column, "expenses");
+            }
+        });
     }
 
     /*
@@ -469,12 +491,10 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
-
     public void showSettings() {
 
 
     }
-
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }

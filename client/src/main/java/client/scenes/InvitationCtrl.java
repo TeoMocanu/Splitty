@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
@@ -40,12 +39,6 @@ public class InvitationCtrl {
 
     public void initialize(Event event) {
         this.event = event;
-
-        LanguageUtils.update(text1);
-        LanguageUtils.update(text2);
-        LanguageUtils.update(sendInvites);
-        LanguageUtils.update(cancelButton);
-
         code.setText(Long.toString(event.getId()));
         title.setText(event.getTitle());
     }

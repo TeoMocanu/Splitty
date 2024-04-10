@@ -15,7 +15,6 @@
  */
 package client.scenes;
 
-import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Debt;
@@ -121,19 +120,6 @@ public class AddExpenseCtrl {
     }
 
     public void initialize(Event event, Expense expense) { // initializing the data from an existing expense into the window
-
-        LanguageUtils.update(title);
-        LanguageUtils.update(paid);
-        LanguageUtils.update(what);
-        LanguageUtils.update(howMany);
-        LanguageUtils.update(typeL);
-        LanguageUtils.update(addButton);
-        LanguageUtils.update(cancelButton);
-        LanguageUtils.update(when);
-        LanguageUtils.update(howSplit);
-        LanguageUtils.update(everyone);
-        LanguageUtils.update(somePeople);
-
         newType.setPromptText(mainCtrl.getString("addNewType"));
         expense = server.getExpenseById(expense.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {

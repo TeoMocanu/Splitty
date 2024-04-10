@@ -86,16 +86,7 @@ public class StarterPageCtrl {
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
 
-        LanguageUtils.update(languageButtonStart);
-        LanguageUtils.update(createButton);
-        LanguageUtils.update(joinButton);
-        LanguageUtils.update(deleteHistoryButton);
-        LanguageUtils.update(createNewEventLabel);
-        LanguageUtils.update(joinEventLabel);
-        LanguageUtils.update(recentlyViewedEventsLabel);
-        LanguageUtils.update(changeServerButton);
-
-        flagView.setImage(mainCtrl.getFlag());
+        rebindUI();
 
         this.serverLabel.setText(server.getServer());
         server.registerForUpdates(e -> {
@@ -296,26 +287,19 @@ public class StarterPageCtrl {
     }
 
     public void languageSwitch() {
-//        String createNewEventText = createNewEvent.getText();
-//        String joinEventText = joinEvent.getText();
+        mainCtrl.changeLanguage();
+        rebindUI();
+    }
 
-        LanguageUtils.switchLanguage();
-        LanguageUtils.update(languageButtonStart);
-        LanguageUtils.update(createButton);
-        LanguageUtils.update(joinButton);
-        LanguageUtils.update(deleteHistoryButton);
-        LanguageUtils.update(createNewEventLabel);
-        LanguageUtils.update(joinEventLabel);
-        LanguageUtils.update(recentlyViewedEventsLabel);
-        LanguageUtils.update(changeServerButton);
-
-//        mainCtrl.changeLanguage();
-//        mainCtrl.showStarterPage();
-
-//        refresh();
-//        joinEvent.setText(joinEventText);
-//        createNewEvent.setText(createNewEventText);
-
+    private void rebindUI() {
+        LanguageUtils.update(languageButtonStart, "LG");
+        LanguageUtils.update(createButton, "create");
+        LanguageUtils.update(joinButton, "join");
+        LanguageUtils.update(deleteHistoryButton, "deleteHistory");
+        LanguageUtils.update(createNewEventLabel, "createNewEvent");
+        LanguageUtils.update(joinEventLabel, "joinEvent");
+        LanguageUtils.update(recentlyViewedEventsLabel, "recentlyViewedEvents");
+        LanguageUtils.update(changeServerButton, "changeServer");
         flagView.setImage(mainCtrl.getFlag());
     }
 

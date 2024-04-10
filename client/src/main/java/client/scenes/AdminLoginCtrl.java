@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -33,6 +34,10 @@ public class AdminLoginCtrl {
     private Button backButton;
     @FXML
     private Button helpButton;
+    @FXML
+    private Label title;
+    @FXML
+    private Label passwordLabel;
 
 
     @Inject
@@ -45,47 +50,48 @@ public class AdminLoginCtrl {
     public void initialize(){
         ServerUtils utils = new ServerUtils();
 
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(enterButton);
-        LanguageUtils.update(backButton);
-        LanguageUtils.update(helpButton);
+        rebindUI();
 
         int passwordLength = 10;
         String randomPassword = utils.generateRandomPassword(passwordLength);
         this.adminPassword = randomPassword;
         System.out.println("Admin Password: " + randomPassword);
-
-        flagView.setImage(mainCtrl.getFlag());
     }
     public void languageSwitch(){
-        LanguageUtils.switchLanguage();
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(enterButton);
-        LanguageUtils.update(backButton);
-        LanguageUtils.update(helpButton);
+        mainCtrl.changeLanguage();
+        rebindUI();
+    }
 
+    private void rebindUI() {
+        LanguageUtils.update(languageButton, "LG");
+        LanguageUtils.update(enterButton, "enter");
+        LanguageUtils.update(backButton, "back");
+        LanguageUtils.update(helpButton, "help");
+        LanguageUtils.update(passwordLabel, "password");
+        LanguageUtils.update(title, "administratorLogin");
         flagView.setImage(mainCtrl.getFlag());
     }
-/*
-    public void language(){
-        if(currentLanguage.equals("en")) en();
-        else if(currentLanguage.equals("nl")) nl();
-    }
 
-    public void en() {
-        languageButton.setText("EN");
-        enterButton.setText("ENTER");
-        backButton.setText("BACK");
-        helpButton.setText("HELP");
-    }
+    /*
+        public void language(){
+            if(currentLanguage.equals("en")) en();
+            else if(currentLanguage.equals("nl")) nl();
+        }
 
-    public void nl() {
-        languageButton.setText("NL");
-        enterButton.setText("INVOEREN");
-        backButton.setText("TERUG");
-        helpButton.setText("HELP");
-    }
-*/
+        public void en() {
+            languageButton.setText("EN");
+            enterButton.setText("ENTER");
+            backButton.setText("BACK");
+            helpButton.setText("HELP");
+        }
+
+        public void nl() {
+            languageButton.setText("NL");
+            enterButton.setText("INVOEREN");
+            backButton.setText("TERUG");
+            helpButton.setText("HELP");
+        }
+    */
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();

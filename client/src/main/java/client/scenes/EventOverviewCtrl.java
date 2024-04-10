@@ -101,20 +101,7 @@ public class EventOverviewCtrl {
 
         eventTitleLabel.setText(event.getTitle());
 
-        LanguageUtils.update(editTitleButton);
-        LanguageUtils.update(sendInvitesButton);
-        LanguageUtils.update(participantsLabel);
-        LanguageUtils.update(participantEditButton);
-        LanguageUtils.update(participantAddButton);
-        LanguageUtils.update(expensesLabel);
-        LanguageUtils.update(filerLabel);
-        LanguageUtils.update(editExpenseButton);
-        LanguageUtils.update(addExpenseButton);
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(backButton);
-        LanguageUtils.update(settleDebtsButton);
-
-        flagView.setImage(mainCtrl.getFlag());
+        rebindUI();
 
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
@@ -125,6 +112,28 @@ public class EventOverviewCtrl {
         initParticipantsListView(event);
         initExpensePayersComboBox();
         initFilteringModeComboBox();
+    }
+
+    private void rebindUI() {
+        LanguageUtils.update(editTitleButton, "editTitle");
+        LanguageUtils.update(sendInvitesButton, "sendInvites");
+        LanguageUtils.update(participantsLabel, "participants");
+        LanguageUtils.update(participantEditButton, "editSelected");
+        LanguageUtils.update(participantAddButton, "add");
+        LanguageUtils.update(expensesLabel, "expenses");
+        LanguageUtils.update(filerLabel, "filter");
+        LanguageUtils.update(editExpenseButton, "editSelected");
+        LanguageUtils.update(addExpenseButton, "add");
+        LanguageUtils.update(languageButton, "LG");
+        LanguageUtils.update(backButton, "back");
+        LanguageUtils.update(settleDebtsButton, "settleDebts");
+
+        LanguageUtils.update(titleColumn, "title");
+        LanguageUtils.update(payerColumn, "payer");
+        LanguageUtils.update(amountColumn, "amountEUR");
+        LanguageUtils.update(dateColumn, "date");
+
+        flagView.setImage(mainCtrl.getFlag());
     }
 
     private void initExpensesTableView(Event event) {
@@ -159,7 +168,7 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensePayersComboBox() {
-        Participant all = new Participant("All", new Event("All"));
+        Participant all = new Participant(mainCtrl.getString("all"), new Event("All"));
         selectedExpensePayer = all;
         payers = new ArrayList<>();
         payers.add(all);
@@ -208,7 +217,7 @@ public class EventOverviewCtrl {
     }
 
     private void filterExpenses() {
-        if (selectedExpensePayer.getName().equals("All")) {
+        if (selectedExpensePayer.getName().equals(mainCtrl.getString("all"))) {
             initExpensesTableView(event);
         } else {
             if (selectedFilteringMode == 0) {
@@ -270,23 +279,10 @@ public class EventOverviewCtrl {
 
     public void languageSwitch() {
         mainCtrl.changeLanguage();
-        mainCtrl.showEventOverview(this.event);
-
-        LanguageUtils.switchLanguage();
-        LanguageUtils.update(editTitleButton);
-        LanguageUtils.update(sendInvitesButton);
-        LanguageUtils.update(participantsLabel);
-        LanguageUtils.update(participantEditButton);
-        LanguageUtils.update(participantAddButton);
-        LanguageUtils.update(expensesLabel);
-        LanguageUtils.update(filerLabel);
-        LanguageUtils.update(editExpenseButton);
-        LanguageUtils.update(addExpenseButton);
-        LanguageUtils.update(languageButton);
-        LanguageUtils.update(backButton);
-        LanguageUtils.update(settleDebtsButton);
-
-
-        initialize(this.event);
+        rebindUI();
+        initExpensesTableView(event);
+        initParticipantsListView(event);
+        initExpensePayersComboBox();
+        initFilteringModeComboBox();
     }
 }

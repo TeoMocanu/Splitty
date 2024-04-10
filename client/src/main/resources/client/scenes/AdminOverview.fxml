@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
    <children>
-      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="EN" />
-      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="EXIT" />
+      <Button fx:id="languageButton" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" onAction="#languageSwitch" text="\%LG">
+         <graphic>
+            <ImageView fx:id="flagView" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic></Button>
+      <Button fx:id="backButton" layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#exitAdminOverview" text="\%exit" />
 
-      <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" prefWidth="151.0" text="Show server information" />
+      <Button fx:id="serverInfoButton" layoutX="97.0" layoutY="360.0" mnemonicParsing="false" onAction="#showServerInfo" text="\%showServerInformation" />
       <TableView fx:id="tableView" layoutX="221.0" layoutY="21.0" prefHeight="245.0" prefWidth="339.0">
          <columns>
-            <TableColumn fx:id="id" text="Event ID">
+            <TableColumn fx:id="id" text="\%eventID">
                <cellValueFactory>
                   <PropertyValueFactory property="id" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="title" text="Title">
+            <TableColumn fx:id="title" text="\%title">
                <cellValueFactory>
                   <PropertyValueFactory property="title" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="participants" text="Participants">
+            <TableColumn fx:id="participants" text="\%participants">
                <cellValueFactory>
                   <PropertyValueFactory property="participants" />
                </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="expenses" text="Expenses">
+            <TableColumn fx:id="expenses" text="\%expenses">
                <cellValueFactory>
                   <PropertyValueFactory property="expenses" />
                </cellValueFactory>
@@ -36,10 +45,22 @@
       </TableView>
       <ChoiceBox fx:id="sortChoiceBox" layoutX="225.0" layoutY="280.0" prefWidth="150.0" />
       <Button fx:id="sortButton" layoutX="386.0" layoutY="280.0" mnemonicParsing="false" onAction="#applySort" text="%applySort" />
-      <Button fx:id="importButtonText" layoutX="39.0" layoutY="155.0" mnemonicParsing="false" onAction="#importFromText" prefHeight="25.0" prefWidth="158.0" text="%importEventFromText" />
-      <Button fx:id="importButtonFile" layoutX="39.0" layoutY="119.0" mnemonicParsing="false" onAction="#importFromFile" prefHeight="25.0" prefWidth="158.0" text="%importEventFromFile" />
-      <Button fx:id="downloadButton" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#downloadAllEvents" prefHeight="25.0" prefWidth="158.0" text="%downloadEventData" />
-      <Button fx:id="helpButton" layoutX="492.0" layoutY="360.0" mnemonicParsing="false" onAction="#showHelp" prefHeight="25.0" prefWidth="68.0" text="Help" />
-      <Button fx:id="settingsButton" layoutX="391.0" layoutY="360.0" mnemonicParsing="false" onAction="#showSettings" prefHeight="25.0" prefWidth="68.0" text="Settings" />
+      <VBox alignment="CENTER" layoutX="45.0" layoutY="22.0" prefHeight="284.0" prefWidth="150.0">
+         <children>
+            <Button fx:id="importButtonText" mnemonicParsing="false" onAction="#importFromText" prefWidth="150.0" text="%importEventFromText" wrapText="true" />
+            <Button fx:id="importButtonFile" mnemonicParsing="false" onAction="#importFromFile" prefWidth="150.0" text="%importEventFromFile" wrapText="true">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="downloadButton" mnemonicParsing="false" onAction="#downloadAllEvents" prefWidth="150.0" text="%downloadEventData" wrapText="true">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <Button fx:id="helpButton" layoutX="492.0" layoutY="360.0" mnemonicParsing="false" onAction="#showHelp" text="\%help" />
+      <Button fx:id="settingsButton" layoutX="391.0" layoutY="360.0" mnemonicParsing="false" onAction="#showSettings" text="\%settings" />
    </children>
 </AnchorPane>
