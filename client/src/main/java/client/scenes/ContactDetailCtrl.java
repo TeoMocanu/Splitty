@@ -109,6 +109,9 @@ public class ContactDetailCtrl {
                     Debt debt = new Debt(event, par, friend, 0);
                     server.addDebt(debt);
                 }
+
+                event.setLastAction("added participant");
+
                 event.addParticipant(par);
                 server.editEvent(event);
             } else {
@@ -118,6 +121,9 @@ public class ContactDetailCtrl {
                 participant.setIban(newParticipant.getIban());
                 participant.setName(newParticipant.getName());
                 server.editParticipant(participant);
+
+                event.setLastAction("edited participant");
+
                 participant = null;
             }
 

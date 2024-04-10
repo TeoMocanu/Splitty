@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -41,7 +42,7 @@ public class AdminOverviewCtrl {
     public ChoiceBox<String> sortChoiceBox;
 
     ObservableList<String> sortChoiceBoxProperties
-            = FXCollections.observableArrayList("ID", "Title");
+            = FXCollections.observableArrayList("ID", "Title", "Creation date", "Last activity");
 
     @FXML
     public Button importButtonText;
@@ -68,19 +69,34 @@ public class AdminOverviewCtrl {
         private final SimpleStringProperty title;
         private final SimpleListProperty<Participant> participants;
         private final SimpleListProperty<Expense> expenses;
-
+        private final SimpleStringProperty creationDate;
+        private final SimpleStringProperty lastActivity;
 
         public TableRowData(SimpleLongProperty id, SimpleStringProperty title,
                             SimpleListProperty<Participant> participants,
-                            SimpleListProperty<Expense> expenses) {
+                            SimpleListProperty<Expense> expenses, SimpleStringProperty creationDate, SimpleStringProperty lastActivity) {
             this.id = id;
             this.title = title;
             this.participants = participants;
             this.expenses = expenses;
+            this.creationDate = creationDate;
+            this.lastActivity = lastActivity;
+        }
+
+        public String getCreationDate() {
+            return creationDate.get();
         }
 
         public long getId() {
             return id.get();
+        }
+
+        public String getLastActivity() {
+            return lastActivity.get();
+        }
+
+        public void setLastActivity(String lastActivity) {
+            this.lastActivity.set(lastActivity);
         }
 
         public SimpleLongProperty idProperty() {
@@ -132,8 +148,12 @@ public class AdminOverviewCtrl {
     public void applySort() {
         if (sortChoiceBox.getValue().equals("ID")) {
             sortById();
-        } else {
+        } else if (sortChoiceBox.getValue().equals("Title")) {
             sortByTitle();
+        } else if (sortChoiceBox.getValue().equals("Creation date")) {
+            sortByCreationDate();
+        } else if (sortChoiceBox.getValue().equals("Last activity")) {
+            sortByLastActivity();
         }
     }
 
@@ -143,9 +163,21 @@ public class AdminOverviewCtrl {
         tableView.sort();
     }
 
+    private void sortByLastActivity() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(5));
+        tableView.sort();
+    }
+
     private void sortByTitle() {
         tableView.getSortOrder().clear();
         tableView.getSortOrder().add(tableView.getColumns().get(1));
+        tableView.sort();
+    }
+
+    private void sortByCreationDate() {
+        tableView.getSortOrder().clear();
+        tableView.getSortOrder().add(tableView.getColumns().get(4));
         tableView.sort();
     }
 
@@ -218,14 +250,48 @@ public class AdminOverviewCtrl {
         });
     }
 
+    private String monthToInt(String month) {
+        if (month.equals("Jan")) return "01";
+        if (month.equals("Feb")) return "02";
+        if (month.equals("Mar")) return "03";
+        if (month.equals("Apr")) return "04";
+        if (month.equals("May")) return "05";
+        if (month.equals("Jun")) return "06";
+        if (month.equals("Jul")) return "07";
+        if (month.equals("Aug")) return "08";
+        if (month.equals("Sep")) return "09";
+        if (month.equals("Oct")) return "10";
+        if (month.equals("Nov")) return "11";
+        if (month.equals("Dec")) return "12";
+        return "00";
+    }
+
+    private String transformLastModifiedString(String date, String action) {
+        if (date == null || action == null) return "not properly tracked";
+        String[] parts = date.split(" ", 6);
+        if (parts.length < 6) return "not tracked";
+        String month = parts[1];
+        String monthNr = monthToInt(month);
+        String day = parts[2];
+        String hour = parts[3];
+        String timezone = parts[4];
+        String year = parts[5];
+        return day + "-" + monthNr + "-" + year + " " + hour + " " + timezone + " " + action;
+    }
+
     public void renderTable() {
         ObservableList<TableRowData> data = FXCollections.observableArrayList();
         List<Event> allEvents = server.getAllEvents();
         for (Event event : allEvents) {
+            String lastModified;
+            lastModified = transformLastModifiedString(event.getLastModifiedDate(), event.getLastModifiedAction());
             data.add(new TableRowData(new SimpleLongProperty(event.getId()),
-                    new SimpleStringProperty(event.getTitle()),
-                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
-                    new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses()))));
+                            new SimpleStringProperty(event.getTitle()),
+                            new SimpleListProperty<>(FXCollections.observableArrayList(event.getParticipants())),
+                            new SimpleListProperty<>(FXCollections.observableArrayList(event.getExpenses())),
+                            new SimpleStringProperty(event.getCreationDate()),
+                            new SimpleStringProperty(lastModified)
+                    ));
         }
         tableView.setItems(data);
         tableInitialize();
@@ -237,6 +303,7 @@ public class AdminOverviewCtrl {
         setupShortcuts();
 
     }
+
     public void setupShortcuts() {
         Platform.runLater(() -> {
             Scene scene = tableView.getScene();
@@ -336,14 +403,20 @@ public class AdminOverviewCtrl {
             textArea.setPromptText("Enter JSON here");
             textArea.setWrapText(true);
             textArea.setPrefSize(400, 200);
-            Button okButton = new Button("OK");
 
+            Button okButton = new Button("OK");
+            Button cancelButton = new Button("Cancel");
+
+            HBox buttonLayout = new HBox();
+            buttonLayout.setAlignment(javafx.geometry.Pos.CENTER);
+            buttonLayout.setSpacing(10);
+            buttonLayout.getChildren().addAll(okButton, cancelButton);
 
             VBox popupLayout = new VBox();
             popupLayout.setAlignment(javafx.geometry.Pos.CENTER);
             popupLayout.setSpacing(10);
             popupLayout.setPrefSize(400, 300);
-            popupLayout.getChildren().addAll(textArea, okButton);
+            popupLayout.getChildren().addAll(textArea, buttonLayout);
 
             Popup popup = new Popup();
 
@@ -364,6 +437,9 @@ public class AdminOverviewCtrl {
                     System.out.println("Failed to import data: " + ex.getMessage());
                     ex.printStackTrace();
                 }
+            });
+            cancelButton.setOnAction(e -> {
+                popup.hide();
             });
             // Popup closes when clicked outside of it
             importButtonText.getScene().setOnMouseClicked(e -> {
@@ -462,10 +538,12 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+
     public void showSettings() {
 
 
     }
+
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }
