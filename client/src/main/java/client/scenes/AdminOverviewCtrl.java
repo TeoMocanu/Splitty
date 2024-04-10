@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
@@ -232,11 +233,16 @@ public class AdminOverviewCtrl {
     }
 
     public void initialize() {
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(serverInfoButton);
+        LanguageUtils.update(backButton);
+
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
         setupShortcuts();
 
     }
+
     public void setupShortcuts() {
         Platform.runLater(() -> {
             Scene scene = tableView.getScene();
@@ -254,9 +260,10 @@ public class AdminOverviewCtrl {
     }
 
     public void languageSwitch() {
-        mainCtrl.changeLanguage();
-        mainCtrl.showAdminOverview();
-        initialize();
+        LanguageUtils.switchLanguage();
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(serverInfoButton);
+        LanguageUtils.update(backButton);
     }
 
     /*
@@ -462,10 +469,12 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+
     public void showSettings() {
 
 
     }
+
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
     }

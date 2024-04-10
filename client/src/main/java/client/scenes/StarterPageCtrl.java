@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import commons.Event;
 import javafx.collections.FXCollections;
@@ -23,9 +24,26 @@ import java.util.*;
 public class StarterPageCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    @FXML
+    private Button languageButtonStart;
+    @FXML
+    private Button createButton;
+    @FXML
+    private Button joinButton;
+    @FXML
+    private Button deleteHistoryButton;
+    @FXML
+    private Label createNewEventLabel;
+    @FXML
+    private Label joinEventLabel;
+    @FXML
+    private Label recentlyViewedEventsLabel;
+    @FXML
+    private Button changeServerButton;
 
     @FXML
     private TextField createNewEvent;
+
 
     @FXML
     private TextField joinEvent;
@@ -67,6 +85,15 @@ public class StarterPageCtrl {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
+
+        LanguageUtils.update(languageButtonStart);
+        LanguageUtils.update(createButton);
+        LanguageUtils.update(joinButton);
+        LanguageUtils.update(deleteHistoryButton);
+        LanguageUtils.update(createNewEventLabel);
+        LanguageUtils.update(joinEventLabel);
+        LanguageUtils.update(recentlyViewedEventsLabel);
+        LanguageUtils.update(changeServerButton);
 
         flagView.setImage(mainCtrl.getFlag());
 
@@ -269,15 +296,25 @@ public class StarterPageCtrl {
     }
 
     public void languageSwitch() {
-        String createNewEventText = createNewEvent.getText();
-        String joinEventText = joinEvent.getText();
+//        String createNewEventText = createNewEvent.getText();
+//        String joinEventText = joinEvent.getText();
 
-        mainCtrl.changeLanguage();
-        mainCtrl.showStarterPage();
+        LanguageUtils.switchLanguage();
+        LanguageUtils.update(languageButtonStart);
+        LanguageUtils.update(createButton);
+        LanguageUtils.update(joinButton);
+        LanguageUtils.update(deleteHistoryButton);
+        LanguageUtils.update(createNewEventLabel);
+        LanguageUtils.update(joinEventLabel);
+        LanguageUtils.update(recentlyViewedEventsLabel);
+        LanguageUtils.update(changeServerButton);
 
-        refresh();
-        joinEvent.setText(joinEventText);
-        createNewEvent.setText(createNewEventText);
+//        mainCtrl.changeLanguage();
+//        mainCtrl.showStarterPage();
+
+//        refresh();
+//        joinEvent.setText(joinEventText);
+//        createNewEvent.setText(createNewEventText);
 
         flagView.setImage(mainCtrl.getFlag());
     }

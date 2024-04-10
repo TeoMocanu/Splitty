@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
+import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -31,7 +32,7 @@ public class EventOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-//    private String en;
+
     private Event event;
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
@@ -64,15 +65,54 @@ public class EventOverviewCtrl {
     @FXML
     private TableColumn<Expense, LocalDate> dateColumn;
 
+    @FXML
+    private Button editTitleButton;
+    @FXML
+    private Button sendInvitesButton;
+    @FXML
+    private Label participantsLabel;
+    @FXML
+    private Button participantEditButton;
+    @FXML
+    private Button participantAddButton;
+    @FXML
+    private Label expensesLabel;
+    @FXML
+    private Label filerLabel;
+    @FXML
+    private Button editExpenseButton;
+    @FXML
+    private Button addExpenseButton;
+    @FXML
+    private Button languageButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button settleDebtsButton;
+
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
+
     public void initialize(Event event) {
         this.event = event;
 
         eventTitleLabel.setText(event.getTitle());
+
+        LanguageUtils.update(editTitleButton);
+        LanguageUtils.update(sendInvitesButton);
+        LanguageUtils.update(participantsLabel);
+        LanguageUtils.update(participantEditButton);
+        LanguageUtils.update(participantAddButton);
+        LanguageUtils.update(expensesLabel);
+        LanguageUtils.update(filerLabel);
+        LanguageUtils.update(editExpenseButton);
+        LanguageUtils.update(addExpenseButton);
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(backButton);
+        LanguageUtils.update(settleDebtsButton);
 
         flagView.setImage(mainCtrl.getFlag());
 
@@ -124,7 +164,7 @@ public class EventOverviewCtrl {
         payers = new ArrayList<>();
         payers.add(all);
         participants = server.getAllParticipantsFromEvent(event.getId());
-        for(Participant p : participants) {
+        for (Participant p : participants) {
             payers.add(p);
         }
         ObservableList<Participant> observablePayerList = FXCollections.observableArrayList(payers);
@@ -156,17 +196,19 @@ public class EventOverviewCtrl {
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
         }
     }
-    private void handleFilteringModeComboBoxAction(){
+
+    private void handleFilteringModeComboBoxAction() {
         selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
         filterExpenses();
     }
-    private void handleExpensePayersComboBoxAction(){
+
+    private void handleExpensePayersComboBoxAction() {
         selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
         filterExpenses();
     }
 
     private void filterExpenses() {
-        if(selectedExpensePayer.getName().equals("All")) {
+        if (selectedExpensePayer.getName().equals("All")) {
             initExpensesTableView(event);
         } else {
             if (selectedFilteringMode == 0) {
@@ -184,7 +226,7 @@ public class EventOverviewCtrl {
     }
 
     public void editParticipant() {
-        if(selectedParticipant != null) {
+        if (selectedParticipant != null) {
             mainCtrl.showContactDetailsEdit(selectedParticipant);
         }
     }
@@ -211,7 +253,7 @@ public class EventOverviewCtrl {
     }
 
     public void editExpense() {
-        if(selectedExpense != null) {
+        if (selectedExpense != null) {
             mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
         }
     }
@@ -229,6 +271,21 @@ public class EventOverviewCtrl {
     public void languageSwitch() {
         mainCtrl.changeLanguage();
         mainCtrl.showEventOverview(this.event);
+
+        LanguageUtils.switchLanguage();
+        LanguageUtils.update(editTitleButton);
+        LanguageUtils.update(sendInvitesButton);
+        LanguageUtils.update(participantsLabel);
+        LanguageUtils.update(participantEditButton);
+        LanguageUtils.update(participantAddButton);
+        LanguageUtils.update(expensesLabel);
+        LanguageUtils.update(filerLabel);
+        LanguageUtils.update(editExpenseButton);
+        LanguageUtils.update(addExpenseButton);
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(backButton);
+        LanguageUtils.update(settleDebtsButton);
+
 
         initialize(this.event);
     }

@@ -1,11 +1,13 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +25,16 @@ public class AdminLoginCtrl {
     @FXML
     private TextField password;
 
+    @FXML
+    private Button languageButton;
+    @FXML
+    private Button enterButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button helpButton;
+
+
     @Inject
     public AdminLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -32,6 +44,12 @@ public class AdminLoginCtrl {
     @FXML
     public void initialize(){
         ServerUtils utils = new ServerUtils();
+
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(enterButton);
+        LanguageUtils.update(backButton);
+        LanguageUtils.update(helpButton);
+
         int passwordLength = 10;
         String randomPassword = utils.generateRandomPassword(passwordLength);
         this.adminPassword = randomPassword;
@@ -40,12 +58,11 @@ public class AdminLoginCtrl {
         flagView.setImage(mainCtrl.getFlag());
     }
     public void languageSwitch(){
-        String password = this.password.getText();
-
-        mainCtrl.changeLanguage();
-        mainCtrl.showAdminLogin();
-
-        this.password.setText(password);
+        LanguageUtils.switchLanguage();
+        LanguageUtils.update(languageButton);
+        LanguageUtils.update(enterButton);
+        LanguageUtils.update(backButton);
+        LanguageUtils.update(helpButton);
 
         flagView.setImage(mainCtrl.getFlag());
     }

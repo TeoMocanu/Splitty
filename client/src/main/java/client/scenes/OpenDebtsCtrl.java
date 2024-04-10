@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Debt;
@@ -27,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import javax.swing.*;
 import java.util.List;
 
 public class OpenDebtsCtrl {
@@ -54,6 +56,10 @@ public class OpenDebtsCtrl {
 
     public void initialize(Event event) {
         this.event = event;
+
+        LanguageUtils.update(titleLabel);
+        LanguageUtils.update(backButton);
+        LanguageUtils.update(settleDebtsButton);
 
         eventTitleLabel.setText(event.getTitle());
         currentDebts = server.getAllDebtsFromEvent(event);
