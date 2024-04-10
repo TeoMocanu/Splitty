@@ -300,8 +300,6 @@ public class AdminOverviewCtrl {
     public void initialize() {
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
-        setupShortcuts();
-
     }
 
     public void setupShortcuts() {

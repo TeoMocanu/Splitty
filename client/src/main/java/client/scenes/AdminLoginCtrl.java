@@ -127,7 +127,26 @@ public class AdminLoginCtrl {
                 break;
         }
     }
+    public void showHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help & Shortcuts");
+        alert.setHeaderText("Application Help and Keyboard Shortcuts");
 
+        StringBuilder content = new StringBuilder();
+
+        content.append("Login:\n")
+                .append("- Open the server console to see the randomly generated admin password.\n")
+                .append("- Use the password to log in.\n\n");
+
+        content.append("Shortcuts:\n")
+                .append("- ENTER: Log-in\n")
+                .append("- ESC: Leave the scene\n");
+
+        alert.setContentText(content.toString());
+
+        alert.getDialogPane().setPrefSize(480, 320);
+        alert.showAndWait();
+    }
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
         mainCtrl.showStarterPage();

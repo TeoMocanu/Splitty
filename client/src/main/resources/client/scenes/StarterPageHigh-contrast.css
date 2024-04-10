@@ -61,3 +61,10 @@
     -fx-border-color: #00BFFF;
     -fx-border-width: 3px;
 }
+
+
+.logo {
+    -fx-fill: #ADD8E6;
+    -fx-font-style: italic;
+    -fx-font-size: 40px;
+}

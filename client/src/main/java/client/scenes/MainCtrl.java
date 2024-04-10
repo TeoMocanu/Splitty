@@ -210,6 +210,8 @@ public class MainCtrl {
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initialize();
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
+        // Call the method to load the shortcuts when the scene is shown
+        adminOverviewCtrl.setupShortcuts();
     }
 
     public void showAddExpense(Event event) {

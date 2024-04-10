@@ -18,7 +18,7 @@
       <Button fx:id="enterButton" layoutX="163.0" layoutY="128.0" mnemonicParsing="false" onAction="#checkPassword" text="%enter" />
       <Button fx:id="languageButton" layoutX="23.0" layoutY="128.0" mnemonicParsing="false" onAction="#languageSwitch" text="%LG" />
       <Button fx:id="backButton" layoutX="23.0" layoutY="11.0" mnemonicParsing="false" onAction="#backToStart" text="%back" translateY="-5.0" />
-      <Button fx:id="helpButton" layoutX="316.0" layoutY="128.0" mnemonicParsing="false" text="%help" />
+      <Button fx:id="helpButton" layoutX="316.0" layoutY="128.0" mnemonicParsing="false" text="%help" onAction="#showHelp"/>
       <Separator layoutX="4.8" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="4.8" AnchorPane.rightAnchor="4.800000000000011" />
    </children>
 </AnchorPane>
