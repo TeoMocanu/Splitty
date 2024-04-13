@@ -49,15 +49,27 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 public class ServerUtils {
 
-    private static String SERVER = "http://localhost:8080/";
-    private static String webSocketServer = "ws://localhost:8080/websocket";
+    private static String server = "localhost:8080"; // default server
+    private static String SERVER = "http://" + server + "/";
+    private static String webSocketServer = "ws://" + server + "/websocket";
     private StompSession session;
 
     public String getServer() {
-        return SERVER;
+        return server;
     }
 
     public void changeServer(String server) {
+        int port;
+        if(server.indexOf("localhost:") == 0){
+            port = Integer.parseInt(server.substring(10));
+        }
+        /*ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/config/port") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(port, APPLICATION_JSON), int.class);*/
+
+        this.server = server;
         this.SERVER = "http://" + server + "/";
         this.webSocketServer = "ws://" + server + "/websocket";
         this.session = connect(webSocketServer);

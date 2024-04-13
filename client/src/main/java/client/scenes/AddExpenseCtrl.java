@@ -38,7 +38,7 @@ public class AddExpenseCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private Expense expense = null;
-    ObservableList<String> types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
+    ObservableList<String> types = FXCollections.observableArrayList("Food", "Entrance fees", "Travel", "Activities", "Other");
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
     ObservableList<String> participants = FXCollections.observableArrayList();
@@ -143,9 +143,6 @@ public class AddExpenseCtrl {
         amount.setText(Float.toString(expense.getAmount()));
         name.setValue(expense.getPayer().getName());
         date.setValue(expense.getLocalDate());
-
-        //addButton.setText(mainCtrl.getString("edit"));
-//        if(en.equals("nl")) addButton.setText("Bewerk");
 
         if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
         else {

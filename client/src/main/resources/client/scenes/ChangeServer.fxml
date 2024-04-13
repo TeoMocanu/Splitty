@@ -15,6 +15,6 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="serverField" layoutX="26.0" layoutY="64.0" prefHeight="26.0" prefWidth="185.0" promptText="localhost:8080" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <TextField fx:id="serverField" layoutX="26.0" layoutY="64.0" prefHeight="26.0" prefWidth="185.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
    </children>
 </AnchorPane>
