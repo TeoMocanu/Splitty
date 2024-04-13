@@ -69,7 +69,8 @@ public class OpenDebtsCtrl {
             for(Debt d : debts) {
                 if(d.getAmount() == 0) continue; // do not display debts with no pending amount
 
-                String text = d.getDebtor().getName() + " "+mainCtrl.getString("gives")+" " + d.getAmount() + "\u20ac "+mainCtrl.getString("to")+" "+ d.getCreditor().getName();
+                String text = d.getDebtor().getName() + " " + mainCtrl.getString("gives") +
+                        " " + d.getAmount() + "\u20ac " + mainCtrl.getString("to") + " " + d.getCreditor().getName();
 //                if(en.equals("nl")) text = d.getDebtor().getName() + " geeft " + d.getAmount() + "\u20ac aan "+ d.getCreditor().getName();
                 String received = mainCtrl.getString("markReceived");
                 Label label = new Label(text);

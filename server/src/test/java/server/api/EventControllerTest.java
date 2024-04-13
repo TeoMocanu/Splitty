@@ -17,8 +17,7 @@ package server.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Event;
@@ -60,6 +59,9 @@ public class EventControllerTest {
         event1 = new Event("event1");
         event2 = new Event("event2");
         eventList = List.of(event1, event2);
+
+        service = mock(EventServiceImplementation.class);
+        eventController = new EventController(service);
     }
 
     @Test
@@ -153,7 +155,7 @@ public class EventControllerTest {
     private static Event getEvent(String q) {
         return new Event(q);
     }
-    
+
     @Test
     public void getUpdatesTest() {
         //when(service.getUpdates()).thenReturn((ResponseEntity.noContent()));
