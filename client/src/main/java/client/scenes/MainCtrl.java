@@ -23,7 +23,6 @@ import commons.Participant;
 import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 public class MainCtrl {
