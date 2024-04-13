@@ -133,7 +133,7 @@ public class EventOverviewCtrl {
         LanguageUtils.update(amountColumn, "amountEUR");
         LanguageUtils.update(dateColumn, "date");
 
-        flagView.setImage(mainCtrl.getFlag());
+        LanguageUtils.update(flagView);
     }
 
     private void initExpensesTableView(Event event) {

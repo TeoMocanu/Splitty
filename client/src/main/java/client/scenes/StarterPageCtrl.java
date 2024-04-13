@@ -288,6 +288,7 @@ public class StarterPageCtrl {
 
     public void languageSwitch() {
         mainCtrl.changeLanguage();
+
         rebindUI();
     }
 
@@ -300,7 +301,8 @@ public class StarterPageCtrl {
         LanguageUtils.update(joinEventLabel, "joinEvent");
         LanguageUtils.update(recentlyViewedEventsLabel, "recentlyViewedEvents");
         LanguageUtils.update(changeServerButton, "changeServer");
-        flagView.setImage(mainCtrl.getFlag());
+        LanguageUtils.update(flagView);
+        LanguageUtils.update(undoButton, "undo");
     }
 
     /*

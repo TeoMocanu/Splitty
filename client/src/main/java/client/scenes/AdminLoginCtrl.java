@@ -69,7 +69,7 @@ public class AdminLoginCtrl {
         LanguageUtils.update(helpButton, "help");
         LanguageUtils.update(passwordLabel, "password");
         LanguageUtils.update(title, "administratorLogin");
-        flagView.setImage(mainCtrl.getFlag());
+        LanguageUtils.update(flagView);
     }
 
     /*

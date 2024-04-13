@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-
 public class EditTitleCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -39,6 +38,8 @@ public class EditTitleCtrl {
         event.setTitle(newTitle);
         server.editEvent(event);
         mainCtrl.showEventOverview(event);
+
+        event.setLastAction("edited");
     }
 
     public void cancel(){

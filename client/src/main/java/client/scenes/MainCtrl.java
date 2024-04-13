@@ -309,8 +309,4 @@ public class MainCtrl {
     public String getString(String key) {
         return LanguageUtils.get(key);
     }
-
-    public Image getFlag() {
-        return LanguageUtils.getFlag(LanguageUtils.getLocale());
-    }
 }

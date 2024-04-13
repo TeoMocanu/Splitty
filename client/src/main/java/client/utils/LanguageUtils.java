@@ -1,6 +1,7 @@
 package client.utils;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,6 +9,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.io.*;
@@ -166,6 +168,10 @@ public class LanguageUtils {
         return Bindings.createStringBinding(() -> get(key, args), LOCALE);
     }
 
+    public static ObjectBinding<Image> createObjectBinding() {
+        return Bindings.createObjectBinding(() -> getFlag(), LOCALE);
+    }
+
     public static void update(Labeled entity, String key) {
         entity.textProperty().bind(createStringBinding(key));
     }
@@ -186,9 +192,13 @@ public class LanguageUtils {
         entity.promptTextProperty().bind(createStringBinding(key));
     }
 
-    public static Image getFlag(Locale locale) {
+    public static void update(ImageView entity){
+        entity.imageProperty().bind(createObjectBinding());
+    }
+
+    public static Image getFlag() {
         String dir = System.getProperty("user.dir");
-        File file = new File(dir += "/client/src/main/resources/language/flag_"+locale.getLanguage()+".png");
+        File file = new File(dir += "/client/src/main/resources/language/flag_"+LOCALE.get().getLanguage()+".png");
         Image flag = new Image(file.toURI().toString());
         return flag;
     }
