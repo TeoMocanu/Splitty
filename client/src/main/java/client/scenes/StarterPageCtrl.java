@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import commons.Event;
 import javafx.collections.FXCollections;
@@ -23,9 +24,26 @@ import java.util.*;
 public class StarterPageCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    @FXML
+    private Button languageButtonStart;
+    @FXML
+    private Button createButton;
+    @FXML
+    private Button joinButton;
+    @FXML
+    private Button deleteHistoryButton;
+    @FXML
+    private Label createNewEventLabel;
+    @FXML
+    private Label joinEventLabel;
+    @FXML
+    private Label recentlyViewedEventsLabel;
+    @FXML
+    private Button changeServerButton;
 
     @FXML
     private TextField createNewEvent;
+
 
     @FXML
     private TextField joinEvent;
@@ -68,7 +86,7 @@ public class StarterPageCtrl {
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
 
-        flagView.setImage(mainCtrl.getFlag());
+        rebindUI();
 
         this.serverLabel.setText(server.getServer());
         server.registerForUpdates(e -> {
@@ -269,17 +287,22 @@ public class StarterPageCtrl {
     }
 
     public void languageSwitch() {
-        String createNewEventText = createNewEvent.getText();
-        String joinEventText = joinEvent.getText();
-
         mainCtrl.changeLanguage();
-        mainCtrl.showStarterPage();
 
-        refresh();
-        joinEvent.setText(joinEventText);
-        createNewEvent.setText(createNewEventText);
+        rebindUI();
+    }
 
-        flagView.setImage(mainCtrl.getFlag());
+    private void rebindUI() {
+        LanguageUtils.update(languageButtonStart, "LG");
+        LanguageUtils.update(createButton, "create");
+        LanguageUtils.update(joinButton, "join");
+        LanguageUtils.update(deleteHistoryButton, "deleteHistory");
+        LanguageUtils.update(createNewEventLabel, "createNewEvent");
+        LanguageUtils.update(joinEventLabel, "joinEvent");
+        LanguageUtils.update(recentlyViewedEventsLabel, "recentlyViewedEvents");
+        LanguageUtils.update(changeServerButton, "changeServer");
+        LanguageUtils.update(flagView);
+        LanguageUtils.update(undoButton, "undo");
     }
 
     /*
