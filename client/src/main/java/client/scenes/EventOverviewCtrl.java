@@ -182,7 +182,8 @@ public class EventOverviewCtrl {
     }
 
     private void initFilteringModeComboBox() {
-        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList(mainCtrl.getString("paidBy"), mainCtrl.getString("owedBy"));
+        ObservableList<String> observableSelectionModeList =
+                FXCollections.observableArrayList(mainCtrl.getString("paidBy"), mainCtrl.getString("owedBy"));
         filteringModeComboBox.setItems(observableSelectionModeList);
         filteringModeComboBox.getSelectionModel().selectFirst();
     }

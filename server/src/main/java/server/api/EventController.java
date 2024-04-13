@@ -23,12 +23,11 @@ public class EventController {
     @Autowired
     private final EventServiceImplementation service;
 
-//    public EventController(EventRepository e){
-//        this.eventRepository = e;
-//    }
-
-    public EventController(){
+    public EventController() {
         service = null;
+    }
+    public EventController(EventServiceImplementation e){
+        this.service = e;
     }
 
     @GetMapping("/getAll")
