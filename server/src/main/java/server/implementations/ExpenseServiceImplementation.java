@@ -32,8 +32,9 @@ public class ExpenseServiceImplementation implements ExpenseService {
     }
 
     @Override
-    public ResponseEntity<Expense> getExpenseById(ExpenseKey id) {
-        Optional<Expense> expenseOptional = expenseRepository.findById(id);
+    public ResponseEntity<Expense> getExpenseById(Long eid, Long id) {
+        ExpenseKey key = new ExpenseKey(eid, id);
+        Optional<Expense> expenseOptional = expenseRepository.findById(key);
         return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

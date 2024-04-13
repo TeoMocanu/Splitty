@@ -138,23 +138,23 @@ public class ServerUtils {
 
     public Expense editExpense(Expense expense) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/editExpense" + expense.getId()) //
+                .target(SERVER).path("api/expenses/editExpense/" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
-    public Expense getExpenseById(Long id) {
+    public Expense getExpenseById(Long eid, Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/getById" + id) //
+                .target(SERVER).path("api/expenses/getById/" + eid + "/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(Expense.class);
+                .get(new GenericType<Expense>(){ });
     }
 
     public void deleteExpense(Expense expense) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/deleteExpense" + expense.getId()) //
+                .target(SERVER).path("api/expenses/deleteExpense/" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(new GenericType<Expense>(){ });
@@ -196,7 +196,7 @@ public class ServerUtils {
 
     public void deleteParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/deleteParticipant" + participant.getEvent().getId() + "/" + participant.getId()) //
+                .target(SERVER).path("api/participants/deleteParticipant/" + participant.getEvent().getId() + "/" + participant.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(new GenericType<Participant>(){ });
@@ -244,9 +244,9 @@ public class ServerUtils {
                 .post(Entity.entity(debt, APPLICATION_JSON), Debt.class);
     }
 
-    public List<Debt> getDebt(Long id) {
+    public List<Debt> getDebtById(Long eid, Long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/debts/event/" + id) //
+                .target(SERVER).path("api/debts/getByIds/" + eid + "/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Debt>>(){ });

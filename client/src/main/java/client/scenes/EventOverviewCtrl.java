@@ -213,7 +213,7 @@ public class EventOverviewCtrl {
 
     public void editExpense() {
         if(selectedExpense != null) {
-            mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
+            mainCtrl.showEditExpense(event, selectedExpense);
         }
     }
 

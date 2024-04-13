@@ -96,6 +96,7 @@ public class AddExpenseCtrl {
 
 
     void initialize(Event event){
+        this.event = server.getEvent(event.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
             types.addAll(event.getTypes());
@@ -116,12 +117,12 @@ public class AddExpenseCtrl {
         somePeople.setSelected(false);
         name.setValue(" ");
         date.setValue(null);
-        this.event = server.getEvent(event.getId());
     }
 
     public void initialize(Event event, Expense expense) { // initializing the data from an existing expense into the window
+        this.event = server.getEvent(event.getId());
         newType.setPromptText(mainCtrl.getString("addNewType"));
-        expense = server.getExpenseById(expense.getId());
+        expense = server.getExpenseById(event.getId(), expense.getId());
         if(event.getTypes() != null && event.getTypes().size() > 0) {
             types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
             types.addAll(event.getTypes());
@@ -143,7 +144,7 @@ public class AddExpenseCtrl {
         name.setValue(expense.getPayer().getName());
         date.setValue(expense.getLocalDate());
 
-        addButton.setText(mainCtrl.getString("edit"));
+        //addButton.setText(mainCtrl.getString("edit"));
 //        if(en.equals("nl")) addButton.setText("Bewerk");
 
         if(expense.getSplitters().size() >= event.getParticipants().size()) everyone.setSelected(true);
@@ -156,7 +157,6 @@ public class AddExpenseCtrl {
             }
         }
         menu.setItems(splitOptions);
-        this.event = server.getEvent(event.getId());
     }
 
     public void cancel() {
