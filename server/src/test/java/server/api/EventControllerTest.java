@@ -21,19 +21,14 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Event;
-import commons.Expense;
-import commons.primaryKeys.ExpenseKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.async.DeferredResult;
 import server.implementations.EventServiceImplementation;
-import server.implementations.ExpenseServiceImplementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventControllerTest {
