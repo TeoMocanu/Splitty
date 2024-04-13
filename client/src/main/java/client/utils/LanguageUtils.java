@@ -108,7 +108,9 @@ public class LanguageUtils {
             properties.setProperty("language", language);
 
             String dir = System.getProperty("user.dir");
-            String file = dir.concat("/client/src/main/resources/language/language.properties");
+            if(!dir.contains("client"))
+                dir += "/client";
+            String file = dir.concat("/src/main/resources/language/language.properties");
 
             FileOutputStream output = new FileOutputStream(file);
             properties.store(output , null);
@@ -198,7 +200,9 @@ public class LanguageUtils {
 
     public static Image getFlag() {
         String dir = System.getProperty("user.dir");
-        File file = new File(dir += "/client/src/main/resources/language/flag_"+LOCALE.get().getLanguage()+".png");
+        if(!dir.contains("client"))
+            dir += "/client";
+        File file = new File(dir + "/src/main/resources/language/flag_"+LOCALE.get().getLanguage()+".png");
         Image flag = new Image(file.toURI().toString());
         return flag;
     }
