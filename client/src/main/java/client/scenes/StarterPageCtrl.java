@@ -293,6 +293,7 @@ public class StarterPageCtrl {
     }
 
     private void rebindUI() {
+        mainCtrl.setPrimaryStageTitle(mainCtrl.getString("starterPage"));
         LanguageUtils.update(languageButtonStart, "LG");
         LanguageUtils.update(createButton, "create");
         LanguageUtils.update(joinButton, "join");
