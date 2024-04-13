@@ -1,11 +1,13 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import commons.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -22,9 +24,26 @@ import java.util.*;
 public class StarterPageCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    @FXML
+    private Button languageButtonStart;
+    @FXML
+    private Button createButton;
+    @FXML
+    private Button joinButton;
+    @FXML
+    private Button deleteHistoryButton;
+    @FXML
+    private Label createNewEventLabel;
+    @FXML
+    private Label joinEventLabel;
+    @FXML
+    private Label recentlyViewedEventsLabel;
+    @FXML
+    private Button changeServerButton;
 
     @FXML
     private TextField createNewEvent;
+
 
     @FXML
     private TextField joinEvent;
@@ -33,29 +52,9 @@ public class StarterPageCtrl {
     private ListView<Event> listView;
 
     @FXML
-    private Button languageButtonStart;
-
-    @FXML
-    private Button createButton;
-
-    @FXML
-    private Button joinButton;
-
-    @FXML
-    private Button deleteHistoryButton;
-
-    @FXML
-    private Label createNewEventLabel;
-
-    @FXML
-    private Label joinEventLabel;
-
-    @FXML
-    private Label recentlyViewedEventsLabel;
+    private ImageView flagView;
     @FXML
     private Label serverLabel;
-    @FXML
-    private Button changeServerButton;
     @FXML
     private List<ContextMenu> contextMenuList;
     @FXML
@@ -86,8 +85,9 @@ public class StarterPageCtrl {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
-//        this.en = en;
-//        language();
+
+        rebindUI();
+
         this.serverLabel.setText(server.getServer());
         server.registerForUpdates(e -> {
             updateEvents(e);
@@ -287,15 +287,22 @@ public class StarterPageCtrl {
     }
 
     public void languageSwitch() {
-        String createNewEventText = createNewEvent.getText();
-        String joinEventText = joinEvent.getText();
-
         mainCtrl.changeLanguage();
-        mainCtrl.showStarterPage();
 
-        refresh();
-        joinEvent.setText(joinEventText);
-        createNewEvent.setText(createNewEventText);
+        rebindUI();
+    }
+
+    private void rebindUI() {
+        LanguageUtils.update(languageButtonStart, "LG");
+        LanguageUtils.update(createButton, "create");
+        LanguageUtils.update(joinButton, "join");
+        LanguageUtils.update(deleteHistoryButton, "deleteHistory");
+        LanguageUtils.update(createNewEventLabel, "createNewEvent");
+        LanguageUtils.update(joinEventLabel, "joinEvent");
+        LanguageUtils.update(recentlyViewedEventsLabel, "recentlyViewedEvents");
+        LanguageUtils.update(changeServerButton, "changeServer");
+        LanguageUtils.update(flagView);
+        LanguageUtils.update(undoButton, "undo");
     }
 
     /*

@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.LanguageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
@@ -15,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -62,6 +64,8 @@ public class AdminOverviewCtrl {
 
     @FXML
     private Button backButton;
+    @FXML
+    private ImageView flagView;
 
     public class TableRowData {
         private final SimpleLongProperty id;
@@ -298,6 +302,7 @@ public class AdminOverviewCtrl {
     }
 
     public void initialize() {
+        rebindUI();
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
     }
@@ -319,8 +324,32 @@ public class AdminOverviewCtrl {
 
     public void languageSwitch() {
         mainCtrl.changeLanguage();
-        mainCtrl.showAdminOverview();
-        initialize();
+        rebindUI();
+    }
+
+    public void rebindUI(){
+        LanguageUtils.update(backButton, "exit");
+        LanguageUtils.update(importButtonText, "importEventFromText");
+        LanguageUtils.update(importButtonFile, "importEventFromFile");
+        LanguageUtils.update(downloadButton, "downloadEventData");
+        LanguageUtils.update(sortButton, "applySort");
+        LanguageUtils.update(languageButton, "LG");
+        LanguageUtils.update(serverInfoButton, "showServerInformation");
+        LanguageUtils.update(settingsButton, "settings");
+        LanguageUtils.update(helpButton, "help");
+        LanguageUtils.update(flagView);
+        tableView.setPlaceholder(new Label(mainCtrl.getString("noContetYet")));
+        tableView.getColumns().forEach(column -> {
+            if (column.getId().equals("id")) {
+                LanguageUtils.update(column, "eventID");
+            } else if (column.getId().equals("title")) {
+                LanguageUtils.update(column, "title");
+            } else if (column.getId().equals("participants")) {
+                LanguageUtils.update(column, "participants");
+            } else if (column.getId().equals("expenses")) {
+                LanguageUtils.update(column, "expenses");
+            }
+        });
     }
 
     /*

@@ -25,9 +25,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
-import java.util.List;
-import java.util.Locale;
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -87,8 +84,7 @@ public class MainCtrl {
         });
     }
 
-    public void reload(Locale locale){
-        myFXML.setLocale(locale);
+    public void reload(){;
         var addExpense = myFXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpense.fxml");
         var starterPage = myFXML.load(StarterPageCtrl.class, "client", "scenes", "StarterPage.fxml");
         var adminOverview = myFXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
@@ -117,15 +113,8 @@ public class MainCtrl {
     }
 
     public void changeLanguage(){
-
-        List<Locale> list = LanguageUtils.getSupportedLocales();
-        int index = list.indexOf(myFXML.getLocale());
-        System.out.println("index: " + index);
-        System.out.println("list: " + list);
-        System.out.println("locale: " + myFXML.getLocale());
-        System.out.println("list: " + list.get(0));
-
-        reload(list.get((index+1)%list.size()));
+        LanguageUtils.switchLanguage();
+        reload();
     }
 
     public void initialize(Stage primaryStage) {
@@ -283,11 +272,11 @@ public class MainCtrl {
 
     public void showOpenDebts(Event event) {
         primaryStage.setResizable(true);
-        primaryStage.setMinWidth(250);
-        primaryStage.setMinHeight(250);
         primaryStage.setTitle(getString("settleDebts"));
         primaryStage.setScene(openDebts);
         primaryStage.sizeToScene();
+        primaryStage.setMinWidth(openDebts.getWidth());
+        primaryStage.setMinHeight(openDebts.getHeight());
         openDebtsCtrl.initialize(event);
         openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
     }
@@ -320,6 +309,6 @@ public class MainCtrl {
     }
 
     public String getString(String key) {
-        return myFXML.getFromBundle(key);
+        return LanguageUtils.get(key);
     }
 }

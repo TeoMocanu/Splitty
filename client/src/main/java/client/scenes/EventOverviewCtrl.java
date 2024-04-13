@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
+import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -20,6 +21,7 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +32,7 @@ public class EventOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-//    private String en;
+
     private Event event;
     private Participant selectedParticipant;
     private Participant selectedExpensePayer;
@@ -51,25 +53,7 @@ public class EventOverviewCtrl {
     @FXML
     private Label eventTitleLabel;
     @FXML
-    private Button sendInvitesButton;
-    @FXML
-    private Button editTitleButton;
-    @FXML
-    private Label participantsLabel;
-    @FXML
-    private Button participantAddButton;
-    @FXML
-    private Button participantEditButton;
-    @FXML
-    private Label expensesLabel;
-    @FXML
-    private Button addExpenseButton;
-    @FXML
-    private Button editExpenseButton;
-    @FXML
-    private Button backButton;
-    @FXML
-    private Button settleDebtsButton;
+    private ImageView flagView;
     @FXML
     private TableView expensesTableView;
     @FXML
@@ -81,15 +65,44 @@ public class EventOverviewCtrl {
     @FXML
     private TableColumn<Expense, LocalDate> dateColumn;
 
+    @FXML
+    private Button editTitleButton;
+    @FXML
+    private Button sendInvitesButton;
+    @FXML
+    private Label participantsLabel;
+    @FXML
+    private Button participantEditButton;
+    @FXML
+    private Button participantAddButton;
+    @FXML
+    private Label expensesLabel;
+    @FXML
+    private Label filerLabel;
+    @FXML
+    private Button editExpenseButton;
+    @FXML
+    private Button addExpenseButton;
+    @FXML
+    private Button languageButton;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button settleDebtsButton;
+
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
+
     public void initialize(Event event) {
         this.event = event;
 
         eventTitleLabel.setText(event.getTitle());
+
+        rebindUI();
+
         participantsListView.setOnMouseClicked(this::handleParticipantsListViewClick);
         expensesTableView.setOnMouseClicked(this::handleExpensesTableViewClick);
         expensePayersComboBox.setOnAction(e -> handleExpensePayersComboBoxAction());
@@ -99,6 +112,28 @@ public class EventOverviewCtrl {
         initParticipantsListView(event);
         initExpensePayersComboBox();
         initFilteringModeComboBox();
+    }
+
+    private void rebindUI() {
+        LanguageUtils.update(editTitleButton, "editTitle");
+        LanguageUtils.update(sendInvitesButton, "sendInvites");
+        LanguageUtils.update(participantsLabel, "participants");
+        LanguageUtils.update(participantEditButton, "editSelected");
+        LanguageUtils.update(participantAddButton, "add");
+        LanguageUtils.update(expensesLabel, "expenses");
+        LanguageUtils.update(filerLabel, "filter");
+        LanguageUtils.update(editExpenseButton, "editSelected");
+        LanguageUtils.update(addExpenseButton, "add");
+        LanguageUtils.update(languageButton, "LG");
+        LanguageUtils.update(backButton, "back");
+        LanguageUtils.update(settleDebtsButton, "settleDebts");
+
+        LanguageUtils.update(titleColumn, "title");
+        LanguageUtils.update(payerColumn, "payer");
+        LanguageUtils.update(amountColumn, "amountEUR");
+        LanguageUtils.update(dateColumn, "date");
+
+        LanguageUtils.update(flagView);
     }
 
     private void initExpensesTableView(Event event) {
@@ -133,12 +168,12 @@ public class EventOverviewCtrl {
     }
 
     private void initExpensePayersComboBox() {
-        Participant all = new Participant("All", new Event("All"));
+        Participant all = new Participant(mainCtrl.getString("all"), new Event("All"));
         selectedExpensePayer = all;
         payers = new ArrayList<>();
         payers.add(all);
         participants = server.getAllParticipantsFromEvent(event.getId());
-        for(Participant p : participants) {
+        for (Participant p : participants) {
             payers.add(p);
         }
         ObservableList<Participant> observablePayerList = FXCollections.observableArrayList(payers);
@@ -147,7 +182,8 @@ public class EventOverviewCtrl {
     }
 
     private void initFilteringModeComboBox() {
-        ObservableList<String> observableSelectionModeList = FXCollections.observableArrayList(mainCtrl.getString("paidBy"), mainCtrl.getString("owedBy"));
+        ObservableList<String> observableSelectionModeList =
+                FXCollections.observableArrayList(mainCtrl.getString("paidBy"), mainCtrl.getString("owedBy"));
         filteringModeComboBox.setItems(observableSelectionModeList);
         filteringModeComboBox.getSelectionModel().selectFirst();
     }
@@ -170,17 +206,19 @@ public class EventOverviewCtrl {
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
         }
     }
-    private void handleFilteringModeComboBoxAction(){
+
+    private void handleFilteringModeComboBoxAction() {
         selectedFilteringMode = filteringModeComboBox.getSelectionModel().getSelectedIndex();
         filterExpenses();
     }
-    private void handleExpensePayersComboBoxAction(){
+
+    private void handleExpensePayersComboBoxAction() {
         selectedExpensePayer = (Participant) expensePayersComboBox.getSelectionModel().getSelectedItem();
         filterExpenses();
     }
 
     private void filterExpenses() {
-        if(selectedExpensePayer.getName().equals("All")) {
+        if (selectedExpensePayer.getName().equals(mainCtrl.getString("all"))) {
             initExpensesTableView(event);
         } else {
             if (selectedFilteringMode == 0) {
@@ -198,7 +236,7 @@ public class EventOverviewCtrl {
     }
 
     public void editParticipant() {
-        if(selectedParticipant != null) {
+        if (selectedParticipant != null) {
             mainCtrl.showContactDetailsEdit(selectedParticipant);
         }
     }
@@ -225,7 +263,7 @@ public class EventOverviewCtrl {
     }
 
     public void editExpense() {
-        if(selectedExpense != null) {
+        if (selectedExpense != null) {
             mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
         }
     }
@@ -239,35 +277,13 @@ public class EventOverviewCtrl {
                 break;
         }
     }
-/*
-    public void language() {
-        if(en.equals("en")) en();
-        else if(en.equals("nl")) nl();
-    }
 
-    public void en() {
-        participantsLabel.setText("Participants");
-        participantAddButton.setText("Add");
-        participantEditButton.setText("Edit Selected");
-        expensesLabel.setText("Expenses");
-        addExpenseButton.setText("Add");
-        settleDebtsButton.setText("Settle Debts");
-        sendInvitesButton.setText("Send Invites");
-        backButton.setText("Back");
-        editExpenseButton.setText("Edit Selected");
-        editTitleButton.setText("Edit Title");
+    public void languageSwitch() {
+        mainCtrl.changeLanguage();
+        rebindUI();
+        initExpensesTableView(event);
+        initParticipantsListView(event);
+        initExpensePayersComboBox();
+        initFilteringModeComboBox();
     }
-    public void nl() {
-        participantsLabel.setText("Deelnemers");
-        participantAddButton.setText("Toevoegen");
-        participantEditButton.setText("Bewerk Geselecteerde");
-        expensesLabel.setText("Uitgaven");
-        addExpenseButton.setText("Toevoegen");
-        settleDebtsButton.setText("Schulden Vereffenen");
-        sendInvitesButton.setText("Uitnodigingen Versturen");
-        backButton.setText("Terug");
-        editExpenseButton.setText("Bewerk Geselecteerde");
-        editTitleButton.setText("Titel Bewerken");
-    }
- */
 }

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -93,7 +94,7 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="%filter">
+                        <Label fx:id="filerLabel" text="%filter">
                            <FlowPane.margin>
                               <Insets right="10.0" />
                            </FlowPane.margin>
@@ -142,6 +143,11 @@
                <children>
                   <FlowPane alignment="CENTER_LEFT" hgap="20.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Button fx:id="languageButton" mnemonicParsing="false" onAction="#languageSwitch" text="%LG">
+                           <graphic>
+                              <ImageView fx:id="flagView" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Button>
                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" text="%back">
                            <FlowPane.margin>
                               <Insets />

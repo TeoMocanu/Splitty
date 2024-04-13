@@ -22,7 +22,8 @@ public class EmailerController {
     public void sendMail(@RequestBody Invitation invitation){
         String subject = "Invitation to join event";
         String text = "Good evening, \n\n" +
-                "You have been invited to join our '"+invitation.getEvent()+"' event. Please use the following code to join: " + invitation.getCode() +
+                "You have been invited to join our '" + invitation.getEvent() +
+                "' event. Please use the following code to join: " + invitation.getCode() +
                 "\n\nBest wishes,\n" +
                 "Splitty - group 04";
 
@@ -33,7 +34,8 @@ public class EmailerController {
     public void sendMail(@RequestBody Reminder reminder){
         String subject = "Reminder to pay";
         String text = "Good evening, \n\n" +
-                "You have to pay "+reminder.getAmount()+" to "+reminder.getDebtor()+" for the '"+reminder.getEvent()+"' event. Please pay as soon as possible. \n\n" +
+                "You have to pay " + reminder.getAmount() + " to " + reminder.getDebtor() +
+                " for the '" + reminder.getEvent() + "' event. Please pay as soon as possible. \n\n" +
                 "Best wishes,\n" +
                 "Splitty - group 04";
 
