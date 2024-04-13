@@ -3,11 +3,16 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
@@ -16,7 +21,7 @@ public class AdminLoginCtrl {
     private final MainCtrl mainCtrl;
 
     private String adminPassword;
-
+    private boolean bypassLogin = false;
     @FXML
     private Button backButton;
 
@@ -79,15 +84,22 @@ public class AdminLoginCtrl {
         clearFields();
         mainCtrl.showStarterPage();
     }
-
+    public void setupShortcuts(Scene scene) {
+        Platform.runLater(() -> {
+            scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+                KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+                KeyCodeCombination bypassPassword = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN);
+                if(bypassPassword.match(e)) bypassLogin = true;
+                if(help.match(e)) showHelp();
+            });
+        });
+    }
     public void checkPassword() {
         try {
-            boolean bypassCredentials = true; // Change this to bypass credentials
-
             String inputPassword = password.getText();
             boolean passwordMatch = true;
 
-            if (!bypassCredentials) {
+            if (bypassLogin==false) {
                 passwordMatch = inputPassword.equals(this.adminPassword);
             }
 
