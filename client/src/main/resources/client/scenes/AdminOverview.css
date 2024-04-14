@@ -9,7 +9,7 @@
 }
 
 .text-field {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-control-inner-background: #000033;
     -fx-text-fill: #FFFFFF;
     -fx-prompt-text-fill: #5F9EA0;
@@ -20,7 +20,7 @@
 .button {
     -fx-background-color: #00008B;
     -fx-text-fill: #B0E0E6;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-border-color: #4682B4;
     -fx-border-width: 2px;
     -fx-font-weight: bold;

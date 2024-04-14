@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,6 +23,8 @@ import javafx.stage.Modality;
 public class AdminLoginCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    private EventHandler<KeyEvent> keyEventHandler;
 
     private String adminPassword;
 
@@ -53,7 +56,7 @@ public class AdminLoginCtrl {
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         ServerUtils utils = new ServerUtils();
 
         rebindUI();
@@ -63,7 +66,8 @@ public class AdminLoginCtrl {
         this.adminPassword = randomPassword;
         System.out.println("Admin Password: " + randomPassword);
     }
-    public void languageSwitch(){
+
+    public void languageSwitch() {
         mainCtrl.changeLanguage();
         rebindUI();
     }
@@ -102,33 +106,49 @@ public class AdminLoginCtrl {
     public void cancel() {
         System.out.println("Exited admin login");
         clearFields();
+        Scene currentScene = password.getScene();
+        if(currentScene != null) {
+            currentScene.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        }
+        removeShortcuts();
         mainCtrl.showStarterPage();
     }
-    public void setupShortcuts(Scene scene) {
-        Platform.runLater(() -> {
-            scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-                KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-                KeyCodeCombination bypassPassword = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN);
-                if(bypassPassword.match(e)) bypassLogin = true;
-                if(help.match(e)) showHelp();
-            });
-        });
+    public void removeShortcuts() {
+        Scene currentScene = password.getScene();
+        if(currentScene != null) {
+            currentScene.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        }
     }
+
+    public void setupShortcuts(Scene scene) {
+        keyEventHandler = event -> {
+            KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+            KeyCodeCombination bypassPassword = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN);
+            if (bypassPassword.match(event)) {
+                bypassLogin = true;
+            }
+            if (help.match(event)) {
+                showHelp();
+            }
+        };
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+    }
+
     public void checkPassword() {
         try {
             String inputPassword = password.getText();
             boolean passwordMatch = true;
 
-            if (bypassLogin==false) {
+            if (bypassLogin == false) {
                 passwordMatch = inputPassword.equals(this.adminPassword);
             }
 
             if (passwordMatch) {
                 System.out.println("Welcome, admin");
+                removeShortcuts();
                 mainCtrl.showAdminOverview();
 
-            }
-            else {
+            } else {
                 System.out.println("Admin credentials are wrong, restart the session to try again");
                 mainCtrl.showStarterPage();
             }
@@ -159,6 +179,7 @@ public class AdminLoginCtrl {
                 break;
         }
     }
+
     public void showHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help & Shortcuts");
@@ -179,8 +200,10 @@ public class AdminLoginCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
+
     public void backToStart(ActionEvent actionEvent) {
         clearFields();
+        removeShortcuts();
         mainCtrl.showStarterPage();
     }
 }
