@@ -89,11 +89,14 @@ public class EventOverviewCtrl {
     private Button backButton;
     @FXML
     private Button settleDebtsButton;
+    @FXML
+    private List<ContextMenu> contextMenuList;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.contextMenuList = new ArrayList<>();
     }
 
     public void initialize(Event event) {
@@ -195,14 +198,48 @@ public class EventOverviewCtrl {
         participantsListView.refresh();
     }
 
+    private boolean showConfirmationDialogExpenses(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setTitle(mainCtrl.getString("confirmation"));
+        alert.initOwner(expensesTableView.getScene().getWindow());
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+
     private void handleExpensesTableViewClick(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
             selectedExpense = (Expense) expensesTableView.getSelectionModel().getSelectedItem();
         }
+        if (mouseEvent.getButton() == MouseButton.SECONDARY) { // Right-click
+            selectedExpense = (Expense) expensesTableView.getSelectionModel().getSelectedItem();
+            if (selectedExpense != null) {
+                // Create ContextMenu
+                if (!contextMenuList.isEmpty()) {
+                    contextMenuList.get(0).hide();
+                    contextMenuList.remove(0);
+                }
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem deleteMenuItem = new MenuItem(mainCtrl.getString("delete"));
+                deleteMenuItem.setOnAction(e -> {
+                    if (showConfirmationDialogExpenses(mainCtrl.getString("confirmationMessageDelete"))) {
+                        expenses.remove(selectedExpense);
+                        initExpensesTableView(event);
+                    }
+                });
+                contextMenu.getItems().add(deleteMenuItem);
+                contextMenuList.add(contextMenu);
+
+                // Display ContextMenu
+                contextMenu.show(expensesTableView, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            }
+        }
     }
 
-    private void handleParticipantsListViewClick(MouseEvent event) {
-        if (event.getButton() == MouseButton.PRIMARY) { // Left-click
+    private void handleParticipantsListViewClick(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
         }
     }
@@ -237,7 +274,8 @@ public class EventOverviewCtrl {
 
     public void editParticipant() {
         if (selectedParticipant != null) {
-            mainCtrl.showContactDetailsEdit(selectedParticipant);
+            Participant participant = server.getParticipantById(event, selectedParticipant.getId());
+            mainCtrl.showContactDetailsEdit(participant);
         }
     }
 
