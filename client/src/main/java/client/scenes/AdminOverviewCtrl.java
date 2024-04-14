@@ -305,13 +305,10 @@ public class AdminOverviewCtrl {
         rebindUI();
         sortChoiceBox.setItems(sortChoiceBoxProperties);
         renderTable();
-        setupShortcuts();
-
     }
 
-    public void setupShortcuts() {
+    public void setupShortcuts(Scene scene) {
         Platform.runLater(() -> {
-            Scene scene = tableView.getScene();
             scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
                 KeyCodeCombination downloadCombination = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
                 KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
@@ -556,12 +553,10 @@ public class AdminOverviewCtrl {
 
         content.append("Language & Sorting:\n")
                 .append("- Change language: Click the 'Language' button or press Ctrl+L.\n")
-                .append("- Sort data: Click 'Sort', then select the property. Alternatively, press Ctrl+S.\n\n");
+                .append("- Sort data: Select the property, then click sort. \n\n");
 
         content.append("Navigation:\n")
                 .append("- Exit the admin overview by clicking 'Exit' or pressing Esc.\n\n");
-
-        content.append("Remember, you can access this help anytime by pressing F1.");
 
         alert.setContentText(content.toString());
 

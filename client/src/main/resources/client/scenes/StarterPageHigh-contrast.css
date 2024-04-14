@@ -62,6 +62,11 @@
     -fx-border-width: 3px;
 }
 
+.logo {
+    -fx-fill: #ADD8E6;
+    -fx-font-style: italic;
+    -fx-font-size: 40px;
+}
 #languageComboBox {
     -fx-background-color: #00008B;
     -fx-text-fill: #B0E0E6;
@@ -70,7 +75,6 @@
     -fx-border-width: 2px;
     -fx-font-weight: bold;
 }
-
 .image-view {
     -fx-opacity: 1;
 }

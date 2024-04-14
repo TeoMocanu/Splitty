@@ -193,12 +193,15 @@ public class MainCtrl {
         primaryStage.setResizable(false);
         adminLoginCtrl.initialize();
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+        adminLoginCtrl.setupShortcuts(adminLogin);
     }
     public void showAdminOverview() {
         primaryStage.setTitle(getString("adminOverview"));
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initialize();
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
+        // Call the method to load the shortcuts when the scene is shown
+        adminOverviewCtrl.setupShortcuts(adminOverview);
     }
 
     public void showAddExpense(Event event) {
