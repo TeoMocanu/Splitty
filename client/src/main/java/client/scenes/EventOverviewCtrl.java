@@ -141,6 +141,7 @@ public class EventOverviewCtrl {
         LanguageUtils.update(dateColumn, "date");
 
         LanguageUtils.update(flagView);
+        mainCtrl.setPrimaryStageTitle(mainCtrl.getString("createEditEvent"));
     }
 
     private void initExpensesTableView(Event event) {

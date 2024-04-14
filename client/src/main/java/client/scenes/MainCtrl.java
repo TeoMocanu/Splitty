@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 public class MainCtrl {
 
-    private Stage primaryStage;
+    Stage primaryStage;
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
     private InvitationCtrl invitationCtrl;
@@ -204,12 +204,15 @@ public class MainCtrl {
         primaryStage.setResizable(false);
         adminLoginCtrl.initialize();
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+        adminLoginCtrl.setupShortcuts(adminLogin);
     }
     public void showAdminOverview() {
         primaryStage.setTitle(getString("adminOverview"));
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initialize();
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
+        // Call the method to load the shortcuts when the scene is shown
+        adminOverviewCtrl.setupShortcuts(adminOverview);
     }
 
     public void showAddExpense(Event event) {
@@ -326,5 +329,9 @@ public class MainCtrl {
 
     public String getString(String key) {
         return LanguageUtils.get(key);
+    }
+
+    public void setPrimaryStageTitle(String title) {
+        primaryStage.setTitle(title);
     }
 }

@@ -68,11 +68,11 @@ public class LanguageUtils {
         List<Locale> list = getSupportedLocales();
         int index = list.indexOf(LOCALE.get());
 
-        System.out.println("LOCALE: " + LOCALE.get());
-        System.out.println("index: " + index);
-        System.out.println("list: " + list);
-        System.out.println("locale: " + getLocale());
-        System.out.println("list: " + list.get(0));
+//        System.out.println("LOCALE: " + LOCALE.get());
+//        System.out.println("index: " + index);
+//        System.out.println("list: " + list);
+//        System.out.println("locale: " + getLocale());
+//        System.out.println("list: " + list.get(0));
 
         setLocale(list.get((index+1)%list.size()));
     }
@@ -108,6 +108,9 @@ public class LanguageUtils {
             properties.setProperty("language", language);
 
             String dir = System.getProperty("user.dir");
+            if(dir.endsWith("client")) {
+                dir = dir.substring(0, dir.length() - 7);
+            }
             String file = dir.concat("/client/src/main/resources/language/language.properties");
 
             FileOutputStream output = new FileOutputStream(file);
@@ -169,7 +172,7 @@ public class LanguageUtils {
     }
 
     public static ObjectBinding<Image> createObjectBinding() {
-        return Bindings.createObjectBinding(() -> getFlag(), LOCALE);
+        return Bindings.createObjectBinding(() -> getFlag(LOCALE.get()), LOCALE);
     }
 
     public static void update(Labeled entity, String key) {
@@ -196,9 +199,12 @@ public class LanguageUtils {
         entity.imageProperty().bind(createObjectBinding());
     }
 
-    public static Image getFlag() {
+    public static Image getFlag(Locale locale) {
         String dir = System.getProperty("user.dir");
-        File file = new File(dir += "/client/src/main/resources/language/flag_"+LOCALE.get().getLanguage()+".png");
+        if(dir.endsWith("client")) {
+            dir = dir.substring(0, dir.length() - 7);
+        }
+        File file = new File(dir + "/client/src/main/resources/language/flag_"+locale.getLanguage()+".png");
         Image flag = new Image(file.toURI().toString());
         return flag;
     }
