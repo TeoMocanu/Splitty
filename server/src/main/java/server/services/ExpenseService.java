@@ -12,7 +12,7 @@ public interface ExpenseService {
 
     List<Expense> getAllExpensesFromEvent(Long eventId);
 
-    ResponseEntity<Expense> getExpenseById(ExpenseKey id);
+    ResponseEntity<Expense> getExpenseById(Long eventId, Long id);
 
     ResponseEntity<Expense> addExpense(Expense expense);
 

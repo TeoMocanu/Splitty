@@ -2,11 +2,21 @@
     -fx-background-color: #000000;
 }
 
+.choice-box .cell {
+    -fx-text-fill: #000000;
+}
+
+.choice-box .label {
+    -fx-text-fill: #000000;
+}
+
 .label {
     -fx-font-size: 11.5px;
     -fx-font-weight: bold;
     -fx-text-fill: #ADD8E6;
 }
+
+
 
 .text-field {
     -fx-font-size: 14px;

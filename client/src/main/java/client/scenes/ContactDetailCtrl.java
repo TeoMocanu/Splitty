@@ -78,7 +78,7 @@ public class ContactDetailCtrl {
         this.participant = participant;
     }*/
 
-    public void initialize(Event event){
+    public void initialize(Event event) {
         this.event = event;
     }
 
