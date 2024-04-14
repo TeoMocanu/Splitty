@@ -124,7 +124,10 @@ public class EventOverviewCtrl {
         initFilteringModeComboBox();
 
         server.registerForUpdates(e -> {
+            System.out.println("HEEEERRREEEEE");
             initParticipantsListView(event);
+            initExpensesTableView(event);
+            eventTitleLabel.setText(event.getTitle());
         });
     }
 
@@ -343,6 +346,10 @@ public class EventOverviewCtrl {
                     }
                 }
                 server.deleteParticipant(selectedParticipant);
+
+                event.setParticipants(server.getAllParticipantsFromEvent(event));
+                server.editEvent(event);
+
                 initParticipantsListView(event);
                 initExpensePayersComboBox();
             }
@@ -371,12 +378,13 @@ public class EventOverviewCtrl {
 
     public void editExpense() {
         if(selectedExpense != null) {
+            deleteExpense();
             mainCtrl.showEditExpense(event, selectedExpense);
         }
     }
 
     public void deleteExpense() {
-        if (selectedExpense != null && showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDeleteExpense"))) {
+        if (selectedExpense != null ) {
             double amountChange = selectedExpense.getAmount() * (-1.0);
             for(Participant p : selectedExpense.getSplitters()) {
                 for(Debt debt : server.getDebtsByParticipant(p)){
@@ -401,6 +409,10 @@ public class EventOverviewCtrl {
                 }
             }
             server.deleteExpense(selectedExpense);
+
+            event.setExpenses(server.getAllExpensesFromEvent(event));
+            server.editEvent(event);
+
             initExpensesTableView(event);
         }
     }

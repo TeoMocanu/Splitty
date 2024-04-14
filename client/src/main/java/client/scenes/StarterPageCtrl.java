@@ -98,9 +98,10 @@ public class StarterPageCtrl {
         rebindUI();
 
         this.serverLabel.setText(server.getServer());
-        server.registerForUpdates(e -> {
-            updateEvents(e);
-        });
+        //server.registerForUpdates(e -> {
+        //    System.out.println("THIISSSSSSS");
+        //    updateEvents(e);
+        //});
     }
 
     public void stop() {
