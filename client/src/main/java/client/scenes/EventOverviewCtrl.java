@@ -9,6 +9,7 @@ import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 
 import commons.Expense;
@@ -89,6 +90,10 @@ public class EventOverviewCtrl {
     private Button backButton;
     @FXML
     private Button settleDebtsButton;
+    @FXML
+    private Button deleteParticipantButton;
+    @FXML
+    private Button deleteExpenseButton;
 
     @Inject
     public EventOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -127,6 +132,9 @@ public class EventOverviewCtrl {
         LanguageUtils.update(languageButton, "LG");
         LanguageUtils.update(backButton, "back");
         LanguageUtils.update(settleDebtsButton, "settleDebts");
+        LanguageUtils.update(deleteParticipantButton, "deleteSelected");
+        LanguageUtils.update(deleteExpenseButton, "deleteSelected");
+
 
         LanguageUtils.update(titleColumn, "title");
         LanguageUtils.update(payerColumn, "payer");
@@ -241,6 +249,22 @@ public class EventOverviewCtrl {
         }
     }
 
+    public void deleteParticipant() {
+        if (selectedParticipant != null) {
+            if(!selectedParticipant.getExpensesPaidBy().isEmpty() || !selectedParticipant.getExpensesToPay().isEmpty()) {
+                //mainCtrl.showAlert(mainCtrl.getString("deleteParticipantError"));
+            }
+            else {
+                for (Debt d : server.getDebtsByParticipant(selectedParticipant)) {
+                    server.deleteDebt(d);
+                }
+                server.deleteParticipant(selectedParticipant);
+                initParticipantsListView(event);
+                initExpensePayersComboBox();
+            }
+        }
+    }
+
     public void addExpense() {
         mainCtrl.showAddExpense(event);
     }
@@ -265,6 +289,13 @@ public class EventOverviewCtrl {
     public void editExpense() {
         if (selectedExpense != null) {
             mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
+        }
+    }
+
+    public void deleteExpense() {
+        if (selectedExpense != null) {
+            server.deleteExpense(selectedExpense);
+            initExpensesTableView(event);
         }
     }
 

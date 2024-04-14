@@ -23,8 +23,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface DebtRepository extends JpaRepository<Debt, DebtKey> {
     @Query(value = "SELECT * FROM DEBT WHERE EVENT_ID = :eid", nativeQuery = true)
     List<Debt> findAllByEventId(@Param("eid") Long eid);
+
+    Optional<List<Debt>> findByEventIdAndParticipantId(@Param("eid") long eid, @Param("pid") long id);
 }

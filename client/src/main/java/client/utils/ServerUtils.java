@@ -196,7 +196,7 @@ public class ServerUtils {
 
     public void deleteParticipant(Participant participant) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/participants/deleteParticipant" + participant.getEvent().getId() + "/" + participant.getId()) //
+                .target(SERVER).path("api/participants/deleteParticipant/" + participant.getEvent().getId() + "/" + participant.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(new GenericType<Participant>(){ });
@@ -223,8 +223,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/expenses/getAllExpensesFromEventPaidBy/" + id + "/" + id1) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Expense>>() {
-                });
+                .get(new GenericType<List<Expense>>(){ });
     }
 
     public List<Expense> getAllExpensesFromEventOwedBy(long id, long id1) {
@@ -232,8 +231,15 @@ public class ServerUtils {
                 .target(SERVER).path("api/expenses/getAllExpensesFromEventOwedBy/" + id + "/" + id1) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Expense>>() {
-                });
+                .get(new GenericType<List<Expense>>(){ });
+    }
+
+    public List<Debt> getDebtsByParticipant(Participant selectedParticipant) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/debts/getByParticipant/" + selectedParticipant.getEventId() + "/" + selectedParticipant.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Debt>>() { });
     }
 
     public Debt addDebt(Debt debt) {

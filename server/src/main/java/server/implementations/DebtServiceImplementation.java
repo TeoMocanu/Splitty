@@ -9,6 +9,7 @@ import server.database.DebtRepository;
 import server.services.DebtService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DebtServiceImplementation implements DebtService {
@@ -79,5 +80,11 @@ public class DebtServiceImplementation implements DebtService {
         }
         Debt updatedDebt = repo.save(debt);
         return ResponseEntity.ok(updatedDebt);
+    }
+
+    @Override
+    public ResponseEntity<List<Debt>> getAllFromParticipant(long eid, long pid) {
+        Optional<List<Debt>> debtsOptional = repo.findByEventIdAndParticipantId(eid, pid);
+        return debtsOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
