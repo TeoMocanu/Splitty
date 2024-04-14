@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import commons.*;
 import commons.emails.Invitation;
+import commons.emails.MockEmail;
 import commons.emails.Reminder;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
@@ -415,4 +416,19 @@ public class ServerUtils {
                 .put(Entity.entity(reminder, APPLICATION_JSON), Reminder.class);
     }
 
+    public void sendTestMail(MockEmail mail) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/mail/sendTest") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(mail, APPLICATION_JSON), MockEmail.class);
+    }
+
+    public boolean hasConfiguredEmail() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/mail/configured") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(Boolean.class);
+    }
 }

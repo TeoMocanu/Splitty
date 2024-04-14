@@ -29,6 +29,8 @@ public class InvitationCtrl {
     @FXML
     private Button sendInvites;
     @FXML
+    private Button sendTestButton;
+    @FXML
     private Button cancelButton;
 
     @Inject
@@ -41,11 +43,31 @@ public class InvitationCtrl {
         this.event = event;
         code.setText(Long.toString(event.getId()));
         title.setText(event.getTitle());
+
+        if(!hasConfiguredEmail()){
+            sendInvites.setDisable(true);
+            sendTestButton.setDisable(true);
+        }
+
+    }
+
+    private boolean hasConfiguredEmail() {
+//        return false;
+        return server.hasConfiguredEmail();
     }
 
     public void cancel() {
         clearFields();
         mainCtrl.showEventOverview(event);
+    }
+
+    public void sendTest() {
+        try {
+            server.sendTestMail(new commons.emails.MockEmail(event.getTitle()));
+        } catch (WebApplicationException e) {
+            ErrorMessage.showError(e.getMessage(), mainCtrl);
+        }
+        InfoMessage.showInfo(mainCtrl.getString("testMailSent"), mainCtrl);
     }
 
     public void send() {
@@ -103,25 +125,4 @@ public class InvitationCtrl {
                 break;
         }
     }
-/*
-    public void language() {
-        if (en.equals("en")) en();
-        else if(en.equals("nl")) nl();
-    }
-
-    public void en() {
-        text1.setText("Give people the following invite code: ");
-        text2.setText("Invite the following people by email (one address per line)");
-        sendInvites.setText("send invites");
-        cancelButton.setText("cancel");
-    }
-
-    public void nl() {
-        text1.setText("Geef mensen de volgende uitnodigingscode: ");
-        text2.setText("Nodig de volgende mensen uit per e-mail (\u00e9\u00e9n adres per regel)");
-        sendInvites.setText("stuur uitnodigingen");
-        cancelButton.setText("annuleren");
-    }
-
- */
 }
