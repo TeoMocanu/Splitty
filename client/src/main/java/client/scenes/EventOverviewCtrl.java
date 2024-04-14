@@ -331,7 +331,7 @@ public class EventOverviewCtrl {
     }
 
     public void back() {
-        server.editEvent(event);
+        //server.editEvent(event);
         mainCtrl.showStarterPage();
     }
 
