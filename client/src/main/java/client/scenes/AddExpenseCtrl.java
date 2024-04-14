@@ -27,6 +27,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class AddExpenseCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private Expense expense = null;
-    ObservableList<String> types = FXCollections.observableArrayList("Food", "Entrance fees", "Travel", "Activities", "Other");
+    ObservableList<String> types;
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
     ObservableList<String> participants = FXCollections.observableArrayList();
@@ -97,10 +99,12 @@ public class AddExpenseCtrl {
 
     void initialize(Event event){
         this.event = server.getEvent(event.getId());
-        if(event.getTypes() != null && event.getTypes().size() > 0) {
-            types = FXCollections.observableArrayList("Food", "Entrance fees", "Travel", "Activities", "Other");
-            types.addAll(event.getTypes());
+        if(event.getTypes() == null || event.getTypes().size() == 0){
+            event.setTypes(List.of("Food", "Entrance fees", "Travel", "Activities", "Other"));
+            server.editEvent(event);
         }
+        types = FXCollections.observableArrayList();
+        types.addAll(event.getTypes());
         type.setItems(types);
         type.setValue("Other");
         currency.setItems(currencies);
@@ -123,10 +127,8 @@ public class AddExpenseCtrl {
         this.event = server.getEvent(event.getId());
         newType.setPromptText(mainCtrl.getString("addNewType"));
         expense = server.getExpenseById(event.getId(), expense.getId());
-        if(event.getTypes() != null && event.getTypes().size() > 0) {
-            types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
-            types.addAll(event.getTypes());
-        }
+        types = FXCollections.observableArrayList();
+        types.addAll(event.getTypes());
         type.setItems(types);
         type.setValue(expense.getType());
         currency.setItems(currencies);

@@ -21,9 +21,14 @@ import commons.Event;
 import commons.Expense;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
@@ -33,9 +38,17 @@ public class StatisticsCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private List<Expense> expenseList;
+    private List<String> colors = List.of("yellow", "blue", "green", "red", "grey", "aqua", "crimson", "orange", "chocolate");
+    private List<String> types;
 
     @FXML
     private Label eventTitle;
+    @FXML
+    private Label totalCostLabel;
+    @FXML
+    private Label eventStatistics;
+    @FXML
+    private Button abortButton;
     @FXML
     private Label costLabel;
     @FXML
@@ -49,6 +62,7 @@ public class StatisticsCtrl {
 
     public void initialize(Event event) {
         this.event = event;
+        types = event.getTypes();
 
         expenseList = server.getAllExpensesFromEvent(event);
         if(expenseList == null) expenseList = new ArrayList<>(0);
@@ -61,20 +75,23 @@ public class StatisticsCtrl {
 
     private void initChart() {
         chart.getData().setAll();
-        //ObservableList<PieChart.Data> types = FXCollections.observableArrayList();
         Map<String, Double> counter = new HashMap<>();
         for(Expense e : expenseList) {
             counter.put(e.getType(), counter.getOrDefault(e.getType(), 0.0) + e.getAmount());
         }
         for(Map.Entry<String, Double> entry : counter.entrySet()) {
-            chart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
+            chart.getData().add(new PieChart.Data(entry.getKey() + "\n " + entry.getValue() + "\u20ac", entry.getValue()));
         }
-        //chart.setData(types);
         chart.setLabelsVisible(true);
+        chart.setLegendVisible(false);
 
-        for (PieChart.Data data : chart.getData()) {
-            Text text = new Text(data.getName() + " (" + data.getPieValue() + ")");
-            data.getNode().setUserData(text);
+        for(PieChart.Data data : chart.getData()){
+            String type = data.getName().split("\n")[0];
+            int index = types.indexOf(type);
+            if(index == -1) index = colors.size()-1;
+            String color = colors.get(index);
+            data.getNode().setStyle("-fx-pie-color: " + color + ";");
+            //data.getNode().setStyle("-fx-text-fill: #ffffff;");
         }
     }
 
