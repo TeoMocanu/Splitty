@@ -17,7 +17,10 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +35,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import commons.*;
 import commons.emails.Invitation;
 import commons.emails.Reminder;
+import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -41,18 +45,40 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+@Service
 public class ServerUtils {
-
-    private static String server = "localhost:8080"; // default server
-    private static String SERVER = "http://" + server + "/";
-    private static String webSocketServer = "ws://" + server + "/websocket";
+    private static String server;
+    private static String SERVER;
+    private static String webSocketServer;
     private StompSession session;
+
+    public ServerUtils() {
+        init();
+    }
+    public void init() {
+        Properties properties = new Properties();
+        InputStream input = getClass().getClassLoader().getResourceAsStream("client.properties");
+        try {
+            properties.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String host = properties.getProperty("server.host");
+        String port = properties.getProperty("server.port");
+        this.server = host+":"+port;
+        System.out.println("Trying to connect to: " + server);
+        this.SERVER = "http://" + server + "/";
+        this.webSocketServer = "ws://" + server + "/websocket";
+        this.session = connect(webSocketServer);
+    }
 
     public String getServer() {
         return server;
