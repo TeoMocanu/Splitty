@@ -35,6 +35,30 @@ public class ParticipantTest {
         assertEquals("abc", participant.getBic());
     }
 
+    @Test
+    public void testGetParticipantKey() {
+        // Create a Participant object
+        Event event = new Event("title");
+        Participant participant = new Participant(event, "John", "john@example.com", "123456789", "ABCD1234");
+
+        // Validate the participant key
+        assertNotNull(participant.getParticipantKey());
+        assertEquals(event.getId(), participant.getParticipantKey().getEventId());
+    }
+
+    @Test
+    public void testSetId() {
+        // Create a Participant object
+        Event event = new Event("title");
+        Participant participant = new Participant(event, "John", "john@example.com", "123456789", "ABCD1234");
+
+        // Set the ID
+        participant.setId(100);
+
+        // Validate the ID
+        assertEquals(100, participant.getId());
+    }
+
 
     @Test
     public void testNotEquals() {

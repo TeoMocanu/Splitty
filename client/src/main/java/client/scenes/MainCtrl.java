@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 public class MainCtrl {
 
-    private Stage primaryStage;
+    Stage primaryStage;
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
     private InvitationCtrl invitationCtrl;
@@ -310,5 +310,9 @@ public class MainCtrl {
 
     public String getString(String key) {
         return LanguageUtils.get(key);
+    }
+
+    public void setPrimaryStageTitle(String title) {
+        primaryStage.setTitle(title);
     }
 }
