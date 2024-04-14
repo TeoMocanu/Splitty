@@ -90,7 +90,7 @@ public class LanguageUtils {
     public static String getLanguageFromFile() {
         try {
             Properties properties = new Properties();
-            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("language/language.properties");
+            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("client.properties");
 
             properties.load(input);
             return properties.getProperty("language");
@@ -102,7 +102,7 @@ public class LanguageUtils {
     public static void setLanguageToFile(String language) {
         try {
             Properties properties = new Properties();
-            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("language/language.properties");
+            InputStream input = LanguageUtils.class.getClassLoader().getResourceAsStream("client.properties");
 
             properties.load(input);
             properties.setProperty("language", language);
@@ -111,7 +111,7 @@ public class LanguageUtils {
             if(dir.endsWith("client")) {
                 dir = dir.substring(0, dir.length() - 7);
             }
-            String file = dir.concat("/client/src/main/resources/language/language.properties");
+            String file = dir.concat("/client/src/main/resources/client.properties");
 
             FileOutputStream output = new FileOutputStream(file);
             properties.store(output , null);

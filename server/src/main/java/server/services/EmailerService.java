@@ -34,6 +34,8 @@ public class EmailerService {
         message.setSubject(subject);
         message.setText(text);
 
+//        JavaMailSender ja
+
         System.out.println("Sending mail to: " + to);
         javaMailSender.send(message);
         System.out.println("Mail sent to: " + to);

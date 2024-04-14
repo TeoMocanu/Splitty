@@ -15,6 +15,7 @@
  */
 package server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -26,7 +27,8 @@ import java.util.Collections;
 @EntityScan(basePackages = { "commons", "server" })
 public class Main {
 
-    public static int port = 8080; // change the port here
+    @Value("${server.port}")
+    public static int port; // change the port here
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Main.class);
