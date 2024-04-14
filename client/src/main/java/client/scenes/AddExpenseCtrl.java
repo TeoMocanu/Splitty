@@ -38,7 +38,7 @@ public class AddExpenseCtrl {
     private final MainCtrl mainCtrl;
     private Event event;
     private Expense expense = null;
-    ObservableList<String> types = FXCollections.observableArrayList("Food", "Entrance fees", "Travel", "Activities", "Other");
+    ObservableList<String> types;
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
     ObservableList<String> participants = FXCollections.observableArrayList();
@@ -97,12 +97,14 @@ public class AddExpenseCtrl {
 
     void initialize(Event event){
         this.event = server.getEvent(event.getId());
-        if(event.getTypes() != null && event.getTypes().size() > 0) {
-            types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
-            types.addAll(event.getTypes());
+        if(event.getTypes() == null || event.getTypes().size() == 0){
+            event.setTypes(List.of("Food", "Entrance fees", "Travel", "Activities", "Other"));
+            server.editEvent(event);
         }
+        types = FXCollections.observableArrayList();
+        types.addAll(event.getTypes());
         type.setItems(types);
-        type.setValue("other");
+        type.setValue("Other");
         currency.setItems(currencies);
         currency.setValue("EUR");
         participants = FXCollections.observableArrayList();
@@ -123,10 +125,8 @@ public class AddExpenseCtrl {
         this.event = server.getEvent(event.getId());
         newType.setPromptText(mainCtrl.getString("addNewType"));
         expense = server.getExpenseById(event.getId(), expense.getId());
-        if(event.getTypes() != null && event.getTypes().size() > 0) {
-            types = FXCollections.observableArrayList("food", "venue", "transport", "activities", "other");
-            types.addAll(event.getTypes());
-        }
+        types = FXCollections.observableArrayList();
+        types.addAll(event.getTypes());
         type.setItems(types);
         type.setValue(expense.getType());
         currency.setItems(currencies);
@@ -178,6 +178,7 @@ public class AddExpenseCtrl {
 
             for(Participant p : newExpense.getSplitters()){
                 List<Debt> debts = server.getAllDebtsFromEvent(event);
+                if(debts == null) debts = new ArrayList<>(0);
                 for(Debt debt : debts) {
                     if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
                         debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters

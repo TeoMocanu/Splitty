@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="457.0" stylesheets="/client/scenes/OpenDebts-highcontrast.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenDebtsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="457.0" stylesheets="/client/scenes/OpenDebts-highcontrast.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenDebtsCtrl">
    <children>
       <VBox prefHeight="484.0" prefWidth="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -61,11 +61,12 @@
                               <Insets />
                            </FlowPane.margin>
                         </Button>
+                        <Button fx:id="statsButton" mnemonicParsing="false" onAction="#stats" text="Stats" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="settleDebtsButton" mnemonicParsing="false" onAction="#settleAllDebts" text="%settleDebts" />
+                        <Button fx:id="settleDebtsButton1" mnemonicParsing="false" onAction="#settleAllDebts" text="%settleDebts" />
                      </children>
                   </FlowPane>
                </children>

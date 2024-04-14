@@ -142,7 +142,8 @@ public class StarterPageCtrl {
             }
         });
         languageComboBox.setOnAction(null);
-        languageComboBox.getSelectionModel().select(labels.stream().filter(l -> l.getText().equals(LanguageUtils.getLocale().getLanguage().toUpperCase())).findFirst().orElse(null));
+        languageComboBox.getSelectionModel().select(labels.stream().filter(l ->
+                l.getText().equals(LanguageUtils.getLocale().getLanguage().toUpperCase())).findFirst().orElse(null));
         languageComboBox.setOnAction(e -> {
             switchLanguageComboBox();
         });
