@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="426.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatisticsCtrl">
+   <children>
+      <Label fx:id="costLabel" layoutX="114.0" layoutY="63.0" text="costLabel" translateX="-5.0">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label fx:id="eventTitle" layoutX="299.0" layoutY="16.0" text="EventTitle" translateX="-5.0">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Label fx:id="totalCostLabel" layoutX="15.0" layoutY="63.0" text="%totalCost">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="eventStatistics" layoutX="14.0" layoutY="14.0" text="%eventStatistics">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <FlowPane alignment="CENTER_RIGHT" layoutX="9.0" layoutY="215.0" prefHeight="18.0" prefWidth="331.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <children>
+            <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abort" text="%cancel">
+               <FlowPane.margin>
+                  <Insets right="10.0" />
+               </FlowPane.margin>
+            </Button>
+         </children>
+      </FlowPane>
+      <Label fx:id="chartLabel" layoutX="15.0" layoutY="100.0" text="%chart" />
+      <PieChart fx:id="chart" layoutX="29.0" layoutY="141.0" prefHeight="299.0" prefWidth="369.0" />
+   </children>
+</AnchorPane>

@@ -41,4 +41,14 @@ public class EmailerController {
 
         emailerService.sendMail(reminder.getEmail(), subject, text);
     }
+
+    @PutMapping("/sendTest")
+    public void sendTestMail(@RequestBody String email){
+        String subject = "Test mail";
+        String text = "This is a test mail. If you received this mail, the mail service is working correctly. \n\n" +
+                "Best wishes,\n" +
+                "Splitty - group 04";
+
+        emailerService.sendMail(email, subject, text);
+    }
 }

@@ -48,6 +48,8 @@ public class MainCtrl {
     private Scene editTitle;
     private OpenDebtsCtrl openDebtsCtrl;
     private Scene openDebts;
+    private StatisticsCtrl statisticsCtrl;
+    private Scene statistics;
     private MyFXML myFXML;
 
     public MainCtrl() {
@@ -67,6 +69,7 @@ public class MainCtrl {
         var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
         var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
         var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+        var statistics = myFXML.load(StatisticsCtrl.class, "client", "scenes", "Statistics.fxml");
 
         this.starterPage(starterPage);
         this.adminLogin(adminLogin);
@@ -78,6 +81,7 @@ public class MainCtrl {
         this.invitation(invitation);
         this.editTitle(editTitle);
         this.settleDebts(openDebts);
+        this.statistics(statistics);
 
         primaryStage.setOnCloseRequest(e -> {
             starterPage.getKey().stop();
@@ -95,6 +99,7 @@ public class MainCtrl {
         var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
         var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
         var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+        var statistics = myFXML.load(StatisticsCtrl.class, "client", "scenes", "Statistics.fxml");
 
         this.starterPage(starterPage);
         this.adminLogin(adminLogin);
@@ -106,6 +111,7 @@ public class MainCtrl {
         this.invitation(invitation);
         this.editTitle(editTitle);
         this.settleDebts(openDebts);
+        this.statistics(statistics);
 
         primaryStage.setOnCloseRequest(e -> {
             starterPage.getKey().stop();
@@ -169,6 +175,11 @@ public class MainCtrl {
     public void settleDebts(Pair<OpenDebtsCtrl, Parent> openDebts){
         this.openDebtsCtrl = openDebts.getKey();
         this.openDebts = new Scene(openDebts.getValue());
+    }
+
+    public void statistics(Pair<StatisticsCtrl, Parent> statistics){
+        this.statisticsCtrl = statistics.getKey();
+        this.statistics = new Scene(statistics.getValue());
     }
 
     public void showStarterPage() {
@@ -281,6 +292,14 @@ public class MainCtrl {
         primaryStage.setMinHeight(openDebts.getHeight());
         openDebtsCtrl.initialize(event);
         openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
+    }
+
+    public void showStatistics(Event event) {
+        primaryStage.setResizable(true);
+        primaryStage.setTitle(getString("statistics"));
+        primaryStage.setScene(statistics);
+        statisticsCtrl.initialize(event);
+        statistics.setOnKeyPressed(e ->statisticsCtrl.keyPressed(e));
     }
 
     public void showChangeServer() {
