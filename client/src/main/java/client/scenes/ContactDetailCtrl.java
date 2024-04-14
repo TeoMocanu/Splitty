@@ -30,6 +30,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.util.List;
+
 
 public class ContactDetailCtrl {
 
@@ -121,6 +123,11 @@ public class ContactDetailCtrl {
                 participant.setIban(newParticipant.getIban());
                 participant.setName(newParticipant.getName());
                 server.editParticipant(participant);
+
+                List<Participant> listP = server.getAllParticipantsFromEvent(event);
+                for(Participant p : listP) if(p.getName().equals(participant.getName())) p = participant;
+                event.setParticipants(listP);
+                server.editEvent(event);
 
                 event.setLastAction("edited participant");
 

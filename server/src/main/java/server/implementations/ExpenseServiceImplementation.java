@@ -48,11 +48,11 @@ public class ExpenseServiceImplementation implements ExpenseService {
     }
 
     @Override
-    public ResponseEntity<Expense> editExpense(ExpenseKey id, Expense expense) {
+    public ResponseEntity<Expense> editExpense(Expense expense) {
         if (expense == null) {
             return ResponseEntity.badRequest().build();
         }
-        if (!expenseRepository.existsById(id)) {
+        if (!expenseRepository.existsById(new ExpenseKey(expense.getEvent().getId(), expense.getId()))) {
             return ResponseEntity.notFound().build();
         }
         Expense updatedExpense = expenseRepository.save(expense);

@@ -37,7 +37,7 @@ public class AddExpenseCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Event event;
-    private Expense expense = null;
+    private Expense expense;
     ObservableList<String> types;
     ObservableList<String> currencies = FXCollections.observableArrayList("EUR", "USD");
 
@@ -122,9 +122,11 @@ public class AddExpenseCtrl {
     }
 
     public void initialize(Event event, Expense expense) { // initializing the data from an existing expense into the window
+        addButton.setText("Edit");
+        title.setText("Edit Expense");
         this.event = server.getEvent(event.getId());
         newType.setPromptText(mainCtrl.getString("addNewType"));
-        expense = server.getExpenseById(event.getId(), expense.getId());
+        this.expense = expense;//server.getExpenseById(event.getId(), expense.getId());
         types = FXCollections.observableArrayList();
         types.addAll(event.getTypes());
         type.setItems(types);
@@ -167,11 +169,16 @@ public class AddExpenseCtrl {
             Expense newExpense = createExpense();
             double amountChange = newExpense.getAmount();
             if(expense != null) {
-                server.editExpense(newExpense);
+                //server.editExpense(newExpense);
+                server.addExpense(newExpense);
+                event.setExpenses(server.getAllExpensesFromEvent(event));
+                server.editEvent(event);
                 amountChange = newExpense.getAmount() - expense.getAmount();
             }
             else {
                 server.addExpense(newExpense);
+                event.setExpenses(server.getAllExpensesFromEvent(event));
+                server.editEvent(event);
                 event.setLastAction("added expense");
             }
             this.event = server.updateEvent(event);

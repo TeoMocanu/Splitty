@@ -118,13 +118,13 @@ public class ExpenseControllerTest {
         long expenseId = 100L;
         ExpenseKey key = new ExpenseKey(eventId, expenseId);
 
-        when(service.editExpense(key, expense1)).thenReturn(ResponseEntity.ok(expense1));
-        ResponseEntity<Expense> response = expenseController.editExpense(key, expense1);
+        when(service.editExpense(expense1)).thenReturn(ResponseEntity.ok(expense1));
+        ResponseEntity<Expense> response = expenseController.editExpense(expense1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(expense1, response.getBody());
-        verify(service).editExpense(key, expense1);
+        verify(service).editExpense(expense1);
     }
 
     @Test
@@ -138,13 +138,13 @@ public class ExpenseControllerTest {
 
         expense1 = new Expense(event1,date1,participant1,participantList,"Shopping",120,"euro");
         Expense editedExpense = new Expense();
-        when(service.editExpense(eq(key), any(Expense.class))).thenReturn(ResponseEntity.ok(editedExpense));
-        ResponseEntity<Expense> response = expenseController.editExpense(key, editedExpense);
+        when(service.editExpense(any(Expense.class))).thenReturn(ResponseEntity.ok(editedExpense));
+        ResponseEntity<Expense> response = expenseController.editExpense(editedExpense);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(editedExpense, response.getBody());
-        verify(service).editExpense(eq(key), any(Expense.class));
+        verify(service).editExpense(any(Expense.class));
     }
 
     @Test
