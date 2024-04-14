@@ -15,14 +15,13 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ExpenseTest {
 
@@ -67,9 +66,9 @@ public class ExpenseTest {
         var a = new Expense(event, date, participant, List.of(participant), "parking", 12.5f, "drinks");
         var b = new Expense(new Event("BBQ"), date, participant, List.of(participant), "parking", 12.5f, "drinks");
 
-        // same properties, should still be a different id
+//         same properties, should still be a different id
 //        assertNotEquals(e.getId(), a.getId());
-        // different properties, should be different id
+//         different properties, should be different id
 //        assertNotEquals(e.getId(), b.getId());
     }
 
@@ -144,5 +143,27 @@ public class ExpenseTest {
     @Test
     public void getEventIdTest() {
         assertEquals(event.getId(), e.getEventId());
+    }
+
+    @Test
+    public void testGetExpenseKey() {
+        // Create an Expense object
+        Expense expense = new Expense(event, LocalDate.of(2024, 12, 12), participant, List.of(participant), "parking", 12.5f, "drinks");
+
+        // Validate the expense key
+        assertNotNull(expense.getExpenseKey());
+        assertEquals(event.getId(), expense.getExpenseKey().getEventId());
+    }
+
+    @Test
+    public void testSetId() {
+        // Create an Expense object
+        Expense expense = new Expense(event, LocalDate.of(2024, 12, 12), participant, List.of(participant), "parking", 12.5f, "drinks");
+
+        // Set the ID
+        expense.setId(100);
+
+        // Validate the ID
+        assertEquals(100, expense.getId());
     }
 }

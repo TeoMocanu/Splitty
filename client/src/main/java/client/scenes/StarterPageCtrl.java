@@ -303,8 +303,8 @@ public class StarterPageCtrl {
     public void updateEvents(Event event) {
         // updating all the events and their expenses and participants
         List<Event> updatedList = new ArrayList<Event>(eventList.size());
-        for (int i = 0; i < eventList.size(); i++) {
-            Event e = server.getEvent(eventList.get(i).getId());
+        for (Event i : eventList) {
+            Event e = server.getEvent(i.getId());
             //e.setExpenses(server.getAllExpensesFromEvent(e));
             //e.setParticipants(server.getAllParticipantsFromEvent(e));
             updatedList.add(e);

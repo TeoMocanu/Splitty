@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OpenDebtsCtrl {
@@ -56,7 +57,8 @@ public class OpenDebtsCtrl {
         this.event = event;
 
         eventTitleLabel.setText(event.getTitle());
-        currentDebts = server.getAllDebtsFromEvent(event);
+        currentDebts = deleteCyclicDebts(server.getAllDebtsFromEvent(event));
+        for(Debt debt : currentDebts) server.editDebt(debt);
         initializeDebtsTable(currentDebts);
     }
 
@@ -161,6 +163,46 @@ public class OpenDebtsCtrl {
     private void clearFields() {
         table.setRoot(new TreeItem<HBox>());
         eventTitleLabel.setText("");
+    }
+
+    private List<Debt> deleteCyclicDebts(List<Debt> debts) {
+        if (debts == null || debts.size() == 0) return new ArrayList<Debt>(0);
+        List<Debt> inCycle;
+        do {
+            inCycle = new ArrayList<>(0);
+            Double min = debts.get(0).getAmount();
+            //DFS
+            for (Debt debt : debts) {
+                if(debt.getAmount() == 0) continue;
+                if (DFS(debts, debt, debt.getCreditor().getId())) inCycle.add(debt);
+            }
+            System.out.println(inCycle.size());
+            for (Debt debt : inCycle) {
+                if (debt.getAmount() < min) min = debt.getAmount();
+            }
+            for (Debt debt : inCycle) {
+                int index = debts.indexOf(debt);
+                //System.out.println("cycle deleting " + min + " eur from " + debt.getCreditor().getName() + " -> " + debt.getDebtor().getName());
+                debt.addAmount(-1.0 * min);
+                debts.set(index, debt);
+                //server.editDebt(debt);
+            }
+        } while(inCycle.size() > 0);
+        return debts;
+    }
+
+    // returns true if given node is in a cycle
+    public boolean DFS(List<Debt> debts, Debt start, Long here) {
+        for(Debt debt : debts) {
+            if(debt.getAmount() == 0) continue;
+            if(debt.getCreditor().getId() == start.getDebtor().getId()) {
+                if(debt.getDebtor().getId() == here) {
+                    return true;
+                }
+                return DFS(debts, debt, here);
+            }
+        }
+        return false;
     }
 
     public void keyPressed(KeyEvent e) {

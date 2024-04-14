@@ -70,3 +70,7 @@
     -fx-border-width: 2px;
     -fx-font-weight: bold;
 }
+
+.image-view {
+    -fx-opacity: 1;
+}
