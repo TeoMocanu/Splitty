@@ -35,7 +35,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import commons.*;
 import commons.emails.Invitation;
 import commons.emails.Reminder;
-import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -45,7 +44,6 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
