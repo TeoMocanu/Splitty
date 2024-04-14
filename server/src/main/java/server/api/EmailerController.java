@@ -1,12 +1,10 @@
 package server.api;
 
 import commons.emails.Invitation;
+import commons.emails.MockEmail;
 import commons.emails.Reminder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.services.EmailerService;
 
 @RestController
@@ -43,12 +41,19 @@ public class EmailerController {
     }
 
     @PutMapping("/sendTest")
-    public void sendTestMail(@RequestBody String email){
-        String subject = "Test mail";
-        String text = "This is a test mail. If you received this mail, the mail service is working correctly. \n\n" +
+    public void sendTestMail(@RequestBody MockEmail mail){
+        String to = emailerService.getSender();
+        String subject = "Test email";
+        String text = "Good evening, \n\n" +
+                "This is a test email, from the "+mail.getEvent()+" event! If you received this, it means your email service is correctly configured.\n\n" +
                 "Best wishes,\n" +
                 "Splitty - group 04";
 
-        emailerService.sendMail(email, subject, text);
+        emailerService.sendMail(to, subject, text);
+    }
+
+    @GetMapping("/configured")
+    public boolean isConfigured(){
+        return !emailerService.getSender().isBlank();
     }
 }
