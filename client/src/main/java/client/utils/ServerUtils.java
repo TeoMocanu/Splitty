@@ -151,10 +151,10 @@ public class ServerUtils {
 
     public Expense editExpense(Expense expense) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/editExpense/" + expense.getId()) //
+                .target(SERVER).path("api/expenses/editExpense") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+                .put(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
     public Expense getExpenseById(Long eid, Long id) {

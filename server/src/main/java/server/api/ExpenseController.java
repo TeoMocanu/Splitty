@@ -82,7 +82,6 @@
 package server.api;
 
 import commons.Expense;
-import commons.primaryKeys.ExpenseKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -133,9 +132,10 @@ public class ExpenseController {
         return service.addExpense(expense);
     }
 
-    @PostMapping("/editExpense/{id}")
-    public ResponseEntity<Expense> editExpense(@PathVariable("id") ExpenseKey id, @RequestBody Expense expense) {
-        return service.editExpense(id, expense);
+    @PutMapping("/editExpense")
+    public ResponseEntity<Expense> editExpense(@RequestBody Expense expense) {
+        System.out.println("lets GOOOOO");
+        return service.editExpense(expense);
     }
 
     @DeleteMapping("/deleteExpense/{eid}/{id}")

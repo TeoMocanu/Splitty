@@ -1,7 +1,6 @@
 package server.services;
 
 import commons.Expense;
-import commons.primaryKeys.ExpenseKey;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public interface ExpenseService {
 
     ResponseEntity<Expense> addExpense(Expense expense);
 
-    ResponseEntity<Expense> editExpense(ExpenseKey id, Expense expense);
+    ResponseEntity<Expense> editExpense(Expense expense);
 
     ResponseEntity<Void> deleteExpense(Long eid, Long id);
 
