@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="426.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatisticsCtrl">
    <children>
-      <Label fx:id="totalCostTitle" layoutX="20.0" layoutY="61.0" text="Total Costs:" translateX="-5.0">
+      <Label fx:id="costLabel" layoutX="114.0" layoutY="63.0" text="costLabel" translateX="-5.0">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -18,7 +18,12 @@
          <font>
             <Font size="17.0" />
          </font></Label>
-      <Label fx:id="title" layoutX="14.0" layoutY="14.0" text="Event Statistics">
+      <Label fx:id="totalCostTitle1" layoutX="15.0" layoutY="63.0" text="%totalCost">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="title" layoutX="14.0" layoutY="14.0" text="%eventStatistics">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -32,7 +37,7 @@
             </Button>
          </children>
       </FlowPane>
-      <Label fx:id="chartLabel" layoutX="15.0" layoutY="100.0" text="Cost distribution per expense type:" />
-      <PieChart fx:id="chart" layoutX="28.0" layoutY="123.0" prefHeight="299.0" prefWidth="369.0" />
+      <Label fx:id="chartLabel" layoutX="15.0" layoutY="100.0" text="%chart" />
+      <PieChart fx:id="chart" layoutX="29.0" layoutY="141.0" prefHeight="299.0" prefWidth="369.0" />
    </children>
 </AnchorPane>

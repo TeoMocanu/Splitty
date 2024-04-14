@@ -21,7 +21,6 @@ import commons.Event;
 import commons.Expense;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -36,15 +35,9 @@ public class StatisticsCtrl {
     private List<Expense> expenseList;
 
     @FXML
-    private Label title;
-    @FXML
     private Label eventTitle;
     @FXML
-    private Button abortButton;
-    @FXML
-    private Label totalCostTitle;
-    @FXML
-    private Label chartLabel;
+    private Label costLabel;
     @FXML
     private PieChart chart;
 
@@ -62,7 +55,7 @@ public class StatisticsCtrl {
         double total = 0.00;
         for(Expense e : expenseList) total += e.getAmount();
         eventTitle.setText(event.getTitle());
-        totalCostTitle.setText("Total cost:   " + total + " \u20ac");
+        costLabel.setText(total + " \u20ac");
         initChart();
     }
 
