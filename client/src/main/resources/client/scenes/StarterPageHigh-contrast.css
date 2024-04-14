@@ -37,11 +37,11 @@
     -fx-font-size: 14px;
 }
 
-.button:hover {
+.button:hover, #languageComboBox:hover {
     -fx-background-color: #27408B;
 }
 
-.button:pressed {
+.button:pressed, #languageComboBox:pressed {
     -fx-background-color: #4169E1;
 }
 
@@ -57,11 +57,24 @@
     -fx-vgap: 10px;
 }
 
-.button:focused, .text-field:focused {
+.button:focused, .text-field:focused, #languageComboBox:focused {
     -fx-border-color: #00BFFF;
     -fx-border-width: 3px;
 }
 
+.logo {
+    -fx-fill: #ADD8E6;
+    -fx-font-style: italic;
+    -fx-font-size: 40px;
+}
+#languageComboBox {
+    -fx-background-color: #00008B;
+    -fx-text-fill: #B0E0E6;
+    -fx-font-size: 10px;
+    -fx-border-color: #4682B4;
+    -fx-border-width: 2px;
+    -fx-font-weight: bold;
+}
 .image-view {
     -fx-opacity: 1;
 }

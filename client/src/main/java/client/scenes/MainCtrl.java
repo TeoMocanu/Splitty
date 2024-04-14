@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 public class MainCtrl {
 
-    private Stage primaryStage;
+    Stage primaryStage;
     private StarterPageCtrl starterPageCtrl;
     private Scene starterPage;
     private InvitationCtrl invitationCtrl;
@@ -48,6 +48,8 @@ public class MainCtrl {
     private Scene editTitle;
     private OpenDebtsCtrl openDebtsCtrl;
     private Scene openDebts;
+    private StatisticsCtrl statisticsCtrl;
+    private Scene statistics;
     private MyFXML myFXML;
 
     public MainCtrl() {
@@ -67,6 +69,7 @@ public class MainCtrl {
         var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
         var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
         var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+        var statistics = myFXML.load(StatisticsCtrl.class, "client", "scenes", "Statistics.fxml");
 
         this.starterPage(starterPage);
         this.adminLogin(adminLogin);
@@ -78,6 +81,7 @@ public class MainCtrl {
         this.invitation(invitation);
         this.editTitle(editTitle);
         this.settleDebts(openDebts);
+        this.statistics(statistics);
 
         primaryStage.setOnCloseRequest(e -> {
             starterPage.getKey().stop();
@@ -95,6 +99,7 @@ public class MainCtrl {
         var invitation = myFXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml");
         var editTitle = myFXML.load(EditTitleCtrl.class, "client", "scenes", "EditTitle.fxml");
         var openDebts = myFXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebts.fxml");
+        var statistics = myFXML.load(StatisticsCtrl.class, "client", "scenes", "Statistics.fxml");
 
         this.starterPage(starterPage);
         this.adminLogin(adminLogin);
@@ -106,6 +111,7 @@ public class MainCtrl {
         this.invitation(invitation);
         this.editTitle(editTitle);
         this.settleDebts(openDebts);
+        this.statistics(statistics);
 
         primaryStage.setOnCloseRequest(e -> {
             starterPage.getKey().stop();
@@ -171,6 +177,11 @@ public class MainCtrl {
         this.openDebts = new Scene(openDebts.getValue());
     }
 
+    public void statistics(Pair<StatisticsCtrl, Parent> statistics){
+        this.statisticsCtrl = statistics.getKey();
+        this.statistics = new Scene(statistics.getValue());
+    }
+
     public void showStarterPage() {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(450);
@@ -179,6 +190,8 @@ public class MainCtrl {
         primaryStage.setScene(starterPage);
         starterPageCtrl.initialize();
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
+        primaryStage.setHeight(550.0);
+        primaryStage.setWidth(438.0);
         //scene = new Scene(root);
         //scene.getStylesheets().add(getClass().getResource("high-contrast-theme.css").toExternalForm());;
     }
@@ -193,12 +206,15 @@ public class MainCtrl {
         primaryStage.setResizable(false);
         adminLoginCtrl.initialize();
         adminLogin.setOnKeyPressed(e -> adminLoginCtrl.keyPressed(e));
+        adminLoginCtrl.setupShortcuts(adminLogin);
     }
     public void showAdminOverview() {
         primaryStage.setTitle(getString("adminOverview"));
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initialize();
         adminOverview.setOnKeyPressed(e -> adminOverviewCtrl.keyPressed(e));
+        // Call the method to load the shortcuts when the scene is shown
+        adminOverviewCtrl.setupShortcuts(adminOverview);
     }
 
     public void showAddExpense(Event event) {
@@ -278,6 +294,14 @@ public class MainCtrl {
         openDebts.setOnKeyPressed(e ->openDebtsCtrl.keyPressed(e));
     }
 
+    public void showStatistics(Event event) {
+        primaryStage.setResizable(true);
+        primaryStage.setTitle(getString("statistics"));
+        primaryStage.setScene(statistics);
+        statisticsCtrl.initialize(event);
+        statistics.setOnKeyPressed(e ->statisticsCtrl.keyPressed(e));
+    }
+
     public void showChangeServer() {
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(Double.MIN_VALUE);
@@ -307,5 +331,9 @@ public class MainCtrl {
 
     public String getString(String key) {
         return LanguageUtils.get(key);
+    }
+
+    public void setPrimaryStageTitle(String title) {
+        primaryStage.setTitle(title);
     }
 }

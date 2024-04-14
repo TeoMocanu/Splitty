@@ -205,6 +205,10 @@ public class OpenDebtsCtrl {
         return false;
     }
 
+    public void stats() {
+        mainCtrl.showStatistics(event);
+    }
+
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:

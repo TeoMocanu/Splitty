@@ -18,14 +18,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
-
 
 public class StarterPageCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    @FXML
-    private Button languageButtonStart;
+//    @FXML
+//    private Button languageButtonStart;
     @FXML
     private Button createButton;
     @FXML
@@ -51,8 +55,8 @@ public class StarterPageCtrl {
     @FXML
     private ListView<Event> listView;
 
-    @FXML
-    private ImageView flagView;
+//    @FXML
+//    private ImageView flagView;
     @FXML
     private Label serverLabel;
     @FXML
@@ -62,6 +66,10 @@ public class StarterPageCtrl {
     private String eventName;
     private List<Event> eventList;
     private Stack<Event> deletedEventsStack = new Stack<>();
+    @FXML
+    private ComboBox<Label> languageComboBox;
+
+    private Label lastSelectedLanguage;
 
 //    private String en;
 //    private List<String> languages = List.of("en", "nl"); // add languages here
@@ -85,6 +93,7 @@ public class StarterPageCtrl {
         // Set mouse click event listener for the ListView
         listView.setOnMouseClicked(this::handleListViewClick);
         listView.setOnKeyPressed(this::handleListViewButton);
+        initLangComboBox();
 
         rebindUI();
 
@@ -102,6 +111,80 @@ public class StarterPageCtrl {
         deletedEventsStack.push(event);
         if (deletedEventsStack.size() > 5) {
             deletedEventsStack.remove(0);
+        }
+    }
+
+    public void initLangComboBox(){
+        List<Label> labels = new ArrayList<>();
+        for (Locale locale : LanguageUtils.getSupportedLocales()) {
+            Label label = new Label(locale.getLanguage().toUpperCase());
+            ImageView flag = new ImageView(LanguageUtils.getFlag(locale));
+            flag.setFitHeight(15);
+            flag.setFitWidth(22);
+            label.setGraphic(flag);
+            labels.add(label);
+        }
+        labels.add(new Label(mainCtrl.getString("addLanguage")));
+        languageComboBox.setItems(FXCollections.observableArrayList(labels));
+        languageComboBox.setCellFactory(param -> new ListCell<Label>() {
+            @Override
+            protected void updateItem(Label item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null) {
+                    setText(item.getText());
+                    if (item.getGraphic() != null) {
+                        ImageView flag = new ImageView(((ImageView)(item.getGraphic())).getImage());
+                        flag.setFitHeight(15);
+                        flag.setFitWidth(22);
+                        setGraphic(flag);
+                    }
+                }
+            }
+        });
+        languageComboBox.setOnAction(null);
+        languageComboBox.getSelectionModel().select(labels.stream().filter(l ->
+                l.getText().equals(LanguageUtils.getLocale().getLanguage().toUpperCase())).findFirst().orElse(null));
+        languageComboBox.setOnAction(e -> {
+            switchLanguageComboBox();
+        });
+        lastSelectedLanguage = languageComboBox.getSelectionModel().getSelectedItem();
+    }
+
+    public void switchLanguageComboBox() {
+        Label selected = languageComboBox.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            if (selected.getText().equals(mainCtrl.getString("addLanguage"))) {
+                // the button will revert to the lastly selected language
+                String dir = System.getProperty("user.dir");
+                if(dir.endsWith("client")) {
+                    dir = dir.substring(0, dir.length() - 7);
+                }
+                Path fileToCopy = Paths.get(dir.concat("/client/src/main/resources/language/AddLanguageKit.zip"));
+                Path target = Paths.get(dir.concat("/AddLanguageKit.zip"));
+                try {
+                    Files.copy(fileToCopy, target);
+                    InfoMessage.showInfo(mainCtrl.getString("addLanguageMessage"), mainCtrl);
+                } catch (IOException ex) {
+                    if(ex.getClass().equals(FileAlreadyExistsException.class))
+                        ErrorMessage.showError(mainCtrl.getString("addLanguageErrorExists"), mainCtrl);
+                    else
+                        ErrorMessage.showError(mainCtrl.getString("addLanguageError"), mainCtrl);
+                } finally {
+                    languageComboBox.setOnAction(null);
+                    languageComboBox.getSelectionModel().select(lastSelectedLanguage);
+                    languageComboBox.setOnAction(e -> {
+                        switchLanguageComboBox();
+                    });
+                }
+            } else {
+                if(LanguageUtils.getSupportedLocales().contains(new Locale(selected.getText().toLowerCase()))) {
+                    LanguageUtils.setLocale(new Locale(selected.getText().toLowerCase()));
+                    lastSelectedLanguage = languageComboBox.getSelectionModel().getSelectedItem();
+                    rebindUI();
+                } else {
+                    ErrorMessage.showError(mainCtrl.getString("languageNotSupported"), mainCtrl);
+                }
+            }
         }
     }
 
@@ -286,14 +369,15 @@ public class StarterPageCtrl {
         }
     }
 
-    public void languageSwitch() {
-        mainCtrl.changeLanguage();
-
-        rebindUI();
-    }
+//    public void languageSwitch() {
+//        mainCtrl.changeLanguage();
+//
+//        rebindUI();
+//    }
 
     private void rebindUI() {
-        LanguageUtils.update(languageButtonStart, "LG");
+        mainCtrl.setPrimaryStageTitle(mainCtrl.getString("starterPage"));
+//        LanguageUtils.update(languageButtonStart, "LG");
         LanguageUtils.update(createButton, "create");
         LanguageUtils.update(joinButton, "join");
         LanguageUtils.update(deleteHistoryButton, "deleteHistory");
@@ -301,8 +385,9 @@ public class StarterPageCtrl {
         LanguageUtils.update(joinEventLabel, "joinEvent");
         LanguageUtils.update(recentlyViewedEventsLabel, "recentlyViewedEvents");
         LanguageUtils.update(changeServerButton, "changeServer");
-        LanguageUtils.update(flagView);
+//        LanguageUtils.update(flagView);
         LanguageUtils.update(undoButton, "undo");
+        initLangComboBox();
     }
 
     /*
