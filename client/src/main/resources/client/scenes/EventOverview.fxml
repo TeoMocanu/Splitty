@@ -62,8 +62,9 @@
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" hgap="20.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_RIGHT" hgap="10.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Button fx:id="deleteParticipantButton" mnemonicParsing="false" onAction="#deleteParticipant" text="%deleteSelected" />
                         <Button fx:id="participantEditButton" mnemonicParsing="false" onAction="#editParticipant" text="%editSelected" />
                         <Button fx:id="participantAddButton" mnemonicParsing="false" onAction="#addParticipant" text="%add" />
                      </children>
@@ -114,12 +115,13 @@
                            </FlowPane.margin></ComboBox>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+                  <FlowPane alignment="CENTER_RIGHT" hgap="10.0" HBox.hgrow="NEVER">
                      <children>
+                        <Button fx:id="deleteExpenseButton" mnemonicParsing="false" onAction="#deleteExpense" text="%deleteSelected" />
                         <Button fx:id="editExpenseButton" mnemonicParsing="false" onAction="#editExpense" text="%editSelected" />
                         <Button fx:id="addExpenseButton" mnemonicParsing="false" onAction="#addExpense" text="%add">
                            <FlowPane.margin>
-                              <Insets left="10.0" />
+                              <Insets />
                            </FlowPane.margin>
                         </Button>
                      </children>
@@ -133,6 +135,7 @@
                <columns>
                   <TableColumn fx:id="titleColumn" text="%title" />
                   <TableColumn fx:id="payerColumn" text="%payer" />
+                  <TableColumn fx:id="typeColumn" text="%type1" />
                   <TableColumn fx:id="amountColumn" text="%amountEUR" />
                   <TableColumn fx:id="dateColumn" text="%date" />
                </columns>
@@ -142,7 +145,7 @@
             </TableView>
             <HBox prefHeight="17.0" prefWidth="580.0" VBox.vgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="CENTER_LEFT" hgap="20.0" HBox.hgrow="ALWAYS">
+                  <FlowPane alignment="CENTER_LEFT" hgap="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Button fx:id="languageButton" mnemonicParsing="false" onAction="#languageSwitch" text="%LG">
                            <graphic>

@@ -9,6 +9,7 @@ import client.utils.LanguageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import commons.Debt;
 import commons.Event;
 
 import commons.Expense;
@@ -64,6 +65,8 @@ public class EventOverviewCtrl {
     private TableColumn<Expense, String> payerColumn;
     @FXML
     private TableColumn<Expense, LocalDate> dateColumn;
+    @FXML
+    private TableColumn<Expense, String> typeColumn;
 
     @FXML
     private Button editTitleButton;
@@ -90,6 +93,10 @@ public class EventOverviewCtrl {
     @FXML
     private Button settleDebtsButton;
     @FXML
+    private Button deleteParticipantButton;
+    @FXML
+    private Button deleteExpenseButton;
+    @FXML
     private List<ContextMenu> contextMenuList;
 
     @Inject
@@ -100,7 +107,7 @@ public class EventOverviewCtrl {
     }
 
     public void initialize(Event event) {
-        this.event = event;
+        this.event = server.getEvent(event.getId());
 
         eventTitleLabel.setText(event.getTitle());
 
@@ -134,7 +141,11 @@ public class EventOverviewCtrl {
         LanguageUtils.update(languageButton, "LG");
         LanguageUtils.update(backButton, "back");
         LanguageUtils.update(settleDebtsButton, "settleDebts");
+        LanguageUtils.update(deleteParticipantButton, "deleteSelected");
+        LanguageUtils.update(deleteExpenseButton, "deleteSelected");
 
+
+        LanguageUtils.update(typeColumn, "type1");
         LanguageUtils.update(titleColumn, "title");
         LanguageUtils.update(payerColumn, "payer");
         LanguageUtils.update(amountColumn, "amountEUR");
@@ -154,23 +165,26 @@ public class EventOverviewCtrl {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         payerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPayer().getName()));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("localDate"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         expensesTableView.setItems(observableExpenseList);
 
-        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(2));
-        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
-        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
-        dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(1));
+        titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(1));
+        amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(1));
+        payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(1));
+        dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(1));
+        typeColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(1));
 
         ScrollBar vScrollBar = (ScrollBar) expensesTableView.lookup(".scroll-bar:vertical");
 
         vScrollBar.visibleProperty().addListener((observable, wasVisible, isVisible) -> {
             if (isVisible) {
                 // If the scrollbar is visible, divide table width by 3 and subtract scrollbar width
-                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(6));
-                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
-                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
-                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(4).subtract(4));
+                titleColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(4));
+                amountColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(4));
+                payerColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(4));
+                dateColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(4));
+                typeColumn.prefWidthProperty().bind(expensesTableView.widthProperty().divide(5).subtract(4));
             }
         });
     }
@@ -229,9 +243,8 @@ public class EventOverviewCtrl {
 
                 MenuItem deleteMenuItem = new MenuItem(mainCtrl.getString("delete"));
                 deleteMenuItem.setOnAction(e -> {
-                    if (showConfirmationDialogExpenses(mainCtrl.getString("confirmationMessageDelete"))) {
-                        expenses.remove(selectedExpense);
-                        initExpensesTableView(event);
+                    if (showConfirmationDialogExpenses(mainCtrl.getString("confirmationMessageDeleteExpense"))) {
+                        deleteExpense();
                     }
                 });
                 contextMenu.getItems().add(deleteMenuItem);
@@ -269,9 +282,8 @@ public class EventOverviewCtrl {
 
                 MenuItem deleteMenuItem = new MenuItem(mainCtrl.getString("delete"));
                 deleteMenuItem.setOnAction(e -> {
-                    if (showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDelete"))) {
-                        participants.remove(selectedParticipant);
-                        initParticipantsListView(event);
+                    if (showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDeleteParticipant"))) {
+                        deleteParticipant();
                     }
                 });
                 contextMenu.getItems().add(deleteMenuItem);
@@ -318,6 +330,25 @@ public class EventOverviewCtrl {
         }
     }
 
+    public void deleteParticipant() {
+        if (selectedParticipant != null) {
+            if(!selectedParticipant.getExpensesPaidBy().isEmpty() || !selectedParticipant.getExpensesToPay().isEmpty()) {
+                showConfirmationDialogParticipants(mainCtrl.getString("errorDeleteParticipantWithExpenses"));
+            }
+            else if(showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDeleteParticipant"))){
+                List<Debt> participantDebts = server.getDebtsByParticipant(selectedParticipant);
+                if(participantDebts != null && !participantDebts.isEmpty()) {
+                    for (Debt d : participantDebts) {
+                        server.deleteDebt(d);
+                    }
+                }
+                server.deleteParticipant(selectedParticipant);
+                initParticipantsListView(event);
+                initExpensePayersComboBox();
+            }
+        }
+    }
+
     public void addExpense() {
         mainCtrl.showAddExpense(event);
     }
@@ -331,7 +362,6 @@ public class EventOverviewCtrl {
     }
 
     public void back() {
-        //server.editEvent(event);
         mainCtrl.showStarterPage();
     }
 
@@ -342,6 +372,36 @@ public class EventOverviewCtrl {
     public void editExpense() {
         if(selectedExpense != null) {
             mainCtrl.showEditExpense(event, selectedExpense);
+        }
+    }
+
+    public void deleteExpense() {
+        if (selectedExpense != null && showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDeleteExpense"))) {
+            double amountChange = selectedExpense.getAmount() * (-1.0);
+            for(Participant p : selectedExpense.getSplitters()) {
+                for(Debt debt : server.getDebtsByParticipant(p)){
+                    if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == selectedExpense.getPayer().getId()) {
+                        debt.addAmount(amountChange / selectedExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                        if(debt.getAmount() < 0) {
+                            debt.setAmount(debt.getAmount() * (-1.0));
+                            debt.setDebtor(debt.getCreditor());
+                            debt.setCreditor(p);
+                        }
+                        server.editDebt(debt);
+                    }
+                    else if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == selectedExpense.getPayer().getId()) {
+                        debt.addAmount((-1.0) * amountChange / selectedExpense.getSplitters().size());
+                        if(debt.getAmount() < 0) {
+                            debt.setAmount(debt.getAmount() * (-1.0));
+                            debt.setCreditor(debt.getDebtor());
+                            debt.setDebtor(p);
+                        }
+                        server.editDebt(debt);
+                    }
+                }
+            }
+            server.deleteExpense(selectedExpense);
+            initExpensesTableView(event);
         }
     }
 

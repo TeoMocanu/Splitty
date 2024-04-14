@@ -41,6 +41,11 @@ public class DebtController {
         return service.getAllFromEvent(idEvent);
     }
 
+    @GetMapping("/getByParticipant/{eid}/{pid}")
+    public ResponseEntity<List<Debt>> getAllFromParticipant(@PathVariable("eid") long eid, @PathVariable("pid") long pid){
+        return service.getAllFromParticipant(eid, pid);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Debt> addDebt(@RequestBody Debt debt){
 //        long idEvent = debt.getEventId();

@@ -205,4 +205,16 @@ public class TestDebtRepository implements DebtRepository {
         }
         return result;
     }
+
+    @Override
+    public List<Debt> findByEventIdAndParticipantId(long eid, long id) {
+        call("findByEventIdAndParticipantId");
+        List<Debt> result = new ArrayList<>();
+        for(Debt debt: debts){
+            if(debt.getEventId() == eid && (debt.getDebtor().getId() == id || debt.getCreditor().getId() == id)){
+                result.add(debt);
+            }
+        }
+        return result;
+    }
 }
