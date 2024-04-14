@@ -112,6 +112,10 @@ public class EventOverviewCtrl {
         initParticipantsListView(event);
         initExpensePayersComboBox();
         initFilteringModeComboBox();
+
+        server.registerForUpdates(e -> {
+            initParticipantsListView(event);
+        });
     }
 
     private void rebindUI() {
@@ -263,8 +267,8 @@ public class EventOverviewCtrl {
     }
 
     public void editExpense() {
-        if (selectedExpense != null) {
-            mainCtrl.showEditExpense(selectedExpense.getEvent(), selectedExpense);
+        if(selectedExpense != null) {
+            mainCtrl.showEditExpense(event, selectedExpense);
         }
     }
 

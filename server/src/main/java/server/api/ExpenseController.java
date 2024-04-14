@@ -111,11 +111,11 @@ public class ExpenseController {
         return service.getAllExpensesFromEvent(eid);
     }
 
-    @GetMapping("/getById/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable("id") ExpenseKey id) {
+    @GetMapping("/getById/{eid}/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable("eid") Long eid, @PathVariable("id") Long id) {
         //Optional<Expense> expenseOptional = expenseRepository.findById(id);
         //return expenseOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-        return service.getExpenseById(id);
+        return service.getExpenseById(eid, id);
     }
 
     @GetMapping("/getAllExpensesFromEventPaidBy/{eid}/{pid}")
