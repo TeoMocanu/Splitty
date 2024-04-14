@@ -60,11 +60,11 @@ public class ExpenseServiceImplementation implements ExpenseService {
     }
 
     @Override
-    public ResponseEntity<Void> deleteExpense(ExpenseKey id) {
-        if (!expenseRepository.existsById(id)) {
+    public ResponseEntity<Void> deleteExpense(Long eid, Long id) {
+        if (!expenseRepository.existsById(new ExpenseKey(eid, id))) {
             return ResponseEntity.notFound().build();
         }
-        expenseRepository.deleteById(id);
+        expenseRepository.deleteById(new ExpenseKey(eid, id));
         return ResponseEntity.noContent().build();
     }
 

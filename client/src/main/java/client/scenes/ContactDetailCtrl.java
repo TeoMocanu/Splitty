@@ -83,7 +83,7 @@ public class ContactDetailCtrl {
     }
 
     public void initialize(Event event, Participant participant) {
-        this.event = event;
+        this.event = server.getEvent(event.getId());
         this.participant = participant;
 
         this.nameField.setText(participant.getName());

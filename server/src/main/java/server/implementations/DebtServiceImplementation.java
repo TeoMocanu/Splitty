@@ -80,4 +80,13 @@ public class DebtServiceImplementation implements DebtService {
         Debt updatedDebt = repo.save(debt);
         return ResponseEntity.ok(updatedDebt);
     }
+
+    @Override
+    public ResponseEntity<List<Debt>> getAllFromParticipant(long eid, long pid) {
+        List<Debt> debts = repo.findByEventIdAndParticipantId(eid, pid);
+        if (debts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(debts);
+    }
 }

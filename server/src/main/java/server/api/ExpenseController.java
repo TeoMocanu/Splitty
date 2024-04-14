@@ -138,8 +138,8 @@ public class ExpenseController {
         return service.editExpense(id, expense);
     }
 
-    @DeleteMapping("/deleteExpense/{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable("id") ExpenseKey id) {
-        return service.deleteExpense(id);
+    @DeleteMapping("/deleteExpense/{eid}/{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable("eid") Long eid, @PathVariable("id") Long id) {
+        return service.deleteExpense(eid, id);
     }
 }

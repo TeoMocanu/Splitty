@@ -18,4 +18,6 @@ public interface DebtService {
     ResponseEntity<Debt> deleteDebt(long eid, long id);
 
     ResponseEntity<Debt> editDebt(Debt debt);
+
+    ResponseEntity<List<Debt>> getAllFromParticipant(long eid, long pid);
 }
