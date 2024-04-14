@@ -15,6 +15,7 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 
+import jakarta.ws.rs.WebApplicationException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -105,7 +106,7 @@ public class EventOverviewCtrl {
     }
 
     public void initialize(Event event) {
-        this.event = event;
+        this.event = server.getEvent(event.getId());
 
         eventTitleLabel.setText(event.getTitle());
 
@@ -326,11 +327,14 @@ public class EventOverviewCtrl {
     public void deleteParticipant() {
         if (selectedParticipant != null) {
             if(!selectedParticipant.getExpensesPaidBy().isEmpty() || !selectedParticipant.getExpensesToPay().isEmpty()) {
-                //mainCtrl.showAlert(mainCtrl.getString("deleteParticipantError"));
+                throw new WebApplicationException(mainCtrl.getString("invalidInput"));
             }
-            else {
-                for (Debt d : server.getDebtsByParticipant(selectedParticipant)) {
-                    server.deleteDebt(d);
+            else if(showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDelete"))){
+                List<Debt> participantDebts = server.getDebtsByParticipant(selectedParticipant);
+                if(participantDebts != null && !participantDebts.isEmpty()) {
+                    for (Debt d : participantDebts) {
+                        server.deleteDebt(d);
+                    }
                 }
                 server.deleteParticipant(selectedParticipant);
                 initParticipantsListView(event);
@@ -352,7 +356,6 @@ public class EventOverviewCtrl {
     }
 
     public void back() {
-        server.editEvent(event);
         mainCtrl.showStarterPage();
     }
 
