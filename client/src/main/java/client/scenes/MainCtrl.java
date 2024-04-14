@@ -179,6 +179,8 @@ public class MainCtrl {
         primaryStage.setScene(starterPage);
         starterPageCtrl.initialize();
         starterPage.setOnKeyPressed(e -> starterPageCtrl.keyPressed(e));
+        primaryStage.setHeight(550.0);
+        primaryStage.setWidth(438.0);
         //scene = new Scene(root);
         //scene.getStylesheets().add(getClass().getResource("high-contrast-theme.css").toExternalForm());;
     }
