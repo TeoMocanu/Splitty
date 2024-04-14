@@ -84,7 +84,10 @@ public class DebtServiceImplementation implements DebtService {
 
     @Override
     public ResponseEntity<List<Debt>> getAllFromParticipant(long eid, long pid) {
-        Optional<List<Debt>> debtsOptional = repo.findByEventIdAndParticipantId(eid, pid);
-        return debtsOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        List<Debt> debts = repo.findByEventIdAndParticipantId(eid, pid);
+        if (debts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(debts);
     }
 }

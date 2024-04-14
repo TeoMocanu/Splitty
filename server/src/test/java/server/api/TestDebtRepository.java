@@ -207,7 +207,7 @@ public class TestDebtRepository implements DebtRepository {
     }
 
     @Override
-    public Optional<List<Debt>> findByEventIdAndParticipantId(long eid, long id) {
+    public List<Debt> findByEventIdAndParticipantId(long eid, long id) {
         return Optional.empty();
     }
 }
