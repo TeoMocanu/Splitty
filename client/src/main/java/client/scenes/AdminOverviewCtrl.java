@@ -7,12 +7,12 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.ws.rs.WebApplicationException;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,6 +33,8 @@ import java.io.IOException;
 public class AdminOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    private EventHandler<KeyEvent> keyEventHandler;
 
     @FXML
     private TableView<TableRowData> tableView;
@@ -308,18 +310,26 @@ public class AdminOverviewCtrl {
     }
 
     public void setupShortcuts(Scene scene) {
-        Platform.runLater(() -> {
-            scene.getWindow().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-                KeyCodeCombination downloadCombination = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
-                KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-                KeyCodeCombination importCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
-                KeyCodeCombination importCombinationText = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
-                if (downloadCombination.match(e)) downloadAllEvents();
-                if (help.match(e)) showHelp();
-                if (importCombination.match(e)) importFromFile();
-                if (importCombinationText.match(e)) importFromText();
-            });
-        });
+
+        keyEventHandler = e -> {
+            KeyCodeCombination downloadCombination = new KeyCodeCombination(KeyCode.D, KeyCombination.CONTROL_DOWN);
+            KeyCodeCombination help = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+            KeyCodeCombination importCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
+            KeyCodeCombination importCombinationText = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+            if (downloadCombination.match(e)) downloadAllEvents();
+            if (help.match(e)) showHelp();
+            if (importCombination.match(e)) importFromFile();
+            if (importCombinationText.match(e)) importFromText();
+        };
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+    }
+
+    public void removeShortcuts() {
+        Scene currentScene = backButton.getScene();
+        if(currentScene != null) {
+            currentScene.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        }
     }
 
     public void languageSwitch() {
@@ -381,6 +391,7 @@ public class AdminOverviewCtrl {
 
     public void cancel() {
         clearFields();
+        removeShortcuts();
         mainCtrl.showStarterPage();
     }
 
@@ -563,13 +574,11 @@ public class AdminOverviewCtrl {
         alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
-
     public void showSettings() {
 
-
     }
-
     public void exitAdminOverview() {
         mainCtrl.showStarterPage();
+        removeShortcuts();
     }
 }
