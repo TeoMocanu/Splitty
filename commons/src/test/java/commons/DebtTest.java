@@ -1,5 +1,6 @@
 package commons;
 
+import commons.primaryKeys.DebtKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,15 @@ class DebtTest {
         debtor = new Participant("name", event);
         creditor = new Participant("name2", event);
         debt = new Debt(event, debtor, creditor, 50.0);
+    }
+    @Test
+    public void testConstructor() {
+        assertNotNull(debt);
+        assertEquals(event.getId(), debt.getEventId());
+        assertEquals(event, debt.getEvent());
+        assertEquals(debtor, debt.getDebtor());
+        assertEquals(creditor, debt.getCreditor());
+        assertEquals(50.0, debt.getAmount());
     }
     @Test
     public void testGettersAndSetters() {
@@ -39,20 +49,26 @@ class DebtTest {
         assertEquals(newCreditor, debt.getCreditor());
         assertEquals(75.0, debt.getAmount());
     }
-    //TODO fix this test, ids are not right
     @Test
-    public void testNotEquals() {
-        // Create two debts with different attributes
-        Event event1 = new Event("title");
-        Event event2 = new Event("title");
-        Participant debtor1 = new Participant("name", event1);
-        Participant debtor2 = new Participant("name1", event1);
-        Participant creditor = new Participant("name2", event2);
-        Debt debt1 = new Debt(event1, debtor1, creditor, 100.0);
-        Debt debt2 = new Debt(event2, debtor2, creditor, 100.0);
+    public void testSetEvent() {
+        Event newEvent = new Event("newTitle");
+        debt.setEvent(newEvent);
+        assertEquals(newEvent, debt.getEvent());
+    }
+    @Test
+    public void testSetId() {
+        debt.setId(100L);
+        assertEquals(100L, debt.getId());
+    }
+    @Test
+    public void testEqualityAndInequality() {
+        // Test equality
+        assertEquals(debt, new Debt(event, debtor, creditor, 50.0));
 
-        // Test not equals method
-//        assertNotEquals(debt1, debt2);
+        // Test inequality
+        assertNotEquals(debt, new Debt(event, debtor, creditor, 100.0));
+        assertNotEquals(debt, null);
+        assertNotEquals(debt, new Object());
     }
     @Test
     public void testHashCode() {
@@ -71,5 +87,9 @@ class DebtTest {
         assertEquals(50.0, debt.getAmount());
         debt.addAmount(20.0);
         assertEquals(70.0, debt.getAmount());
+    }
+    @Test
+    public void testGetDebtKey() {
+        assertEquals(new DebtKey(event.getId(), debt.getId()), debt.getDebtKey());
     }
 }

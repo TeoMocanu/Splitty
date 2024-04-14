@@ -15,15 +15,15 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventTest {
 
@@ -199,6 +199,31 @@ public class EventTest {
         var b = new Event("event");
         assertNotEquals(a.getId(), b.getId());
     }*/
+
+    @Test
+    public void testToJSONString() throws IOException {
+        // Convert the Event object to JSON string
+        String jsonString = e.toJSONString();
+
+        // Validate the JSON string format
+        assertTrue(jsonString.contains("title"));
+        assertTrue(jsonString.contains("participants"));
+        assertTrue(jsonString.contains("expenses"));
+        assertTrue(jsonString.contains("types"));
+    }
+
+    @Test
+    public void testSetLastAction() {
+        // Create an Event object
+        Event event = new Event("Test Event");
+
+        // Set last action
+        event.setLastAction("updated");
+
+        // Validate last modified action and date
+        assertEquals("updated", event.getLastModifiedAction());
+        assertNotNull(event.getLastModifiedDate());
+    }
 
     @Test
     public void toStringTest() {
