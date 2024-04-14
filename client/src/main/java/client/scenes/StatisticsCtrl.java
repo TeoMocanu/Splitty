@@ -19,16 +19,14 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 
 import java.util.*;
-
 
 public class StatisticsCtrl {
 
@@ -45,8 +43,6 @@ public class StatisticsCtrl {
     private Button abortButton;
     @FXML
     private Label totalCostTitle;
-    @FXML
-    private Label totalCost;
     @FXML
     private Label chartLabel;
     @FXML
@@ -66,21 +62,27 @@ public class StatisticsCtrl {
         double total = 0.00;
         for(Expense e : expenseList) total += e.getAmount();
         eventTitle.setText(event.getTitle());
-        totalCost.setText(total + " \u20ac");
+        totalCostTitle.setText("Total cost:   " + total + " \u20ac");
         initChart();
     }
 
     private void initChart() {
-        ObservableList<PieChart.Data> types = FXCollections.observableArrayList();
+        chart.getData().setAll();
+        //ObservableList<PieChart.Data> types = FXCollections.observableArrayList();
         Map<String, Double> counter = new HashMap<>();
         for(Expense e : expenseList) {
             counter.put(e.getType(), counter.getOrDefault(e.getType(), 0.0) + e.getAmount());
         }
         for(Map.Entry<String, Double> entry : counter.entrySet()) {
-            types.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+            chart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
-        chart.setData(types);
+        //chart.setData(types);
+        chart.setLabelsVisible(true);
 
+        for (PieChart.Data data : chart.getData()) {
+            Text text = new Text(data.getName() + " (" + data.getPieValue() + ")");
+            data.getNode().setUserData(text);
+        }
     }
 
     public void abort() {

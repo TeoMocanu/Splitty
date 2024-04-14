@@ -8,20 +8,19 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="358.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatisticsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="426.0" stylesheets="/client/scenes/StarterPageHigh-contrast.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatisticsCtrl">
    <children>
-      <Label fx:id="totalCostTitle" layoutX="20.0" layoutY="65.0" text="Total Costs:" translateX="-5.0" />
-      <Label fx:id="eventTitle" layoutX="230.0" layoutY="16.0" text="EventTitle" translateX="-5.0">
+      <Label fx:id="totalCostTitle" layoutX="20.0" layoutY="61.0" text="Total Costs:" translateX="-5.0">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label fx:id="eventTitle" layoutX="299.0" layoutY="16.0" text="EventTitle" translateX="-5.0">
          <font>
             <Font size="17.0" />
          </font></Label>
-      <Label fx:id="totalCost" layoutX="108.0" layoutY="61.0" text="0" translateX="-5.0">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font></Label>
       <Label fx:id="title" layoutX="14.0" layoutY="14.0" text="Event Statistics">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="22.0" />
          </font>
       </Label>
       <FlowPane alignment="CENTER_RIGHT" layoutX="9.0" layoutY="215.0" prefHeight="18.0" prefWidth="331.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
@@ -33,7 +32,7 @@
             </Button>
          </children>
       </FlowPane>
-      <Label fx:id="chartLabel" layoutX="15.0" layoutY="100.0" text="Distribution of Expenses:" />
-      <PieChart fx:id="chart" layoutX="28.0" layoutY="123.0" prefHeight="227.0" prefWidth="302.0" />
+      <Label fx:id="chartLabel" layoutX="15.0" layoutY="100.0" text="Cost distribution per expense type:" />
+      <PieChart fx:id="chart" layoutX="28.0" layoutY="123.0" prefHeight="299.0" prefWidth="369.0" />
    </children>
 </AnchorPane>
