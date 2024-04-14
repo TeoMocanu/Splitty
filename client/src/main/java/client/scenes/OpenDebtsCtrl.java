@@ -100,6 +100,8 @@ public class OpenDebtsCtrl {
 //                    text = "Send Reminder";
 //                    if(en.equals("nl")) text = "Herinnering verzenden";
                     Button button = new Button(text);
+                    if(!server.hasConfiguredEmail())
+                        button.setDisable(true);
                     button.setOnAction(e -> { sendReminder(d); });
                     node.getChildren().add(new TreeItem<>(new HBox(button)));
 
