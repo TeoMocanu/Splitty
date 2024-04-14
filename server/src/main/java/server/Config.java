@@ -17,15 +17,28 @@ package server;
 
 import java.util.Random;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+//@Configuration
+@Component
+@ConfigurationProperties(prefix = "app")
 public class Config {
 
     @Bean
     public Random getRandom() {
         return new Random();
+    }
+
+    private int port;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
     /*@Bean
