@@ -92,13 +92,13 @@ public class ExpenseControllerTest {
         long expenseId = 100L;
         ExpenseKey key = new ExpenseKey(eventId, expenseId);
 
-        when(service.getExpenseById(key)).thenReturn(ResponseEntity.ok(expense1));
-        ResponseEntity<Expense> response = expenseController.getExpenseById(key);
+        when(service.getExpenseById(eventId, expenseId)).thenReturn(ResponseEntity.ok(expense1));
+        ResponseEntity<Expense> response = expenseController.getExpenseById(eventId, expenseId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(expense1, response.getBody());
-        verify(service).getExpenseById(key);
+        verify(service).getExpenseById(eventId, expenseId);
     }
 
     @Test

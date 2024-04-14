@@ -27,6 +27,7 @@ public class ChangeServerCtrl {
     }
 
     public void initialize(){
+        serverField.setText(server.getServer());
     }
 
     public void save(){
@@ -43,7 +44,7 @@ public class ChangeServerCtrl {
             alert.showAndWait();
              */
             ErrorMessage.showError(mainCtrl.getString("invalidServerMessage")+"\n\n" + e.getMessage(), mainCtrl);
-            server.changeServer("localhost:8080");
+            server.changeServer(current);
             return;
         }
         mainCtrl.getStarterPageCtrl().getServerLabel().setText(server.getServer());

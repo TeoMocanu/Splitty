@@ -19,12 +19,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.util.Collections;
+
 
 @SpringBootApplication
 @EntityScan(basePackages = { "commons", "server" })
 public class Main {
 
+    public static int port = 8080; // change the port here
+
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication app = new SpringApplication(Main.class);
+        app.setDefaultProperties(Collections.singletonMap("server.port", "" + port));
+        app.run(args);
+        //SpringApplication.run(Main.class, args);
     }
 }
