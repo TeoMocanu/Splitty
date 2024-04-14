@@ -70,6 +70,7 @@ public class AdminLoginCtrl {
         LanguageUtils.update(passwordLabel, "password");
         LanguageUtils.update(title, "administratorLogin");
         LanguageUtils.update(flagView);
+        mainCtrl.setPrimaryStageTitle(mainCtrl.getString("adminLogin"));
     }
 
     /*

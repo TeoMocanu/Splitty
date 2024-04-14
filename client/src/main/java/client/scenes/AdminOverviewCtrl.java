@@ -341,6 +341,7 @@ public class AdminOverviewCtrl {
         LanguageUtils.update(settingsButton, "settings");
         LanguageUtils.update(helpButton, "help");
         LanguageUtils.update(flagView);
+        mainCtrl.setPrimaryStageTitle(mainCtrl.getString("adminOverview"));
         tableView.setPlaceholder(new Label(mainCtrl.getString("noContetYet")));
         tableView.getColumns().forEach(column -> {
             if (column.getId().equals("id")) {
