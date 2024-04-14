@@ -61,3 +61,7 @@
     -fx-border-color: #00BFFF;
     -fx-border-width: 3px;
 }
+
+.image-view {
+    -fx-opacity: 1;
+}
