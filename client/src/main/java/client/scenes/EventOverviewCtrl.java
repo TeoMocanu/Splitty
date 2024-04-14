@@ -238,9 +238,43 @@ public class EventOverviewCtrl {
         }
     }
 
+    private boolean showConfirmationDialogParticipants(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setTitle(mainCtrl.getString("confirmation"));
+        alert.initOwner(participantsListView.getScene().getWindow());
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+
     private void handleParticipantsListViewClick(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) { // Left-click
             selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
+        }
+        if (mouseEvent.getButton() == MouseButton.SECONDARY) { // Right-click
+            selectedParticipant = (Participant) participantsListView.getSelectionModel().getSelectedItem();
+            if (selectedParticipant != null) {
+                // Create ContextMenu
+                if (!contextMenuList.isEmpty()) {
+                    contextMenuList.get(0).hide();
+                    contextMenuList.remove(0);
+                }
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem deleteMenuItem = new MenuItem(mainCtrl.getString("delete"));
+                deleteMenuItem.setOnAction(e -> {
+                    if (showConfirmationDialogParticipants(mainCtrl.getString("confirmationMessageDelete"))) {
+                        participants.remove(selectedParticipant);
+                        initParticipantsListView(event);
+                    }
+                });
+                contextMenu.getItems().add(deleteMenuItem);
+                contextMenuList.add(contextMenu);
+
+                // Display ContextMenu
+                contextMenu.show(participantsListView, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            }
         }
     }
 
