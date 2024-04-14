@@ -153,11 +153,11 @@ public class ExpenseControllerTest {
         long expenseId = 100L;
         ExpenseKey key = new ExpenseKey(eventId, expenseId);
 
-        when(service.deleteExpense(key)).thenReturn(ResponseEntity.noContent().build());
-        ResponseEntity<Void> response = expenseController.deleteExpense(key);
+        when(service.deleteExpense(eventId, expenseId)).thenReturn(ResponseEntity.noContent().build());
+        ResponseEntity<Void> response = expenseController.deleteExpense(eventId, expenseId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(service).deleteExpense(key);
+        verify(service).deleteExpense(eventId, expenseId);
     }
 
     @Test

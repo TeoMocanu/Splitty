@@ -166,7 +166,7 @@ public class ServerUtils {
 
     public void deleteExpense(Expense expense) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/expenses/deleteExpense/" + expense.getId()) //
+                .target(SERVER).path("api/expenses/deleteExpense/" + expense.getEventId()+ "/" + expense.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(new GenericType<Expense>(){ });

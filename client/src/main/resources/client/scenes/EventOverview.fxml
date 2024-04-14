@@ -135,6 +135,7 @@
                <columns>
                   <TableColumn fx:id="titleColumn" text="%title" />
                   <TableColumn fx:id="payerColumn" text="%payer" />
+                  <TableColumn fx:id="typeColumn" text="%type1" />
                   <TableColumn fx:id="amountColumn" text="%amountEUR" />
                   <TableColumn fx:id="dateColumn" text="%date" />
                </columns>

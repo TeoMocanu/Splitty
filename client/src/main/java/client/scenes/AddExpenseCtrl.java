@@ -182,9 +182,14 @@ public class AddExpenseCtrl {
                 for(Debt debt : debts) {
                     if(debt.getDebtor().getId() == p.getId() && debt.getCreditor().getId() == newExpense.getPayer().getId()) {
                         debt.addAmount(amountChange / newExpense.getSplitters().size()); // dividing the amount equally between all the splitters
+                        if(debt.getAmount() < 0) {
+                            debt.setAmount(debt.getAmount() * (-1.0));
+                            debt.setDebtor(debt.getCreditor());
+                            debt.setCreditor(p);
+                        }
                         server.editDebt(debt);
                     }
-                    if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == newExpense.getPayer().getId()) {
+                    else if(debt.getCreditor().getId() == p.getId() && debt.getDebtor().getId() == newExpense.getPayer().getId()) {
                         debt.addAmount((-1.0) * amountChange / newExpense.getSplitters().size());
                         if(debt.getAmount() < 0) {
                             debt.setAmount(debt.getAmount() * (-1.0));

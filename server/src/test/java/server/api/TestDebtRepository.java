@@ -208,6 +208,13 @@ public class TestDebtRepository implements DebtRepository {
 
     @Override
     public List<Debt> findByEventIdAndParticipantId(long eid, long id) {
-        return Optional.empty();
+        call("findByEventIdAndParticipantId");
+        List<Debt> result = new ArrayList<>();
+        for(Debt debt: debts){
+            if(debt.getEventId() == eid && (debt.getDebtor().getId() == id || debt.getCreditor().getId() == id)){
+                result.add(debt);
+            }
+        }
+        return result;
     }
 }

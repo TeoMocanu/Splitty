@@ -9,7 +9,6 @@ import server.database.DebtRepository;
 import server.services.DebtService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DebtServiceImplementation implements DebtService {
